@@ -34,3 +34,26 @@
 .ai-tags span{border-color:rgba(231,60,78,.34);color:var(--soft);background:rgba(231,60,78,.06)}
 @media(max-width:900px){.ai-grid{grid-template-columns:1fr}.ai-card{min-height:auto}.ai-icon{margin-bottom:26px}}
 @media(max-width:620px){.ai-card{padding:22px}.ai-principle{padding:20px;grid-template-columns:1fr}.ai-principle>svg{margin-bottom:2px}}
+
+
+/* Services */
+.services-section{background:#0e0b0c}
+.services-head h2 span{color:var(--red)}
+.services-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.service-card{position:relative;min-height:430px;padding:30px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(145deg,#151113,#0d0a0b);overflow:hidden;transition:transform .2s ease,border-color .2s ease}
+.service-card:hover{transform:translateY(-4px);border-color:rgba(231,60,78,.58)}
+.service-number{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border:1px solid #70303a;border-radius:50%;color:var(--red);font-size:.72rem;font-weight:800;letter-spacing:.1em;margin-bottom:46px}
+.service-card h3{font-size:1.55rem;letter-spacing:-.035em;margin-bottom:14px}
+.service-card>p{color:var(--muted);font-size:.93rem;line-height:1.7;margin-bottom:25px}
+.service-card ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.service-card li{position:relative;padding:11px 0 11px 18px;border-bottom:1px solid var(--line);color:#d7ced0;font-size:.82rem}
+.service-card li:before{content:"";position:absolute;left:1px;top:17px;width:6px;height:6px;border-radius:50%;background:var(--red)}
+.service-process{display:grid;grid-template-columns:.8fr 1.2fr;gap:70px;margin-top:22px;padding:38px;border:1px solid var(--line);border-radius:20px;background:#0a0809}
+.process-intro>p:not(.section-label){color:var(--muted);max-width:430px;margin:20px 0 28px}
+.process-steps{border-top:1px solid var(--line)}
+.process-steps article{display:grid;grid-template-columns:42px 1fr;gap:14px;padding:17px 0;border-bottom:1px solid var(--line)}
+.process-steps article>span{color:var(--red);font-size:.7rem;font-weight:800;letter-spacing:.12em;padding-top:2px}
+.process-steps strong{display:block;font-size:.92rem;margin-bottom:3px}
+.process-steps p{color:var(--muted);font-size:.82rem;margin:0}
+@media(max-width:900px){.services-grid{grid-template-columns:1fr}.service-card{min-height:auto}.service-process{grid-template-columns:1fr;gap:35px}}
+@media(max-width:600px){.service-card{padding:23px}.service-number{margin-bottom:30px}.service-process{padding:23px}.process-intro .button{width:100%}}
