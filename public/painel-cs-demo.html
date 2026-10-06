@@ -1,0 +1,1452 @@
+<title>Painel de CS · Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+  /* Layout: barra lateral com a fonte dos dados + area principal com abas no topo; cada aba abre com numeros grandes e desce para graficos e listas */
+  :root {
+    --bg:#F3F2F8; --side:#E9E7F2; --card:#FFFFFF; --line:#DEDBEA; --soft:#F7F6FB;
+    --ink:#1C1A2B; --muted:#646079;
+    --accent:#5B4BD6; --accent-soft:#E7E3FB; --accent-2:#A79BF0; --rueda:#C2417A; --rueda-soft:#F6DDE8; --liliam:#127F96; --liliam-soft:#D6EEF3;
+    --ok:#178A4C; --ok-soft:#DDF3E6; --warn:#B7791F; --warn-soft:#FBEFD9; --bad:#C9353A; --bad-soft:#FBE3E4;
+    --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+    --body:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+    --r:14px;
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+    --bg:#13121B; --side:#1A1925; --card:#1F1E2C; --line:#2E2C3F; --soft:#262536;
+    --ink:#ECEAF6; --muted:#A29EB8;
+    --accent:#9D90FF; --accent-soft:#2C2750; --accent-2:#6A5FC4; --rueda:#F07AAE; --rueda-soft:#45202F; --liliam:#4CC3DB; --liliam-soft:#143840;
+    --ok:#4ACB85; --ok-soft:#173826; --warn:#E8B04E; --warn-soft:#3A2D14; --bad:#F2777B; --bad-soft:#3F1C1F;
+    color-scheme: dark;
+  } }
+  :root[data-theme="dark"] {
+    --bg:#13121B; --side:#1A1925; --card:#1F1E2C; --line:#2E2C3F; --soft:#262536;
+    --ink:#ECEAF6; --muted:#A29EB8;
+    --accent:#9D90FF; --accent-soft:#2C2750; --accent-2:#6A5FC4; --rueda:#F07AAE; --rueda-soft:#45202F; --liliam:#4CC3DB; --liliam-soft:#143840;
+    --ok:#4ACB85; --ok-soft:#173826; --warn:#E8B04E; --warn-soft:#3A2D14; --bad:#F2777B; --bad-soft:#3F1C1F;
+    color-scheme: dark;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:400 15px/1.55 var(--body); -webkit-font-smoothing:antialiased; }
+  h1, h2, h3 { margin:0; font-family:var(--display); color:var(--ink); text-wrap:balance; }
+  p { margin:0; }
+  .num { font-variant-numeric:tabular-nums; }
+
+  .app { display:grid; grid-template-columns:272px minmax(0,1fr); min-height:100vh; }
+  .side { background:var(--side); padding:32px 22px; display:flex; flex-direction:column; gap:28px; }
+  .brand { display:flex; align-items:center; gap:10px; font-family:var(--display); font-weight:700; font-size:17px; }
+  .brand i { width:30px; height:30px; border-radius:9px; background:var(--accent); display:grid; place-items:center; color:var(--card); font-style:normal; font-size:15px; }
+  .side h4 { margin:0 0 10px; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:600; }
+  .side .box { display:grid; gap:10px; font-size:13.5px; }
+  .side .row { display:flex; justify-content:space-between; gap:12px; }
+  .side .row span:first-child { color:var(--muted); }
+  .side .row b { font-weight:600; text-align:right; }
+  .meter { height:8px; border-radius:99px; background:var(--line); overflow:hidden; display:flex; }
+  .meter i { display:block; height:100%; }
+  .side small { font-size:12px; color:var(--muted); line-height:1.5; }
+  .side .rec-tot { font-family:var(--display); font-size:20px; font-weight:700; }
+  .side .rec-n { color:var(--muted); font-weight:400; font-size:12px; }
+  .rec-falha { font-size:12px; color:var(--warn); background:var(--warn-soft); border-radius:8px; padding:8px 10px; line-height:1.45; display:grid; gap:6px; }
+  .rec-falha .atraso { display:grid; grid-template-columns:1fr auto; gap:0 8px; color:var(--ink); }
+  .rec-falha .atraso small { grid-column:1 / -1; color:var(--muted); font-size:11.5px; }
+  .rec-falha .atraso-sit { color:var(--ink); font-style:italic; }
+  .side .foot { margin-top:auto; font-size:12px; color:var(--muted); }
+  .theme-btn { border:1px solid var(--line); background:var(--card); color:var(--ink); border-radius:10px; padding:8px 12px; font:600 13px var(--body); cursor:pointer; }
+
+  .main { padding-block:40px 56px; padding-inline:48px; min-width:0; }
+  .demo-tag { display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:600; color:var(--warn); background:var(--warn-soft); padding:4px 10px; border-radius:99px; margin-bottom:14px; }
+  h1 { font-size:clamp(30px, 4vw, 44px); font-weight:800; letter-spacing:-0.025em; line-height:1.08; }
+  .lead { color:var(--muted); margin-top:10px; font-size:15px; max-width:62ch; }
+  .atualizado { margin-top:12px; font-size:13px; color:var(--muted); }
+  .atualizado::before { content:""; display:inline-block; width:8px; height:8px; margin-right:8px; border-radius:50%; background:var(--ok); vertical-align:1px; }
+  .atualizado b { color:var(--ink); font-weight:600; }
+  .tip { text-decoration:underline dotted; text-underline-offset:3px; cursor:help; }
+  .tip:focus-visible { outline:2px solid var(--accent); outline-offset:2px; border-radius:3px; }
+  #tip-box { position:fixed; z-index:50; max-width:300px; background:var(--ink); color:var(--bg); font:400 12.5px/1.45 var(--body); padding:9px 11px; border-radius:8px; pointer-events:none; box-shadow:0 6px 20px rgba(0,0,0,.18); text-transform:none; letter-spacing:0; }
+  #tip-box b { color:var(--bg); font-weight:600; display:block; margin-bottom:2px; }
+  #tip-box .tip-lista { display:grid; gap:6px; margin-top:6px; max-width:320px; }
+  #tip-box .tip-item { display:grid; grid-template-columns:1fr auto; gap:10px; align-items:start; padding-top:6px; border-top:1px solid rgba(127,127,127,.35); }
+  #tip-box .tip-item b { display:inline; margin:0; white-space:nowrap; }
+  #tip-box .tip-item em { opacity:.75; font-style:normal; font-size:12px; }
+  #tip-box em { display:block; font-style:normal; opacity:.75; font-size:12px; margin-top:4px; }
+
+  .tabs { display:flex; gap:4px; margin:28px 0 26px; border-bottom:1px solid var(--line); overflow-x:auto; scrollbar-width:thin; }
+  .tab { background:none; border:0; border-bottom:2px solid transparent; margin-bottom:-1px; padding:10px 14px; font:500 14.5px var(--body); color:var(--muted); cursor:pointer; white-space:nowrap; }
+  .tab:hover { color:var(--ink); }
+  .aviso-metodo { margin:-12px 0 20px; padding:9px 14px; border-radius:10px; background:var(--accent-soft); color:var(--ink); font-size:13px; line-height:1.5; }
+  .aviso-metodo span { color:var(--accent); font-weight:700; margin-right:4px; }
+  .aviso-metodo button { all:unset; color:var(--accent); font-weight:600; text-decoration:underline; text-underline-offset:2px; cursor:pointer; }
+  .aviso-metodo button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; border-radius:3px; }
+  .tab[aria-selected="true"] { color:var(--accent); border-bottom-color:var(--accent); font-weight:600; }
+  .tab:focus-visible, .theme-btn:focus-visible, input:focus-visible, .chip:focus-visible, th button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+
+  .panel { display:grid; gap:22px; }
+  .panel[hidden] { display:none; }
+  .kpis { display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:14px; }
+  .kpi { background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:18px 18px 16px; display:grid; gap:6px; align-content:start; }
+  .kpi .k { font-size:13px; color:var(--muted); }
+  .kpi .v { white-space:nowrap; font-family:var(--display); font-size:clamp(20px, 1.7vw, 28px); font-weight:700; letter-spacing:-0.02em; line-height:1.1; font-variant-numeric:tabular-nums; }
+  .kpi .f { font-size:12.5px; color:var(--muted); }
+  .kpi .v.bad { color:var(--bad); }
+
+  .row2 { display:grid; grid-template-columns:minmax(0,1.6fr) minmax(0,1fr); gap:22px; }
+  .row-eq { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:22px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:22px; min-width:0; }
+  .card h3 { font-size:17px; font-weight:700; letter-spacing:-0.01em; }
+  .card .sub { font-size:13px; color:var(--muted); margin-top:4px; }
+  .card-head { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap; margin-bottom:18px; }
+  .legend { display:flex; gap:16px; flex-wrap:wrap; font-size:12.5px; color:var(--muted); }
+  .legend span { display:inline-flex; align-items:center; gap:7px; }
+  .dot { width:10px; height:10px; border-radius:3px; display:inline-block; flex:none; }
+  .note { font-size:13px; color:var(--muted); margin-top:14px; }
+  .note b { color:var(--ink); font-weight:600; }
+
+  svg text { fill:var(--muted); font:500 11px var(--body); }
+  svg .grid { stroke:var(--line); stroke-width:1; }
+  svg .lbl { fill:var(--ink); font-weight:600; }
+
+  .insights h2 { font-size:19px; font-weight:700; margin-bottom:12px; }
+  .ins-grid { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:14px; }
+  .ins { background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:18px; display:grid; gap:6px; position:relative; overflow:hidden; }
+  .ins::before { content:""; position:absolute; inset:0 auto 0 0; width:4px; background:var(--accent); }
+  .ins.warn::before { background:var(--warn); } .ins.bad::before { background:var(--bad); } .ins.ok::before { background:var(--ok); }
+  .ins b { font-family:var(--display); font-size:19px; font-weight:700; line-height:1.2; }
+  .ins span { font-size:13.5px; color:var(--muted); }
+
+  .donut-wrap { display:grid; grid-template-columns:150px 1fr; gap:18px; align-items:center; }
+  .prod-wrap { display:grid; gap:14px; justify-items:center; }
+  .prod-wrap .tbl-wrap { width:100%; }
+  .tbl-prod { font-size:13px; }
+  .tbl-prod th, .tbl-prod td { padding:8px 8px; }
+  .tbl-prod tr.tot td { border-top:1px solid var(--line); font-weight:600; }
+  .donut-list { display:grid; gap:10px; font-size:13.5px; }
+  .donut-list div { display:grid; grid-template-columns:auto 1fr auto; gap:8px; align-items:center; }
+  .donut-list small { color:var(--muted); font-size:12px; }
+
+  .hb { display:grid; gap:11px; }
+  .hb-row { display:grid; grid-template-columns:150px minmax(0,1fr) 92px; gap:12px; align-items:center; font-size:13.5px; }
+  .hb-row small { display:block; color:var(--muted); font-size:11.5px; }
+  .hb-track { height:14px; border-radius:5px; background:var(--soft); position:relative; overflow:hidden; }
+  .hb-track i { position:absolute; inset:0 auto 0 0; border-radius:5px; background:var(--accent); }
+  .hb-track i.ghost { background:var(--accent-soft); }
+  .hb-track i.ok { background:var(--ok); } .hb-track i.warn { background:var(--warn); } .hb-track i.bad { background:var(--bad); }
+  .hb-row .v { text-align:right; font-variant-numeric:tabular-nums; font-weight:600; }
+
+  .ag { display:grid; gap:18px; }
+  .ag-item { display:grid; gap:8px; }
+  .ag-top { display:flex; justify-content:space-between; align-items:baseline; gap:12px; }
+  .ag-top b { font-family:var(--display); font-size:16px; }
+  .ag-top span { font-variant-numeric:tabular-nums; font-weight:600; }
+  .ag-bar { display:flex; gap:2px; height:16px; border-radius:5px; overflow:hidden; background:var(--soft); }
+  .ag-bar i { display:block; height:100%; }
+  .ag-parts { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:10px; font-size:13px; }
+  .ag-parts div { display:grid; grid-template-columns:auto 1fr; gap:2px 8px; align-items:center; }
+  .ag-parts small { grid-column:2; color:var(--muted); font-size:12px; }
+  .hb-track i.c-stripe { background:var(--accent); } .hb-track i.c-kiwify { background:var(--ok); } .hb-track i.c-asaas { background:var(--warn); }
+  .hb-track i.c-pix { background:var(--accent-2); } .hb-track i.c-rueda { background:var(--rueda); } .hb-track i.c-liliam { background:var(--liliam); }
+  .acc-tot { font-family:var(--display); font-size:30px; font-weight:800; letter-spacing:-0.02em; }
+  .acc-bar { display:flex; gap:3px; height:18px; margin-bottom:16px; }
+  .acc-bar i { display:block; height:100%; border-radius:4px; }
+  .acc-list { display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:12px; }
+  .acc-list div { display:grid; grid-template-columns:auto 1fr; gap:2px 8px; align-items:center; font-size:13.5px; }
+  .acc-list b { grid-column:2; font-family:var(--display); font-size:24px; font-weight:700; font-variant-numeric:tabular-nums; }
+  .acc-list small { grid-column:2; font-size:12px; color:var(--muted); }
+  @media (max-width:760px) { .acc-list { grid-template-columns:repeat(2, minmax(0,1fr)); } }
+  .pend { margin-top:18px; padding-top:16px; border-top:1px solid var(--line); display:grid; gap:10px; }
+  .pend-head { display:flex; align-items:center; gap:10px; font-size:14px; }
+  .pend-head b { font-family:var(--display); font-size:15px; }
+  .pend-list { display:flex; flex-wrap:wrap; gap:8px; }
+  .pend-item { display:inline-flex; align-items:center; gap:8px; background:var(--warn-soft); color:var(--ink); border-radius:99px; padding:5px 12px; font-size:13px; }
+  .pend-item b { color:var(--warn); font-variant-numeric:tabular-nums; }
+  .h-meses { display:flex; gap:6px; flex-wrap:wrap; }
+  .h-grid { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:14px; }
+  .h-tile { background:var(--soft); border:1px solid var(--line); border-radius:12px; padding:16px; display:grid; gap:4px; align-content:start; }
+  .h-tile .k { font-size:13px; color:var(--muted); }
+  .h-tile .v { font-family:var(--display); font-size:clamp(20px, 1.7vw, 26px); font-weight:700; letter-spacing:-0.02em; white-space:nowrap; font-variant-numeric:tabular-nums; }
+  .h-tile .f { font-size:12.5px; color:var(--muted); }
+  .h-tile-2 { grid-column:span 2; }
+  .h-tile .h-sub { font:500 13px var(--body); color:var(--muted); letter-spacing:0; }
+  .saida-split { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:4px 0 2px; }
+  .saida-parte { border-radius:9px; padding:8px 10px; display:grid; gap:2px; font-size:12px; color:var(--muted); line-height:1.4; }
+  .saida-parte b { color:var(--ink); font-size:13px; }
+  .saida-parte.churn { background:var(--bad-soft); }
+  .saida-parte.outras { background:var(--warn-soft); }
+  @media (max-width:480px) { .h-tile-2 { grid-column:auto; } .saida-split { grid-template-columns:1fr; } }
+  .delta { font-size:12.5px; font-weight:600; font-variant-numeric:tabular-nums; }
+  .delta.bom { color:var(--ok); } .delta.ruim { color:var(--bad); } .delta.neutro { color:var(--muted); }
+  tr.sel td { background:var(--accent-soft); }
+  @media (max-width:1100px) { .h-grid { grid-template-columns:repeat(2, minmax(0,1fr)); } }
+  @media (max-width:480px) { .h-grid { grid-template-columns:minmax(0,1fr); } }
+  .vs { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:14px; }
+  .vs > div { background:var(--soft); border:1px solid var(--line); border-radius:12px; padding:16px; display:grid; gap:4px; }
+  .vs b { font-family:var(--display); font-size:34px; font-weight:800; letter-spacing:-0.02em; font-variant-numeric:tabular-nums; }
+  .vs span { font-size:13px; color:var(--muted); }
+
+  .slider { display:flex; align-items:center; gap:10px; font-size:13px; color:var(--muted); }
+  .slider input { accent-color:var(--accent); width:140px; }
+  .pill { display:inline-block; font-size:12px; font-weight:600; padding:3px 10px; border-radius:99px; white-space:nowrap; }
+  .pill.ok { background:var(--ok-soft); color:var(--ok); } .pill.warn { background:var(--warn-soft); color:var(--warn); } .pill.bad { background:var(--bad-soft); color:var(--bad); } .pill.n { background:var(--accent-soft); color:var(--accent); }
+
+  .tbl-wrap { overflow-x:auto; }
+  table { width:100%; border-collapse:collapse; font-size:13.5px; }
+  th { text-align:left; font-size:12px; font-weight:600; color:var(--muted); padding:10px 12px; border-bottom:1px solid var(--line); white-space:nowrap; background:var(--soft); }
+  th button { all:unset; cursor:pointer; }
+  th button::after { content:" ↕"; opacity:.5; }
+  td { padding:10px 12px; border-bottom:1px solid var(--line); }
+  tr:last-child td { border-bottom:0; }
+  td.n, th.n { text-align:right; font-variant-numeric:tabular-nums; }
+  .tools { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:14px; }
+  .tools input[type=search] { flex:1 1 220px; min-width:0; border:1px solid var(--line); background:var(--soft); color:var(--ink); border-radius:10px; padding:9px 12px; font:400 14px var(--body); }
+  .chip { border:1px solid var(--line); background:var(--card); color:var(--muted); border-radius:99px; padding:6px 12px; font:500 13px var(--body); cursor:pointer; }
+  .chip[aria-pressed="true"] { background:var(--accent); color:var(--card); border-color:var(--accent); }
+  .count { font-size:13px; color:var(--muted); margin-left:auto; }
+  .busca-wrap { position:relative; flex:1 1 220px; min-width:0; display:flex; }
+  .busca-wrap svg { position:absolute; left:11px; top:50%; transform:translateY(-50%); color:var(--muted); pointer-events:none; }
+  .tools .busca-wrap input[type=search] { flex:1; padding-left:34px; }
+  .filtro-wrap { position:relative; }
+  .btn-filtro { position:relative; display:grid; place-items:center; width:40px; height:40px; border:1px solid var(--line); background:var(--soft); color:var(--ink); border-radius:10px; cursor:pointer; }
+  .btn-filtro:hover, .btn-filtro[aria-expanded="true"] { border-color:var(--accent); color:var(--accent); }
+  .btn-filtro:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  .btn-filtro-n { position:absolute; top:-6px; right:-6px; min-width:18px; height:18px; padding:0 5px; border-radius:99px; background:var(--accent); color:var(--card); font:700 11px/18px var(--body); text-align:center; }
+  .pop-filtro { position:absolute; top:calc(100% + 8px); right:0; z-index:30; width:300px; max-width:calc(100vw - 32px); background:var(--card); border:1px solid var(--line); border-radius:14px; box-shadow:0 12px 32px rgba(20,18,40,.16); }
+  .pop-head { display:flex; justify-content:space-between; align-items:center; padding:14px 16px; border-bottom:1px solid var(--line); }
+  .pop-head b { font-family:var(--display); font-size:15px; }
+  .pop-limpar { border:0; background:none; color:var(--accent); font:600 13px var(--body); cursor:pointer; padding:4px; }
+  .pop-body { max-height:min(60vh, 460px); overflow-y:auto; padding:6px 16px 14px; }
+  .pop-sec { padding:12px 0; border-bottom:1px solid var(--line); display:grid; gap:10px; }
+  .pop-sec:last-child { border-bottom:0; }
+  .pop-sec h5 { margin:0; font:600 12.5px var(--body); color:var(--ink); }
+  .pop-campo { display:grid; gap:5px; }
+  .pop-campo label { font-size:12.5px; color:var(--muted); }
+  .pop-campo select, .pop-campo input { width:100%; border:1px solid var(--line); background:var(--soft); color:var(--ink); border-radius:9px; padding:8px 10px; font:400 13.5px var(--body); }
+  .pop-campo select:focus-visible, .pop-campo input:focus-visible { outline:2px solid var(--accent); outline-offset:1px; }
+  .pop-duplo { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .ativos { display:flex; gap:6px; flex-wrap:wrap; margin:-4px 0 12px; }
+  .ativos:empty { display:none; }
+  .ativo { display:inline-flex; align-items:center; gap:6px; background:var(--accent-soft); color:var(--accent); border:0; border-radius:99px; padding:4px 6px 4px 11px; font:600 12.5px var(--body); cursor:pointer; }
+  .ativo i { font-style:normal; display:grid; place-items:center; width:18px; height:18px; border-radius:50%; background:var(--card); font-size:12px; }
+  .stats4 { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:14px; }
+  .stats4 div { display:grid; gap:2px; }
+  .stats4 b { font-family:var(--display); font-size:28px; font-weight:700; font-variant-numeric:tabular-nums; }
+  .stats4 span { font-size:12.5px; color:var(--muted); }
+
+  .metodo { display:grid; gap:14px; max-width:78ch; }
+  .metodo div { background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:16px 18px; }
+  .metodo b { display:block; font-family:var(--display); font-size:16px; margin-bottom:4px; }
+  .metodo p { color:var(--muted); font-size:14px; }
+  .metodo { display:grid; gap:16px; max-width:none; }
+  .m-sec { background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:18px 22px; }
+  .m-sec h4 { margin:0 0 10px; font:700 17px var(--display); color:var(--ink); }
+  .metodo .m-sec b { display:inline; font-family:inherit; font-size:inherit; margin:0; }
+  .metodo .m-sec div { background:none; border:0; padding:0; border-radius:0; }
+  .metodo .m-sec .m-duas { display:grid; }
+  .m-sec ul { margin:0; padding-left:20px; display:grid; gap:6px; color:var(--ink); font-size:14px; }
+  .m-sec p { color:var(--muted); font-size:14px; margin:0 0 6px; }
+  .m-tab { font-size:13.5px; }
+  .m-tab td { vertical-align:top; }
+  .m-tab td:first-child { white-space:nowrap; }
+  .m-calc td small { color:var(--muted); }
+  .m-duas { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .metodo .m-sec .m-churn, .metodo .m-sec .m-nao { border-radius:12px; padding:14px 16px; }
+  .metodo .m-sec .m-churn { background:var(--bad-soft); } .metodo .m-sec .m-nao { background:var(--warn-soft); }
+  .metodo .m-sec .m-churn > b, .metodo .m-sec .m-nao > b { font:700 16px var(--display); color:var(--ink); display:block; margin-bottom:4px; }
+  .m-churn ul, .m-nao ul { font-size:13.5px; }
+  .m-obs { margin-top:10px !important; font-size:13px !important; }
+  .assinatura { margin-top:36px; padding-top:14px; border-top:1px solid var(--line); font-size:11.5px; color:var(--muted); text-align:right; }
+  .assinatura b { font-weight:600; color:var(--muted); }
+  @media (max-width:760px) { .m-duas { grid-template-columns:1fr; } .assinatura { text-align:left; } .assinatura .sep { display:block; height:0; overflow:hidden; } .m-tab td:first-child { white-space:normal; } }
+
+  @media (max-width:1100px) { .row2, .row-eq { grid-template-columns:minmax(0,1fr); } .ins-grid { grid-template-columns:minmax(0,1fr); } }
+  @media (max-width:860px) {
+    .app { grid-template-columns:minmax(0,1fr); }
+    .side { padding:22px 16px; gap:18px; }
+    .side .foot { margin-top:0; }
+    .main { padding-inline:16px; padding-block:24px 40px; }
+  }
+  @media (max-width:560px) {
+    .hb-row { grid-template-columns:96px minmax(0,1fr) 78px; }
+    .donut-wrap { grid-template-columns:minmax(0,1fr); justify-items:center; }
+    .vs { grid-template-columns:minmax(0,1fr); }
+    .kpi .v { font-size:26px; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition:none!important; animation:none!important; } }
+</style>
+
+<div class="app">
+  <aside class="side">
+    <div class="brand"><i>D</i>Demo · CS</div>
+    <div>
+      <h4>Fonte dos dados</h4>
+      <div class="box">
+        <div class="row"><span>Planilha</span><b>Dashboard CS V.13</b></div>
+        <div class="row"><span>Posição de</span><b id="s-data"></b></div>
+        <div class="row"><span>Contas na base</span><b id="s-reg"></b></div>
+      </div>
+    </div>
+    <div>
+      <h4 id="s-rec-tit">Recebido no mês</h4>
+      <div class="box">
+        <div class="row"><span>Total recebido</span><b class="rec-tot num" id="s-rec-tot"></b></div>
+        <div class="box" id="s-rec-lista"></div>
+        <div class="rec-falha" id="s-rec-falha" hidden></div>
+        <div class="rec-falha" id="s-resgate" hidden></div>
+        <div class="rec-falha" id="s-cancel" hidden></div>
+        <small id="s-rec-nota"></small>
+      </div>
+    </div>
+    <div class="foot">
+      <button class="theme-btn" id="tema" type="button">Trocar tema</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <span class="demo-tag">Demonstração · dados fictícios</span>
+    <h1>Customer Success · Demonstração</h1>
+    <p class="lead">Base ativa, receita recorrente, churn e renovações da carteira, com os números da planilha de CS.</p>
+    <p class="atualizado" id="atualizado"></p>
+
+    <div class="tabs" role="tablist" aria-label="Seções do painel">
+      <button class="tab" role="tab" id="t-visao" aria-controls="p-visao">Visão executiva</button>
+      <button class="tab" role="tab" id="t-operacao" aria-controls="p-operacao">Operação de CS</button>
+      <button class="tab" role="tab" id="t-retencao" aria-controls="p-retencao">Retenção</button>
+      <button class="tab" role="tab" id="t-receita" aria-controls="p-receita">Receita</button>
+      <button class="tab" role="tab" id="t-clientes" aria-controls="p-clientes">Clientes</button>
+      <button class="tab" role="tab" id="t-historico" aria-controls="p-historico">Histórico</button>
+      <button class="tab" role="tab" id="t-metodologia" aria-controls="p-metodologia">Metodologia</button>
+    </div>
+    <p class="aviso-metodo" id="aviso-metodo">
+      <span aria-hidden="true">ⓘ</span> <b>Entenda os indicadores:</b> passe o mouse sobre os nomes sublinhados ou consulte a aba <button type="button" id="ir-metodo">Metodologia</button> para ver fontes, critérios e cálculos.
+    </p>
+
+    <!-- VISAO EXECUTIVA -->
+    <section class="panel" role="tabpanel" id="p-visao" aria-labelledby="t-visao">
+      <div class="kpis" id="k-visao"></div>
+      <div class="row2">
+        <div class="card">
+          <div class="card-head">
+            <div><h3>MRR que entrou e que saiu</h3><p class="sub">Por mês, em reais</p></div>
+            <div class="legend"><span><i class="dot" style="background:var(--accent)"></i>Entrou</span><span><i class="dot" style="background:var(--bad)"></i>Saiu</span></div>
+          </div>
+          <div id="g-mov"></div>
+          <p class="note" id="n-mov"></p>
+        </div>
+        <div class="card">
+          <div class="card-head"><div><h3>MRR por produto</h3><p class="sub">Composição da receita ativa</p></div></div>
+          <div class="prod-wrap"><div id="g-donut"></div>
+            <div class="tbl-wrap"><table class="tbl-prod">
+              <thead><tr><th>Produto</th><th class="n">% receita</th><th class="n">Clientes</th><th class="n">Ticket médio</th><th class="n">Receita</th></tr></thead>
+              <tbody id="tb-prod"></tbody>
+            </table></div>
+          </div>
+        </div>
+      </div>
+      <div class="insights">
+        <h2>Pontos de atenção</h2>
+        <div class="ins-grid" id="insights"></div>
+      </div>
+    </section>
+
+    <!-- OPERACAO DE CS -->
+    <section class="panel" role="tabpanel" id="p-operacao" aria-labelledby="t-operacao" hidden>
+      <div class="kpis" id="k-op"></div>
+      <div class="row-eq">
+        <div class="card">
+          <div class="card-head"><div><h3>Churn por onboarding</h3><p class="sub">Quanto saiu de cada grupo</p></div></div>
+          <div class="hb" id="g-onb"></div>
+          <p class="note" id="n-onb"></p>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div><h3>Churn mensal de clientes</h3><p class="sub">Clientes que saíram ÷ pico de pagantes do mês</p></div>
+            <label class="slider" for="meta">Meta máxima <input type="range" id="meta" min="5" max="30" step="1" value="15"> <b id="meta-v" class="num"></b></label>
+          </div>
+          <div id="g-churn"></div>
+          <p class="note" id="n-churn"></p>
+        </div>
+      </div>
+      <div class="row-eq">
+        <div class="card">
+          <div class="card-head"><div><h3>Motivos de churn</h3><p class="sub" id="s-motivos"></p></div></div>
+          <div class="hb" id="g-motivos"></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div><h3>Saídas que não são churn</h3><p class="sub">Entram em cancelamentos, ficam fora da taxa de churn</p></div></div>
+          <div class="hb" id="g-naochurn"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RETENCAO -->
+    <section class="panel" role="tabpanel" id="p-retencao" aria-labelledby="t-retencao" hidden>
+      <div class="kpis" id="k-ret"></div>
+      <div class="row-eq">
+        <div class="card">
+          <div class="card-head"><div><h3>Quanto de cada safra continua ativo</h3><p class="sub">Contas agrupadas pelo mês de entrada</p></div></div>
+          <div class="hb" id="g-safras"></div>
+          <p class="note">Safra recente sempre parece melhor, porque teve menos tempo para cancelar.</p>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div><h3>MRR que entrou e quanto ainda está ativo</h3><p class="sub">Por safra</p></div>
+            <div class="legend"><span><i class="dot" style="background:var(--accent-soft)"></i>Entrou</span><span><i class="dot" style="background:var(--ok)"></i>Ainda ativo</span></div>
+          </div>
+          <div class="hb" id="g-safras-mrr"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h3>Todas as safras</h3><p class="sub">Contagem por conta</p></div></div>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Safra</th><th class="n">Entraram</th><th class="n">Cancelaram</th><th class="n">Churn</th><th class="n">Outras saídas</th><th class="n">Ativas hoje</th><th class="n">Retenção</th><th class="n">Churn %</th><th class="n">MRR que entrou</th><th class="n">MRR ativo</th></tr></thead>
+          <tbody id="tb-safras"></tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <!-- RECEITA -->
+    <section class="panel" role="tabpanel" id="p-receita" aria-labelledby="t-receita" hidden>
+      <div class="kpis" id="k-rec"></div>
+      <div class="row2">
+        <div class="card">
+          <div class="card-head"><div><h3>Resultado líquido por mês</h3><p class="sub">MRR que entrou menos MRR que saiu</p></div></div>
+          <div id="g-liq"></div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <div><h3>Agências parceiras</h3><p class="sub">Clientes da agência e serviços da a empresa que ela opera</p></div>
+          </div>
+          <div class="ag" id="g-ag"></div>
+          <p class="note">Os serviços são clientes da a empresa: a agência só opera a conta.</p>
+        </div>
+      </div>
+      <div class="row-eq">
+        <div class="card">
+          <div class="card-head"><div><h3>MRR por plano</h3><p class="sub">Ticket por conta pagante</p></div></div>
+          <div class="hb" id="g-planos"></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div><h3>MRR por forma de pagamento</h3><p class="sub">Todas as formas de pagamento conferidas</p></div></div>
+          <div class="hb" id="g-metodo"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CLIENTES -->
+    <section class="panel" role="tabpanel" id="p-clientes" aria-labelledby="t-clientes" hidden>
+      <div class="card">
+        <div class="card-head"><div><h3>Acessos na plataforma</h3><p class="sub" id="acc-sub">Logins ativos hoje, por tipo de conta</p></div><b class="acc-tot num" id="acc-tot"></b></div>
+        <div class="acc-bar" id="acc-bar"></div>
+        <div class="acc-list" id="acc-list"></div>
+        <div class="pend" id="pend" hidden>
+          <div class="pend-head"><b>Acessos a criar</b><span class="pill warn num" id="pend-n"></span></div>
+          <div class="pend-list" id="pend-list"></div>
+        </div>
+      </div>
+      <div class="card" id="card-inad" hidden>
+        <div class="card-head"><div><h3>Clientes inadimplentes</h3><p class="sub">Quem está com pagamento em aberto. "Em atraso" continua na base e no MRR; "Nunca pagou" fica fora de clientes, contas e MRR.</p></div><span class="pill bad num" id="inad-n"></span></div>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Cliente</th><th>Desde</th><th class="n">Valor</th><th>Situação</th><th>Observação</th></tr></thead>
+          <tbody id="tb-inad"></tbody>
+        </table></div>
+      </div>
+      <div class="row-eq">
+        <div class="card">
+          <div class="card-head"><div><h3>Renovações nos próximos 60 dias</h3><p class="sub" id="s-renov"></p></div></div>
+          <div class="tbl-wrap"><table>
+            <thead><tr><th>Cliente</th><th>Plano</th><th>Vence em</th><th class="n">MRR</th></tr></thead>
+            <tbody id="tb-renov"></tbody>
+          </table></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><div><h3>Clientes, contas e usuários</h3><p class="sub">A mesma base contada de três jeitos</p></div></div>
+          <div class="tbl-wrap"><table>
+            <thead><tr><th></th><th class="n">Pagam</th><th class="n">Não pagam</th><th class="n">Internos</th><th class="n">Total</th></tr></thead>
+            <tbody id="tb-niveis"></tbody>
+          </table></div>
+          <p class="note" id="n-niveis"></p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h3>Carteira ativa</h3><p class="sub">Uma linha por conta</p></div></div>
+        <div class="tools">
+          <div class="busca-wrap">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <input type="search" id="busca" placeholder="Buscar cliente" aria-label="Buscar cliente">
+          </div>
+          <div class="filtro-wrap">
+            <button type="button" class="btn-filtro" id="btn-filtro" aria-haspopup="true" aria-expanded="false" aria-controls="pop-filtro" title="Filtros">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 5h16l-6.5 7.5V19l-3 1.5v-8z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+              <span class="btn-filtro-n" id="btn-filtro-n" hidden></span>
+            </button>
+            <div class="pop-filtro" id="pop-filtro" hidden role="dialog" aria-label="Filtros da carteira">
+              <div class="pop-head"><b>Filtros</b><button type="button" class="pop-limpar" id="pop-limpar">Limpar</button></div>
+              <div class="pop-body" id="pop-body"></div>
+            </div>
+          </div>
+          <span class="count" id="cnt"></span>
+        </div>
+        <div class="ativos" id="filtros-ativos"></div>
+        <div class="tbl-wrap"><table id="tbl-cli">
+          <thead><tr><th><button data-s="0">Cliente</button></th><th><button data-s="1">Plano</button></th><th>Produto</th><th>Tipo</th><th><button data-s="4">Pagamento</button></th><th><button data-s="5">Entrada</button></th><th><button data-s="venc">Vence em</button></th><th class="n"><button data-s="6">MRR</button></th><th>Onboarding</th></tr></thead>
+          <tbody id="tb-cli"></tbody>
+        </table></div>
+      </div>
+    </section>
+
+    <!-- HISTORICO -->
+    <section class="panel" role="tabpanel" id="p-historico" aria-labelledby="t-historico" hidden>
+      <div class="card">
+        <div class="card-head">
+          <div><h3 id="h-titulo"></h3><p class="sub" id="h-sub"></p></div>
+          <div class="h-meses" id="h-meses" role="group" aria-label="Escolha o mês"></div>
+        </div>
+        <div class="h-grid" id="h-grid"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h3>Todos os meses</h3><p class="sub">Posição no último dia de cada mês</p></div></div>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Mês</th><th class="n">MRR no fim</th><th class="n">Clientes pagantes</th><th class="n">Contas</th><th class="n">Ticket</th><th class="n">Entraram</th><th class="n">MRR novo</th><th class="n">Saíram</th><th class="n">MRR perdido</th><th class="n">Churn</th><th class="n">Churn MRR software</th><th class="n">Churn MRR serviço</th><th class="n">Churn de MRR</th></tr></thead>
+          <tbody id="tb-hist"></tbody>
+        </table></div>
+        <p class="note">Quem continua ativo entra com o valor de hoje: se um cliente mudou de preço, os meses anteriores mostram o preço atual. Quem já saiu entra com o valor registrado na saída. Internos ficam fora.</p>
+      </div>
+    </section>
+
+    <!-- METODOLOGIA: montada pelo script com exemplos reais do ultimo mes fechado -->
+    <section class="panel" role="tabpanel" id="p-metodologia" aria-labelledby="t-metodologia" hidden>
+      <div class="metodo" id="metodo"></div>
+    </section>
+    <footer class="assinatura">
+      Criado por <b>Morgana Petterle da Cunha</b> · demonstração com dados fictícios
+    </footer>
+  </main>
+</div>
+
+<script>
+(function () {
+  var D = {"geradoEm":"06/10/2026","big":[{"ico":"user","k":"Usuários","v":"107","f":"91 pagantes · 10 grátis/trial · 6 internos"},{"ico":"emp","k":"Clientes ativos","v":"74","f":"65 pagam · 9 não pagam · 97 contas"},{"ico":"mrr","k":"MRR ativo","v":"R$ 40.424,93","f":"mensalizado, todos os planos"},{"ico":"tk","k":"Ticket médio","v":"R$ 621,92","f":"MRR total ÷ 65 clientes pagantes"},{"ico":"churn","k":"Churn de outubro","v":"0,0%","f":"0 clientes saíram ÷ pico de 65 (outubro)"},{"ico":"churn","k":"Churn de MRR","v":"0,0%","f":"R$ 0 ÷ MRR do início R$ 39.931"},{"ico":"clock","k":"Contratos vencendo em 30 dias","v":"4","f":"R$ 2.135 de MRR"},{"ico":"clock","k":"Contratos vencendo em 60 dias","v":"5","f":"R$ 2.381 de MRR"}],"niveis":{"cli":[65,9,0,74],"ct":[87,10,0,97],"lg":[91,10,6,107]},"kpi":{"mrr":40424.93,"contratos":5,"risco":2380.8},"mensal":[{"m":"Jan","novos":2,"novo":308.14,"perd":0,"liq":308.14,"churn":0,"pc":0,"pag":2},{"m":"Fev","novos":18,"novo":6236.58,"perd":0,"liq":6236.58,"churn":0,"pc":0,"pag":18},{"m":"Mar","novos":23,"novo":7451.98,"perd":922.56,"liq":6529.42,"churn":4,"pc":0.1143,"pag":35},{"m":"Abr","novos":31,"novo":16153.48,"perd":1478.7,"liq":14674.78,"churn":5,"pc":0.0862,"pag":58},{"m":"Mai","novos":29,"novo":7627.09,"perd":7307.32,"liq":319.77,"churn":20,"pc":0.2857,"pag":70},{"m":"Jun","novos":27,"novo":7064.99,"perd":5863.29,"liq":1201.7,"churn":14,"pc":0.1892,"pag":74},{"m":"Jul","novos":23,"novo":13152.99,"perd":6976.34,"liq":6176.65,"churn":20,"pc":0.2817,"pag":71},{"m":"Ago","novos":12,"novo":2220.84,"perd":4115.34,"liq":-1894.5,"churn":14,"pc":0.2059,"pag":68},{"m":"Set","novos":32,"novo":11997.93,"perd":8719.68,"liq":3278.25,"churn":9,"pc":0.1385,"pag":65},{"m":"Out","novos":3,"novo":802.28,"perd":308.14,"liq":494.14,"churn":0,"pc":0,"pag":65}],"planos":[["Mensal",66,65,20036.54,308.25],["Serviço LinkedIn",5,5,10374.67,2074.93],["SEO",2,2,4092,2046],["Mentoria",2,2,2169.38,1084.69],["Trimestral",10,10,2992.12,299.21],["Semestral",2,2,512.74,256.37],["Anual",1,1,247.48,247.48],["Gratuito",4,0,0,0],["Trial",5,0,0,0]],"tipos":[["Individual",43,42,13122.4],["Serviço (próprio)",5,5,10374.67],["Multicontas",12,10,4558.24],["SEO",2,2,4092],["Cliente Agência Sul",11,11,3389.54],["Mentoria",2,2,2169.38],["Cliente Agência Norte",10,10,1550],["Vip",6,4,984.56],["Parceiro/Afiliado",4,1,184.14],["Agência Chefe",2,0,0]],"produtos":[["Software",88,78,23788.88,304.99],["Serviço",5,5,10374.67,2074.93],["SEO",2,2,4092,2046],["Mentoria",2,2,2169.38,1084.69]],"motivos":[["Outros",33],["Falta de resultado/ROI",21],["Falta de uso (tempo/prioridade)",7],["Problema técnico",5],["Preço/orçamento",4],["Sem resposta pós contato",3],["Foi pro concorrente",3],["Encerramento combinado",2],["Solução própria",2],["Cliente sem fit cultural",2],["Fechamento da empresa",1]],"naoChurn":[["Fim de contrato",8],["Desistência (não chegou a contratar)",6],["Outras saídas (encerramento combinado etc.)",2],["Saída eventual",1]],"topClientes":[["Alfa Consultoria",2790,"Serviço · op. Norte"],["Raiz Consultoria",2686.67,"Serviço · op. Sul"],["Ponto Consultoria",2170,"SEO"],["Prisma Consultoria",1922,"SEO"],["Lume Consultoria",1798,"Serviço · op. Norte"],["Quadra Consultoria",1550,"Serviço · op. Norte"],["Vértice Consultoria",1550,"Serviço · op. Norte"],["Brisa Consultoria",1239.38,"Mentoria"],["Farol Consultoria",984.56,"Multicontas"],["Horizonte Consultoria",930,"Mentoria"]],"conc":{"top5":11366.67,"top10":17620.61},"hoje":[["Pilar Consultoria","Mensal",308.14,"Acordo Sul","06/10"],["Âncora Consultoria","Trimestral",248,"Checkout","05/10"]],"onb":[["Fez onboarding",155,53,0.3419],["Não fez onboarding",45,36,0.8]],"naoPagam":[["Atlas Consultoria","Trial"],["Rota Consultoria","Trial"],["Nova Consultoria","Trial"],["Órbita Consultoria","Mensal com cortesia · Parceiro/Afiliado"],["Elo Consultoria","Trial"],["Trilha Consultoria","Trial"],["Cume Consultoria","Gratuito · conta guarda-chuva"],["Vetor Consultoria","Gratuito · Vip"],["Horizonte Tech","Gratuito · Vip"],["Pilar Tech","Gratuito · conta guarda-chuva"]],"fluxo":[["Base viva em 1º de outubro","referência do início do mês",98,""],["Saíram durante o mês","0 churn + 2 fim de contrato e afins",-2,"sai"],["Entraram durante o mês","contas novas no mês",3,"entra"],["Ativos hoje","posição de 06/10",97,"fim"]],"conferencia":{"fontes":[["Cartão","conferido por fatura paga",40,13988.44,"pos"],["Checkout","conferido por venda paga",18,6784.14,"pos"],["Boleto","sem conexão",7,14466.67,"cmp"],["Acordos Norte e Sul","sem conexão",21,4631.4,"cmp"],["PIX","sem conexão",2,554.28,"cmp"]],"abertos":[]},"safras":[{"m":"Jan","entr":2,"cancel":1,"churn":1,"ativos":1,"dias":109,"d30":0,"mrrIn":308.14,"mrrAt":0},{"m":"Fev","entr":18,"cancel":11,"churn":9,"ativos":7,"dias":101,"d30":1,"mrrIn":6236.58,"mrrAt":1294.56},{"m":"Mar","entr":23,"cancel":18,"churn":16,"ativos":5,"dias":72,"d30":4,"mrrIn":7451.98,"mrrAt":1447.7},{"m":"Abr","entr":31,"cancel":24,"churn":24,"ativos":7,"dias":78,"d30":4,"mrrIn":16153.48,"mrrAt":5878.84},{"m":"Mai","entr":29,"cancel":22,"churn":21,"ativos":7,"dias":71,"d30":5,"mrrIn":7627.09,"mrrAt":1722.98},{"m":"Jun","entr":27,"cancel":17,"churn":11,"ativos":10,"dias":61,"d30":4,"mrrIn":7064.99,"mrrAt":2766.44},{"m":"Jul","entr":23,"cancel":8,"churn":6,"ativos":15,"dias":40,"d30":2,"mrrIn":13152.99,"mrrAt":9193.36},{"m":"Ago","entr":12,"cancel":2,"churn":0,"ativos":10,"dias":0,"d30":2,"mrrIn":2220.84,"mrrAt":2220.84},{"m":"Set","entr":32,"cancel":2,"churn":1,"ativos":30,"dias":6,"d30":2,"mrrIn":11997.93,"mrrAt":11997.93},{"m":"Out","entr":3,"cancel":0,"churn":0,"ativos":3,"dias":0,"d30":0,"mrrIn":802.28,"mrrAt":802.28}],"tv":{"ativos":95,"cancel":66,"pc90":0.697,"pc30":0.2323},"contratos":[["Âncora Tech","Trimestral","15/10/2026",9,308.14,30],["Atlas Tech","Trimestral","16/10/2026",10,308.14,30],["Brisa Consultoria","Trimestral","17/10/2026",11,1239.38,30],["Rota Tech","Trimestral","24/10/2026",18,279,30],["Nova Tech","Semestral","20/11/2026",45,246.14,60]],"txt":{"mes":"outubro","contasIni":98,"contasFim":97,"contasPag":87,"clientes":74,"churnN":0,"pico":65,"churnPc":0,"servNorte":7274.67,"servN":5,"servTk":2074.93,"softTk":304.99,"maiorAtivo":321,"registros":208,"conferido":"30/09/2026"},"recebidos":{"mes":"10","de":"01/10","ate":"06/10","total":8606.84,"fontes":[{"nome":"Cartão","valor":1972.84,"n":6,"ok":true,"obs":"consultado em 05/10 17:31","falhas":["Farol Consultoria","Órbita Tech"]},{"nome":"Checkout","valor":744,"n":1,"ok":true,"obs":"consultado em 06/10 12:33","falhas":[]},{"nome":"Boleto","valor":5890,"n":2,"ok":true,"obs":"consultado em 06/10 12:33","falhas":[]}],"atrasos":[{"nome":"Farol Consultoria","valor":984.56,"desde":"24/09","tentativas":2,"proxima":"08/10","contatos":4,"ultimo":"05/10","situacao":""},{"nome":"Órbita Tech","valor":370.14,"desde":"03/10","tentativas":1,"proxima":"10/10","contatos":0,"ultimo":"","situacao":""}],"resgates":[{"nome":"Elo Tech","valor":308.14,"toques":3,"total":4,"ultimo":"05/10","proximo":"07/10","tipo":"encerramento (conta bloqueada nesse dia)"}],"cancelamentos":[]},"clientes":[["Pilar Consultoria","Mensal","Software","Cliente Agência Sul","Acordo Sul","2026-10-06",308.14,"S","1","Cume Consultoria",1,1,"g:Trilha Tech"],["Âncora Consultoria","Trimestral","Software","Individual","Checkout","2026-10-05",248,"S","1","",1,0,"g:Âncora Consultoria"],["Cume Tech - conta 2","Mensal","Software","Multicontas","Cartão","2026-10-01",246.14,"S","1","",1,1,"g:Cume Tech"],["Vetor Tech - conta 1","Trimestral","Software","Multicontas","Checkout","2026-09-30",308.14,"S","1","",1,1,"g:Vetor Tech"],["Vetor Tech - conta 2","Mensal","Software","Multicontas","Cartão","2026-09-30",184.14,"S","1","",1,1,"g:Vetor Tech"],["Alfa Tech","Anual","Software","Individual","Checkout","2026-09-30",247.49,"S","1","",1,1,"g:Alfa Tech"],["Raiz Tech","Trimestral","Software","Multicontas","Checkout","2026-09-29",308.14,"S","1","",1,1,"g:Raiz Tech"],["Ponto Tech","Mensal","Software","Cliente Agência Sul","Acordo Sul","2026-09-29",308.14,"S","1","Cume Consultoria",1,1,"g:Trilha Tech"],["Prisma Tech","Mensal","Software","Individual","Checkout","2026-09-29",370.14,"S","1","",1,1,"g:Prisma Tech"],["Raiz Consultoria","Trimestral","Serviço","Serviço","Boleto","2026-09-29",2686.66,"S","1","Cume Consultoria",1,1,"g:Raiz Consultoria"],["Lume Tech","Mensal","Software","Cliente Agência Sul","Cartão","2026-09-29",308.14,"S","1","Cume Consultoria",1,1,"g:Trilha Tech"],["Atlas Consultoria","Trial","Software","Individual","Gratuito","2026-09-28",0,"","1","",1,1,"g:Atlas Consultoria"],["Quadra Tech","Mensal","Software","Individual","Cartão","2026-09-25",370.14,"S","1","",1,1,"g:Quadra Tech"],["Vértice Tech","Mensal","Software","Individual","Cartão","2026-09-24",370.14,"S","1","",1,1,"g:Vértice Tech"],["Brisa Tech","Mensal","Software","Cliente Agência Sul","Acordo Sul","2026-09-22",308.14,"S","1","Cume Consultoria",1,1,"g:Trilha Tech"],["Farol Tech","Mensal","Software","Individual","Checkout","2026-09-22",370.14,"S","1","",1,1,"g:Farol Tech"],["Cume Digital","Trimestral","Software","Individual","PIX","2026-09-21",308.14,"S","1","",1,1,"g:Cume Digital"],["Vetor Digital","Mensal","Software","Multicontas","Cartão","2026-09-18",740.28,"S","2","",1,1,"g:Vetor Digital"],["Alfa Digital","Trimestral","Software","Individual","Checkout","2026-09-18",308.14,"S","1","",1,1,"g:Alfa Digital"],["Raiz Digital","Mensal","Software","Individual","Cartão","2026-09-21",370.14,"S","1","",1,1,"g:Raiz Digital"],["Ponto Digital","Mensal","Software","Individual","Cartão","2026-09-22",370.14,"S","1","",1,1,"g:Ponto Digital"],["Prisma Digital","Mensal","Software","Cliente Agência Sul","Acordo Sul","2026-09-17",308.14,"S","1","Cume Consultoria",1,1,"g:Trilha Tech"],["Lume Digital","Mensal","Software","Individual","Checkout","2026-09-16",308.14,"S","1","",1,1,"g:Lume Digital"],["Quadra Digital","Mensal","Software","Individual","Cartão","2026-09-14",370.14,"S","1","",1,1,"g:Quadra Digital"],["Vértice Digital","Mensal","Software","Individual","Cartão","2026-09-14",370.14,"S","1","",1,1,"g:Vértice Digital"],["Brisa Digital","Trimestral","Software","Individual","Checkout","2026-09-11",308.14,"S","1","",1,1,"g:Brisa Digital"],["Farol Digital","Mensal","Software","Individual","Cartão","2026-09-10",370.14,"S","1","",1,1,"g:Farol Digital"],["Horizonte Digital","Mensal","Software","Multicontas","Cartão","2026-09-10",370.14,"S","1","",1,1,"g:Horizonte Digital"],["Rota Consultoria","Trial","Software","Multicontas","Gratuito","2026-09-09",0,"S","1","Cume Consultoria",1,1,"g:Rota Consultoria"],["Pilar Digital","Mensal","Software","Cliente Agência Sul","Acordo Sul","2026-09-03",308.14,"S","1","Cume Consultoria",1,1,"g:Trilha Tech"],["Âncora Digital","Mensal","Software","Cliente Agência Sul","Acordo Sul","2026-09-03",308.14,"S","1","",1,1,"g:Trilha Tech"],["Atlas Digital","Mensal","Software","Individual","Cartão","2026-09-02",370.14,"S","1","",1,1,"g:Atlas Digital"],["Rota Digital","Mensal","Software","Individual","Cartão","2026-09-01",370.14,"S","1","",1,1,"g:Rota Digital"],["Nova Digital","Mensal","Software","Multicontas","Cartão","2026-08-21",370.14,"S","1","",1,1,"g:Nova Digital"],["Nova Consultoria","Trial","Software","Multicontas","Gratuito","2026-08-19",0,"S","1","Cume Consultoria",1,1,"g:Nova Consultoria"],["Órbita Digital","Mensal","Software","Cliente Agência Sul","Acordo Sul","2026-08-17",308.14,"S","1","",1,1,"g:Trilha Tech"],["Órbita Consultoria","Mensal","Software","Parceiro/Afiliado","Gratuito","2026-08-11",0,"S","1","",1,1,"g:Órbita Consultoria"],["Elo Digital","Mensal","Software","Cliente Agência Sul","Acordo Sul","2026-08-07",308.14,"S","1","Cume Consultoria",1,1,"g:Trilha Tech"],["Trilha Digital","Mensal","Software","Cliente Agência Sul","Acordo Sul","2026-08-07",308.14,"S","1","",1,1,"g:Trilha Tech"],["Brisa Marketing","Mensal","Software","Individual","Cartão","2026-08-05",370.14,"S","1","",1,1,"g:Brisa Marketing"],["Órbita Tech","Mensal","Software","Individual","Cartão","2026-08-03",246.14,"S","1","",1,1,"g:Órbita Tech"],["Rota Tech","Trimestral","Software","Individual","Checkout","2026-07-24",279,"S","1","Cume Consultoria",1,1,"g:Rota Tech"],["Farol Marketing","Mensal","Software","Cliente Agência Sul","Acordo Sul","2026-07-24",308.14,"S","1","",1,1,"g:Trilha Tech"],["Elo Consultoria","Trial","Software","Parceiro/Afiliado","Gratuito","2026-07-24",0,"S","1","",1,1,"g:Horizonte Marketing"],["Trilha Consultoria","Trial","Software","Parceiro/Afiliado","Gratuito","2026-07-24",0,"S","1","",1,1,"g:Horizonte Marketing"],["Pilar Marketing","Mensal","Software","Individual","Cartão","2026-07-20",370.14,"S","1","",1,1,"g:Pilar Marketing"],["Brisa Consultoria","Trimestral","Mentoria","Mentoria","Checkout","2026-07-17",1239.38,"S","1","",1,1,"g:Brisa Consultoria"],["Atlas Tech","Trimestral","Software","Individual","Checkout","2026-07-16",308.14,"S","1","",1,1,"g:Atlas Tech"],["Âncora Marketing","Mensal","Software","Individual","Cartão","2026-07-15",370.14,"S","1","",1,1,"g:Âncora Marketing"],["Âncora Tech","Trimestral","Software","Individual","Checkout","2026-07-15",308.14,"S","1","",1,1,"g:Âncora Tech"],["Atlas Marketing","Mensal","Software","Parceiro/Afiliado","Checkout","2026-07-15",184.14,"S","1","",1,1,"g:Atlas Marketing"],["Horizonte Consultoria","Trimestral","Mentoria","Mentoria","Checkout","2026-07-06",930,"S","1","",1,1,"g:Horizonte Consultoria"],["Rota Marketing","Mensal","Software","Individual","Cartão","2026-07-03",308.14,"S","1","",1,1,"g:Rota Marketing"],["Cume Consultoria","Gratuito","Software","Agência Chefe","Gratuito","2026-07-03",0,"S","1","",1,1,"g:Nova Marketing"],["Órbita Marketing","Mensal","Software","Individual","Cartão","2026-06-25",370.14,"S","1","",1,1,"g:Órbita Marketing"],["Elo Marketing","Mensal","Software","Individual","Cartão","2026-06-24",370.14,"S","1","",1,1,"g:Elo Marketing"],["Trilha Marketing","Mensal","Software","Individual","Cartão","2026-06-22",308.14,"S","1","",1,1,"g:Trilha Marketing"],["Cume Marketing","Mensal","Software","Individual","Cartão","2026-06-19",370.14,"S","1","",1,1,"g:Cume Marketing"],["Elo Tech","Trimestral","Software","Individual","Checkout","2026-06-18",308.14,"S","1","",1,1,"g:Elo Tech"],["Vetor Marketing","Semestral","Software","Individual","Checkout","2026-06-17",266.6,"S","1","",1,1,"g:Vetor Marketing"],["Alfa Marketing","Mensal","Software","Individual","Cartão","2026-06-09",308.14,"S","1","",1,1,"g:Alfa Marketing"],["Raiz Marketing","Mensal","Software","Individual","Cartão","2026-05-27",308.14,"S","1","",1,1,"g:Raiz Marketing"],["Ponto Marketing","Mensal","Software","Individual","Cartão","2026-05-26",184.14,"S","1","",1,1,"g:Ponto Marketing"],["Nova Tech","Semestral","Software","Individual","PIX","2026-05-20",246.14,"S","1","",1,1,"g:Nova Tech"],["Prisma Marketing","Mensal","Software","Individual","Cartão","2026-05-19",184.14,"S","1","",1,1,"g:Prisma Marketing"],["Lume Marketing","Mensal","Software","Vip","Checkout","2026-05-18",184.14,"S","1","",1,1,"g:Lume Marketing"],["Quadra Marketing","Mensal","Software","Individual","Cartão","2026-05-11",308.14,"S","1","",1,1,"g:Quadra Marketing"],["Vértice Marketing - conta 2","Mensal","Software","Individual","Cartão","2026-05-01",308.14,"S","1","",1,1,"g:Vértice Marketing"],["Farol Consultoria","Mensal","Software","Multicontas","Cartão","2026-04-24",984.56,"S","4","",4,3,"g:Farol Consultoria"],["Elo Advocacia","Mensal","Software","Individual","Cartão","2026-04-19",184.14,"S","1","",1,1,"g:Elo Advocacia"],["Cume Tech - conta 1","Mensal","Software","Multicontas","Cartão","2026-04-16",308.14,"S","1","",1,1,"g:Cume Tech"],["Ponto Consultoria","Mensal","SEO","SEO","Boleto","2026-04-03",2170,"","0","Interno",0,0,"g:Ponto Consultoria"],["Prisma Consultoria","Mensal","SEO","SEO","Boleto","2026-04-03",1922,"","0","Interno",0,0,"g:Prisma Consultoria"],["Trilha Advocacia","Mensal","Software","Individual","Cartão","2026-03-23",246.14,"S","1","",1,1,"g:Trilha Advocacia"],["Cume Advocacia","Mensal","Software","Multicontas","Cartão","2026-03-13",738.42,"S","3","",3,3,"g:Cume Advocacia"],["Vetor Consultoria","Gratuito","Software","Vip","Gratuito","2026-03-11",0,"S","1","",1,1,"g:Vetor Consultoria"],["Vetor Advocacia","Mensal","Software","Vip","Cartão","2026-03-06",308.14,"N","1","",1,1,"g:Vetor Advocacia"],["Alfa Advocacia","Mensal","Software","Individual","Cartão","2026-02-23",308.14,"S","1","",1,1,"g:Alfa Advocacia"],["Horizonte Tech","Gratuito","Software","Vip","Gratuito","2026-02-20",0,"S","1","",1,1,"g:Horizonte Tech"],["Raiz Advocacia","Mensal","Software","Individual","Cartão","2026-02-11",184.14,"S","1","",1,1,"g:Raiz Advocacia"],["Ponto Advocacia","Mensal","Software","Vip","Cartão","2026-02-06",184.14,"S","1","",1,1,"g:Ponto Advocacia"],["Prisma Advocacia","Mensal","Software","Vip","Cartão","2026-02-02",308.14,"S","1","",1,1,"g:Prisma Advocacia"],["Pilar Tech","Gratuito","Software","Agência Chefe","Acordo Norte","2026-01-28",0,"S","1","",1,1,"g:Lume Advocacia"],["Quadra Advocacia","Mensal","Serviço","Serviço","Boleto","2025-11-19",1550,"S","1","Pilar Tech",1,1,"g:Vértice Advocacia"],["Brisa Advocacia","Mensal","Serviço","Serviço","Boleto","2025-11-19",1550,"S","1","Pilar Tech",1,1,"g:Vértice Advocacia"],["Farol Advocacia","Mensal","Serviço","Serviço","Boleto","2026-07-16",2790,"S","1","Pilar Tech",1,1,"g:Alfa Consultoria"],["Horizonte Advocacia","Mensal","Serviço","Serviço","Boleto","2026-07-31",1798,"S","1","Pilar Tech",1,1,"g:Lume Consultoria"],["Pilar Advocacia","Mensal","Software","Cliente Agência Norte","Acordo Norte","2026-04-09",155,"S","1","Pilar Tech",1,1,"g:Âncora Advocacia"],["Atlas Advocacia","Mensal","Software","Cliente Agência Norte","Acordo Norte","2026-04-09",155,"S","1","Pilar Tech",1,1,"g:Âncora Advocacia"],["Rota Advocacia","Mensal","Software","Cliente Agência Norte","Acordo Norte","2026-03-03",155,"S","1","Pilar Tech",1,1,"g:Âncora Advocacia"],["Nova Advocacia","Mensal","Software","Cliente Agência Norte","Acordo Norte","2026-02-26",155,"S","1","Pilar Tech",1,1,"g:Âncora Advocacia"],["Órbita Advocacia","Mensal","Software","Cliente Agência Norte","Acordo Norte","2026-08-06",155,"S","1","Pilar Tech",1,1,"g:Âncora Advocacia"],["Quadra Educação","Mensal","Software","Cliente Agência Norte","Acordo Norte","2026-06-17",155,"S","1","Pilar Tech",1,1,"g:Âncora Advocacia"],["Vértice Educação","Mensal","Software","Cliente Agência Norte","Acordo Norte","2026-06-17",155,"S","1","Pilar Tech",1,1,"g:Âncora Advocacia"],["Brisa Educação","Mensal","Software","Cliente Agência Norte","Acordo Norte","2026-06-17",155,"S","1","Pilar Tech",1,1,"g:Âncora Advocacia"],["Farol Educação","Mensal","Software","Cliente Agência Norte","Acordo Norte","2026-02-04",155,"S","1","Pilar Tech",1,1,"g:Âncora Advocacia"],["Horizonte Educação","Mensal","Software","Cliente Agência Norte","Acordo Norte","2026-08-17",155,"S","1","Pilar Tech",1,1,"g:Âncora Advocacia"]],"historico":[{"m":"Jan","parcial":false,"mrr":3408.14,"mrrIni":3100,"contas":4,"contasPag":3,"clientes":3,"clientesPag":2,"entraram":2,"mrrNovo":308.14,"sairam":0,"mrrSaiu":0,"churnContas":0,"mrrChurn":0,"churnProd":{},"saidas":[],"entradas":[["Pilar Tech","28/01",0,false],["Pilar Educação","29/01",308.14,false]]},{"m":"Fev","parcial":false,"mrr":9644.72,"mrrIni":3408.14,"contas":22,"contasPag":20,"clientes":20,"clientesPag":18,"entraram":18,"mrrNovo":6236.58,"sairam":0,"mrrSaiu":0,"churnContas":0,"mrrChurn":0,"churnProd":{},"saidas":[],"entradas":[["Prisma Advocacia","02/02",308.14,false],["Âncora Educação","02/02",308.14,false],["Atlas Educação","04/02",246.14,false],["Rota Educação","04/02",308.14,false],["Farol Educação","04/02",155,false],["Ponto Advocacia","06/02",184.14,false],["Raiz Advocacia","11/02",184.14,false],["Nova Educação","14/02",246.14,false],["Órbita Educação","19/02",246.14,false],["Elo Educação","19/02",1239.38,false],["Horizonte Tech","20/02",0,false],["Trilha Educação","20/02",1239.38,false],["Alfa Advocacia","23/02",308.14,false],["Cume Educação","23/02",308.14,false],["Vetor Educação","24/02",308.14,false],["Nova Advocacia","26/02",155,true],["Alfa Educação","26/02",184.14,false],["Raiz Educação","27/02",308.14,false]]},{"m":"Mar","parcial":false,"mrr":16174.14,"mrrIni":9644.72,"contas":41,"contasPag":38,"clientes":38,"clientesPag":35,"entraram":23,"mrrNovo":7451.98,"sairam":4,"mrrSaiu":922.56,"churnContas":4,"mrrChurn":922.56,"churnProd":{"Software":922.56},"saidas":[["Órbita Educação","18/03","Outros",true,246.14],["Ponto Educação","19/03","Outros",true,184.14],["Prisma Educação","26/03","Outros",true,184.14],["Lume Educação","27/03","Preço/orçamento",true,308.14]],"entradas":[["Nova Saúde","02/03",308.14,false],["Rota Advocacia","03/03",155,true],["Prisma Educação","05/03",184.14,false],["Vetor Advocacia","06/03",308.14,false],["Órbita Saúde","06/03",1239.38,false],["Elo Saúde","06/03",246.14,false],["Trilha Saúde","09/03",246.14,false],["Vetor Consultoria","11/03",0,false],["Cume Saúde","12/03",184.14,false],["Vetor Saúde","13/03",308.14,false],["Lume Educação","13/03",308.14,false],["Cume Advocacia","13/03",738.42,false],["Alfa Saúde","14/03",308.14,false],["Ponto Educação","18/03",184.14,false],["Raiz Saúde","19/03",246.14,false],["Ponto Saúde","20/03",308.14,false],["Trilha Advocacia","23/03",246.14,false],["Prisma Saúde","23/03",308.14,false],["Lume Saúde","24/03",246.14,false],["Quadra Saúde","24/03",308.14,false],["Vértice Saúde","27/03",558,false],["Brisa Saúde","27/03",204.8,false],["Farol Saúde","31/03",308.14,false]]},{"m":"Abr","parcial":false,"mrr":30848.92,"mrrIni":16174.14,"contas":67,"contasPag":64,"clientes":61,"clientesPag":58,"entraram":31,"mrrNovo":16153.48,"sairam":5,"mrrSaiu":1478.7,"churnContas":5,"mrrChurn":1478.7,"churnProd":{"Software":1478.7},"saidas":[["Ponto Saúde","10/04","Outros",true,308.14],["Horizonte Saúde","10/04","Outros",true,308.14],["Alfa Saúde","15/04","Outros",true,308.14],["Rota Educação","27/04","Outros",true,308.14],["Trilha Saúde","30/04","Outros",true,246.14]],"entradas":[["Pilar Saúde","01/04",184.14,false],["Âncora Saúde","02/04",308.14,false],["Atlas Saúde","02/04",308.14,false],["Rota Saúde","02/04",308.14,false],["Prisma Engenharia","02/04",246.14,false],["Ponto Consultoria","03/04",2170,false],["Prisma Consultoria","03/04",1922,false],["Lume Engenharia","06/04",308.14,false],["Quadra Engenharia","08/04",308.14,false],["Vértice Engenharia - conta 2","08/04",246.14,false],["Vértice Engenharia - conta 1","08/04",246.14,false],["Brisa Engenharia","08/04",492.28,false],["Horizonte Saúde","08/04",308.14,false],["Atlas Advocacia","09/04",155,true],["Pilar Advocacia","09/04",155,true],["Farol Engenharia","09/04",308.14,false],["Horizonte Engenharia","10/04",308.14,false],["Pilar Engenharia","10/04",246.14,false],["Âncora Engenharia","13/04",492.28,false],["Cume Tech - conta 1","16/04",308.14,false],["Atlas Engenharia","16/04",3100,false],["Rota Engenharia","16/04",308.14,false],["Nova Engenharia","16/04",308.14,false],["Órbita Engenharia","17/04",308.14,false],["Elo Advocacia","19/04",184.14,false],["Elo Engenharia","22/04",308.14,false],["Farol Consultoria","24/04",984.56,false],["Trilha Engenharia","27/04",308.14,false],["Cume Engenharia","29/04",492.28,false],["Vetor Engenharia","30/04",246.14,false],["Alfa Engenharia","30/04",277.14,false]]},{"m":"Mai","parcial":false,"mrr":31168.69,"mrrIni":30848.92,"contas":74,"contasPag":71,"clientes":67,"clientesPag":64,"entraram":28,"mrrNovo":7627.08,"sairam":21,"mrrSaiu":7307.32,"churnContas":20,"mrrChurn":6067.94,"churnProd":{"Software":6067.94},"saidas":[["Quadra Engenharia","05/05","Outros",true,308.14],["Alfa Engenharia","07/05","Outros",true,277.14],["Pilar Engenharia","11/05","Outros",true,246.14],["Rota Engenharia","12/05","Outros",true,308.14],["Farol Saúde","12/05","Outros",true,308.14],["Vetor Educação","14/05","Outros",true,308.14],["Lume Engenharia","15/05","Outros",true,308.14],["Pilar Educação","18/05","Outros",true,308.14],["Nova Educação","18/05","Outros",true,246.14],["Trilha Educação","20/05","Fim de contrato",false,1239.38],["Órbita Engenharia","20/05","Outros",true,308.14],["Vetor Saúde","20/05","Outros",true,308.14],["Âncora Engenharia","22/05","Outros",true,492.28],["Rota Saúde","23/05","Outros",true,308.14],["Atlas Educação","28/05","Outros",true,246.14],["Raiz Engenharia","28/05","Falta de resultado/ROI",true,308.14],["Ponto Engenharia","29/05","Falta de resultado/ROI",true,246.14],["Quadra Saúde","29/05","Outros",true,308.14],["Nova Saúde","29/05","Outros",true,308.14],["Cume Educação","29/05","Outros",true,308.14],["Atlas Software","29/05","Outros",true,308.14]],"entradas":[["Vértice Marketing - conta 1","01/05",246.14,false],["Vértice Marketing - conta 2","01/05",308.14,false],["Rota Software","01/05",246.14,false],["Nova Software","04/05",246.14,false],["Órbita Software","05/05",285.06,false],["Atlas Software","05/05",308.14,false],["Elo Software","06/05",308.14,false],["Trilha Software","07/05",308.14,false],["Ponto Engenharia","07/05",246.14,false],["Cume Software","09/05",308.14,false],["Quadra Marketing","11/05",308.14,false],["Vetor Software","11/05",284.58,false],["Alfa Software","12/05",308.14,false],["Raiz Software","13/05",292.73,false],["Ponto Software","15/05",308.14,false],["Lume Marketing","18/05",184.14,false],["Prisma Marketing","19/05",184.14,false],["Prisma Software","19/05",51.35,false],["Lume Software","19/05",308.14,false],["Nova Tech","20/05",246.14,false],["Quadra Software","21/05",308.14,false],["Raiz Engenharia","21/05",308.14,false],["Vértice Software","22/05",308.14,false],["Brisa Software","22/05",308.14,false],["Ponto Marketing","26/05",184.14,false],["Farol Software","26/05",308.14,false],["Raiz Marketing","27/05",308.14,false],["Horizonte Software","29/05",308.14,false]]},{"m":"Jun","parcial":false,"mrr":32370.39,"mrrIni":31168.69,"contas":83,"contasPag":80,"clientes":73,"clientesPag":70,"entraram":27,"mrrNovo":7064.99,"sairam":18,"mrrSaiu":5863.29,"churnContas":14,"mrrChurn":4065.91,"churnProd":{"Software":4065.91},"saidas":[["Vetor Software","01/06","Outros",true,284.58],["Vértice Saúde","01/06","Fim de contrato",false,558],["Órbita Software","01/06","Inadimplente",true,285.06],["Pilar Software","02/06","Desistência",false,0],["Órbita Saúde","06/06","Fim de contrato",false,1239.38],["Horizonte Engenharia","12/06","Falta de resultado/ROI",true,308.14],["Raiz Software","15/06","Falta de resultado/ROI",true,292.73],["Âncora Software","16/06","Desistência",false,0],["Trilha Engenharia","18/06","Sem resposta pós contato",true,308.14],["Alfa Software","18/06","Falta de resultado/ROI",true,308.14],["Raiz Educação","18/06","Inadimplente",true,308.14],["Raiz Comunicação","22/06","Falta de resultado/ROI",true,308.14],["Âncora Saúde","22/06","Outros",true,308.14],["Brisa Software","22/06","Falta de resultado/ROI",true,308.14],["Elo Saúde","29/06","Falta de uso (tempo/prioridade)",true,246.14],["Âncora Educação","29/06","Outros",true,308.14],["Rota Software","29/06","Falta de resultado/ROI",true,246.14],["Nova Software","30/06","Outros",true,246.14]],"entradas":[["Ponto Comunicação","01/06",184.14,false],["Prisma Comunicação","02/06",308.14,false],["Pilar Software","02/06",0,false],["Raiz Comunicação","03/06",308.14,false],["Lume Comunicação","03/06",308.14,false],["Quadra Comunicação","05/06",308.14,false],["Vértice Comunicação","09/06",308.14,false],["Alfa Marketing","09/06",308.14,false],["Brisa Comunicação","10/06",124,false],["Farol Comunicação","10/06",246.14,false],["Horizonte Comunicação","15/06",292.73,false],["Âncora Software","16/06",0,false],["Pilar Comunicação","16/06",370.14,false],["Quadra Educação","17/06",155,true],["Vértice Educação","17/06",155,true],["Vetor Marketing","17/06",266.6,false],["Brisa Educação","17/06",155,true],["Elo Tech","18/06",308.14,false],["Âncora Comunicação","18/06",370.14,false],["Cume Marketing","19/06",370.14,false],["Atlas Comunicação","19/06",246.14,false],["Rota Comunicação","20/06",308.14,false],["Nova Comunicação","22/06",308.14,false],["Órbita Comunicação","22/06",308.14,false],["Elo Comunicação","22/06",308.14,false],["Elo Marketing","24/06",370.14,false],["Órbita Marketing","25/06",370.14,false]]},{"m":"Jul","parcial":false,"mrr":38547.04,"mrrIni":32370.39,"contas":84,"contasPag":77,"clientes":74,"clientesPag":68,"entraram":23,"mrrNovo":13152.99,"sairam":22,"mrrSaiu":6976.34,"churnContas":21,"mrrChurn":5736.96,"churnProd":{"Software":5736.96},"saidas":[["Lume Saúde","03/07","Foi pro concorrente",true,246.14],["Prisma Engenharia","03/07","Solução própria",true,246.14],["Atlas Saúde","03/07","Falta de resultado/ROI",true,308.14],["Vértice Engenharia - conta 1","05/07","Falta de uso (tempo/prioridade)",true,246.14],["Vetor Engenharia","06/07","Falta de uso (tempo/prioridade)",true,246.14],["Farol Engenharia","07/07","Cliente sem fit cultural",true,308.14],["Cume Software","08/07","Falta de resultado/ROI",true,308.14],["Alfa Educação","08/07","Inadimplente",true,184.14],["Elo Educação","09/07","Fim de contrato",false,1239.38],["Vértice Software","13/07","Problema técnico",true,308.14],["Trilha Comunicação","13/07","Preço/orçamento",true,308.14],["Brisa Saúde","14/07","Problema técnico",true,204.8],["Raiz Saúde","14/07","Cliente sem fit cultural",true,246.14],["Cume Saúde","14/07","Outros",true,184.14],["Cume Engenharia","16/07","Foi pro concorrente",true,492.28],["Elo Comunicação","20/07","Falta de resultado/ROI",true,308.14],["Quadra Comunicação","22/07","Falta de resultado/ROI",true,308.14],["Horizonte Software","22/07","Falta de resultado/ROI",true,308.14],["Farol Software","26/07","Fechamento da empresa",true,308.14],["Lume Software","28/07","Sem resposta pós contato",true,308.14],["Prisma Software","29/07","Falta de uso (tempo/prioridade)",true,51.35],["Elo Software","30/07","Falta de resultado/ROI",true,308.14]],"entradas":[["Cume Comunicação","02/07",308.14,false],["Rota Marketing","03/07",308.14,false],["Vetor Comunicação","03/07",123.38,false],["Cume Consultoria","03/07",0,false],["Horizonte Consultoria","06/07",930,false],["Alfa Comunicação","06/07",61.69,false],["Trilha Comunicação","08/07",308.14,false],["Âncora Marketing","15/07",370.14,false],["Atlas Marketing","15/07",184.14,false],["Âncora Tech","15/07",308.14,false],["Farol Advocacia","16/07",2790,false],["Atlas Tech","16/07",308.14,false],["Brisa Consultoria","17/07",1239.38,false],["Pilar Labs","20/07",370.14,false],["Pilar Marketing","20/07",370.14,false],["Âncora Labs","23/07",370.14,false],["Rota Tech","24/07",279,false],["Elo Consultoria","24/07",0,false],["Trilha Consultoria","24/07",0,false],["Atlas Labs","24/07",308.14,false],["Rota Labs","27/07",0,false],["Horizonte Advocacia","31/07",1798,false],["Nova Labs","31/07",2418,false]]},{"m":"Ago","parcial":false,"mrr":36652.54,"mrrIni":38547.04,"contas":79,"contasPag":70,"clientes":64,"clientesPag":56,"entraram":12,"mrrNovo":2220.84,"sairam":17,"mrrSaiu":4115.34,"churnContas":14,"mrrChurn":3991.34,"churnProd":{"Software":3991.34},"saidas":[["Vetor Comunicação","03/08","Falta de resultado/ROI",true,123.38],["Lume Comunicação","03/08","Preço/orçamento",true,308.14],["Elo Engenharia","05/08","Falta de resultado/ROI",true,308.14],["Horizonte Comunicação","07/08","Preço/orçamento",true,292.73],["Quadra Software","07/08","Foi pro concorrente",true,308.14],["Pilar Comunicação","07/08","Falta de resultado/ROI",true,370.14],["Órbita Labs","10/08","Desistência",false,0],["Elo Labs","10/08","Desistência",false,0],["Alfa Comunicação","17/08","Inadimplente",true,61.69],["Pilar Saúde","17/08","Sem resposta pós contato",true,184.14],["Âncora Comunicação","18/08","Outros",true,370.14],["Âncora Labs","19/08","Solução própria",true,370.14],["Pilar Labs","20/08","Falta de resultado/ROI",true,370.14],["Trilha Software","21/08","Falta de resultado/ROI",true,308.14],["Rota Comunicação","21/08","Problema técnico",true,308.14],["Vértice Comunicação","24/08","Inadimplente",true,308.14],["Brisa Comunicação","31/08","Saída eventual",false,124]],"entradas":[["Órbita Tech","03/08",246.14,false],["Brisa Marketing","05/08",370.14,false],["Órbita Advocacia","06/08",155,true],["Trilha Labs","07/08",308.14,true],["Cume Labs","07/08",308.14,true],["Elo Labs","10/08",0,false],["Órbita Labs","10/08",0,false],["Órbita Consultoria","11/08",0,false],["Vetor Labs","17/08",308.14,true],["Horizonte Educação","17/08",155,true],["Nova Consultoria","19/08",0,false],["Nova Digital","21/08",370.14,false]]},{"m":"Set","parcial":false,"mrr":39930.79,"mrrIni":36652.54,"contas":96,"contasPag":85,"clientes":75,"clientesPag":65,"entraram":32,"mrrNovo":11997.93,"sairam":15,"mrrSaiu":8719.68,"churnContas":11,"mrrChurn":7919.26,"churnProd":{"Serviço":5518,"Software":2401.26},"saidas":[["Vértice Marketing - conta 1","01/09","Inadimplente",true,246.14],["Rota Labs","02/09","Desistência",false,0],["Prisma Saúde","03/09","Problema técnico",true,308.14],["Ponto Software","09/09","Falta de resultado/ROI",true,308.14],["Farol Comunicação","10/09","Fim de contrato",false,246.14],["Prisma Comunicação","11/09","Falta de uso (tempo/prioridade)",true,308.14],["Atlas Comunicação","19/09","Fim de contrato",false,246.14],["Órbita Comunicação","22/09","Fim de contrato",false,308.14],["Vértice Engenharia - conta 2","23/09","Falta de uso (tempo/prioridade)",true,246.14],["Brisa Engenharia","23/09","Outros",true,492.28],["Atlas Engenharia","25/09","Encerramento combinado",true,3100],["Nova Labs","25/09","Encerramento combinado",true,2418],["Ponto Comunicação","28/09","Falta de resultado/ROI",true,184.14],["Alfa Labs","29/09","Problema técnico",true,0],["Nova Engenharia","30/09","Falta de uso (tempo/prioridade)",true,308.14]],"entradas":[["Rota Digital","01/09",370.14,false],["Atlas Digital","02/09",370.14,false],["Raiz Labs","03/09",308.14,true],["Ponto Labs","03/09",308.14,true],["Rota Consultoria","09/09",0,false],["Farol Digital","10/09",370.14,false],["Horizonte Digital","10/09",370.14,false],["Brisa Digital","11/09",308.14,false],["Quadra Digital","14/09",370.14,false],["Vértice Digital","14/09",370.14,false],["Lume Digital","16/09",308.14,false],["Prisma Labs","17/09",308.14,true],["Vetor Digital","18/09",740.28,false],["Alfa Digital","18/09",308.14,false],["Raiz Digital","21/09",370.14,false],["Cume Digital","21/09",308.14,false],["Lume Labs","22/09",370.14,false],["Brisa Tech","22/09",308.14,true],["Farol Tech","22/09",370.14,false],["Alfa Labs","24/09",0,false],["Vértice Tech","24/09",370.14,false],["Quadra Tech","25/09",370.14,false],["Atlas Consultoria","28/09",0,false],["Prisma Tech","29/09",370.14,false],["Ponto Tech","29/09",308.14,true],["Raiz Tech","29/09",308.14,false],["Lume Tech","29/09",308.14,true],["Quadra Labs","29/09",0,false],["Raiz Consultoria","29/09",2686.66,false],["Vetor Tech - conta 1","30/09",308.14,false],["Vetor Tech - conta 2","30/09",184.14,false],["Alfa Tech","30/09",247.49,false]]},{"m":"Out","parcial":true,"mrr":40424.93,"mrrIni":39930.79,"contas":97,"contasPag":87,"clientes":74,"clientesPag":65,"entraram":3,"mrrNovo":802.28,"sairam":2,"mrrSaiu":308.14,"churnContas":0,"mrrChurn":0,"churnProd":{},"saidas":[["Cume Comunicação","02/10","Fim de contrato",false,308.14],["Quadra Labs","05/10","Desistência",false,0]],"entradas":[["Cume Tech - conta 2","01/10",246.14,true],["Âncora Consultoria","05/10",248,false],["Pilar Consultoria","06/10",308.14,true]]}],"inadimplentes":[["Vértice Labs","05/05/2026","05/05/2027"],["Brisa Labs","20/12/2025","20/12/2026"]],"atualizadoEm":"06/10/2026 12:33"};
+
+  function $(id){ return document.getElementById(id); }
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function brl(n){ return Number(n).toLocaleString('pt-BR',{maximumFractionDigits:0}); }
+  function reais(n){ return 'R$ ' + brl(n); }
+  function reais2(n){ return 'R$ ' + Number(n).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+  function pct(x,c){ return (x*100).toFixed(c===undefined?1:c).replace('.',',') + '%'; }
+  function big(prefixo){ for (var i=0;i<D.big.length;i++) if (D.big[i].k.indexOf(prefixo)===0) return D.big[i]; return {v:'—',f:''}; }
+  function kpis(el, itens){
+    el.innerHTML = itens.map(function(k){
+      return '<div class="kpi"><span class="k">' + esc(k[0]) + '</span><span class="v' + (k[3]?' '+k[3]:'') + '">' + esc(k[1]) + '</span><span class="f">' + esc(k[2]) + '</span></div>';
+    }).join('');
+  }
+  function hbars(el, itens, fmt){
+    var max = 0; itens.forEach(function(i){ max = Math.max(max, i.max || i.v); });
+    max = max || 1;
+    el.innerHTML = itens.map(function(i){
+      var ghost = i.ghost !== undefined ? '<i class="ghost" style="width:' + Math.max(1, i.ghost/max*100) + '%"></i>' : '';
+      return '<div class="hb-row"><span>' + esc(i.k) + (i.s ? '<small>' + esc(i.s) + '</small>' : '') + '</span>' +
+        '<div class="hb-track">' + ghost + '<i class="' + (i.c||'') + '" style="width:' + (i.v ? Math.max(1, i.v/max*100) : 0) + '%"></i></div>' +
+        '<span class="v">' + (fmt ? fmt(i.v, i) : brl(i.v)) + '</span></div>';
+    }).join('');
+  }
+  function escala(max){
+    if (max <= 0) return [0,1];
+    var passo = Math.pow(10, String(Math.round(max)).length - 1), t = Math.ceil(max/passo)*passo;
+    if (t/passo < 3) { passo = passo/2; t = Math.ceil(max/passo)*passo; }
+    var ticks = []; for (var v=0; v<=t+1e-9; v+=passo) ticks.push(v); return ticks;
+  }
+  function kfmt(n){ return n >= 1000 ? Math.round(n/1000) + 'k' : String(Math.round(n)); }
+  // churn de MRR separado em software e servico (mentoria, se houver, aparece a parte)
+  function churnPartes(h){
+    var p = (h && h.churnProd) || {}, sv = p['Serviço'] || 0, mt = p['Mentoria'] || 0, seo = p['SEO'] || 0, sw = 0;
+    Object.keys(p).forEach(function(k){ if (k !== 'Serviço' && k !== 'Mentoria' && k !== 'SEO') sw += p[k]; });
+    return {sw:sw, sv:sv, mt:mt, seo:seo};
+  }
+  function churnPorProduto(h){
+    var c = churnPartes(h);
+    return 'Software ' + reais(c.sw) + ' · Serviço ' + reais(c.sv) + (c.seo ? ' · SEO ' + reais(c.seo) : '') + (c.mt ? ' · Mentoria ' + reais(c.mt) : '');
+  }
+  function mesAtualHist(){ var H = D.historico || []; return H[H.length - 1]; }
+  // planos com "Mensal - Servicos e SEO" separado em duas linhas (Servico e SEO), a partir da carteira
+  function planosDet(){
+    var out = [];
+    D.planos.forEach(function(p){
+      if (!/Servi.os e SEO/.test(p[0])) { out.push(p); return; }
+      [['Mensal - Serviços', 'Serviço'], ['Mensal - SEO', 'SEO']].forEach(function(x){
+        var L = (D.clientes || []).filter(function(c){ return c[1] === 'Mensal' && c[2] === x[1]; });
+        var pag = L.filter(function(c){ return c[6] > 0; }).length, v = L.reduce(function(s, c){ return s + (+c[6] || 0); }, 0);
+        if (L.length) out.push([x[0], L.length, pag, v, pag ? v / pag : 0]);
+      });
+    });
+    return out;
+  }
+
+  // dicas ao passar o mouse: por que cada numero existe e qual a base de calculo. Regras na ordem; a primeira que casar vale.
+  var DICAS = {
+    clientes:      ['Churn de clientes', 'Mede quantas empresas pagantes deixaram de ser clientes no mês. Cálculo: clientes que perderam todas as contas pagantes no mês ÷ maior número de clientes pagantes em qualquer dia do mês. Fim de contrato, saída eventual e desistência não contam.'],
+    mrr:           ['Churn de MRR', 'Mede quanto de receita recorrente foi perdida por churn. Cálculo: MRR das contas que saíram por churn no mês ÷ MRR no início do mês. Fim de contrato, saída eventual e desistência não contam.'],
+    churnSw:       ['Churn de MRR · software', 'Parte do churn de MRR que veio de contas de software (inclui mentoria). Soma do MRR dessas contas que saíram por churn no mês.'],
+    churnSv:       ['Churn de MRR · serviço', 'Parte do churn de MRR que veio de serviços da a empresa. Soma do MRR desses contratos que saíram por churn no mês.'],
+    safraChurn:    ['Churn da safra', 'Mostra quantas contas daquela safra saíram por churn. Cálculo: contas da safra que saíram por churn ÷ contas que entraram naquele mês. Fim de contrato, saída eventual e desistência ficam em "Outras saídas".'],
+    onbChurn:      ['Churn por onboarding', 'Compara quem fez e quem não fez onboarding. Cálculo: contas do grupo que saíram por churn ÷ total de contas do grupo, na base histórica inteira.'],
+    motivos:       ['Motivos de churn', 'Por que os clientes saíram, para atacar as causas. Contagem de contas que saíram por churn no ano, pelo motivo registrado na planilha.'],
+    naoChurn:      ['Saídas que não são churn', 'Saídas que não indicam insatisfação: fim de contrato, saída eventual e desistência antes de contratar. Contam como cancelamento, mas ficam fora da taxa de churn.'],
+    saidasChurn:   ['Saídas por churn no ano', 'Total de contas que saíram por churn desde janeiro. Contagem por conta (um cliente com 3 contas pode somar 3).'],
+    mrrAtivo:      ['MRR ativo', 'Receita recorrente mensal de hoje. Soma do valor mensalizado de todas as contas ativas que pagam: trimestral ÷ 3, semestral ÷ 6, anual ÷ 12. Gratuitos e trials valem zero.'],
+    mrrFim:        ['MRR no fim do mês', 'Receita recorrente mensal no último dia do mês (ou hoje, no mês em andamento). Mesmo cálculo do MRR ativo, na data de fechamento.'],
+    mrrNovo:       ['MRR novo', 'Receita recorrente que entrou no mês. Soma do MRR das contas com data de entrada no mês.'],
+    mrrPerd:       ['MRR perdido', 'Receita recorrente que saiu no mês, por churn e por outras saídas. Soma do MRR registrado na saída das contas que saíram no mês.'],
+    resultado:     ['Resultado do mês', 'Mostra se a carteira cresceu ou encolheu. Cálculo: MRR novo − MRR perdido no mês.'],
+    mov:           ['MRR que entrou e que saiu', 'Compara, mês a mês, a receita nova com a receita perdida. Barra roxa = MRR novo; barra vermelha = MRR perdido (churn + outras saídas).'],
+    prod:          ['MRR por produto', 'De onde vem a receita. MRR ativo separado por produto (Software, Serviço, SEO, Mentoria); o percentual é a fatia de cada um no total.'],
+    plano:         ['MRR por plano', 'Quanto cada tipo de plano rende. MRR ativo somado por plano; ticket = MRR do plano ÷ contas pagantes do plano.'],
+    forma:         ['MRR por forma de pagamento', 'Por onde o dinheiro entra. MRR ativo somado pela forma de pagamento de cada conta; os acordos das agências aparecem como Agência Norte e Agência Sul.'],
+    ticket:        ['Ticket médio', 'Quanto, em média, cada empresa pagante rende por mês. Cálculo: MRR total (todos os produtos) ÷ total de clientes pagantes. Gratuitos, trials e cortesias ficam fora do divisor. Mesma conta do Histórico.'],
+    clientesPag:   ['Clientes pagantes', 'Empresas com pelo menos uma conta ativa que paga. Gratuitos, trials e cortesias aparecem à parte, embaixo do número. Um cliente pode ter várias contas.'],
+    prodTab:       ['MRR por produto', 'Por produto: fatia da receita (% do MRR), clientes pagantes, ticket médio (receita do produto ÷ clientes pagantes do produto) e receita mensal. Um cliente com dois produtos conta nos dois.'],
+    clientesAt:    ['Clientes', 'Empresas com pelo menos uma conta ativa (o grupo da planilha). Um cliente pode ter várias contas. Internos ficam fora.'],
+    contas:        ['Contas', 'Cada linha ativa da planilha. Um cliente multicontas ou de agência tem várias contas. Internos ficam fora.'],
+    usuarios:      ['Usuários', 'Logins previstos na plataforma: soma do número de acessos de cada conta ativa, mais os internos. Inclui os acessos que ainda faltam criar.'],
+    pagam:         ['Pagam', 'Clientes, contas ou logins com valor de MRR maior que zero.'],
+    naoPagam:      ['Não pagam', 'Gratuitos, trials e cortesias: estão ativos, mas com MRR zero.'],
+    internos:      ['Internos', 'Logins da equipe interna. Entram só em usuários; ficam fora de clientes, contas e MRR.'],
+    onbPct:        ['Fizeram onboarding', 'Quanto da base passou pelo onboarding. Cálculo: contas da base histórica (ativas e que já saíram) com onboarding feito ÷ contas com registro.'],
+    onbCard:       ['Churn por onboarding', 'Mostra o efeito do onboarding na permanência. Cálculo: contas do grupo que saíram por churn ÷ total de contas do grupo (fez ou não fez onboarding), na base histórica inteira.'],
+    onbCol:        ['Onboarding', 'Se a conta passou pelo onboarding, conforme a planilha. "Sem registro" = campo vazio.'],
+    tAtivos:       ['Tempo médio dos ativos', 'Há quanto tempo, em média, as contas ativas estão com a gente. Média dos dias entre a data de entrada e hoje.'],
+    tCancel:       ['Tempo médio até cancelar', 'Quanto tempo, em média, quem saiu ficou. Média dos dias entre a entrada e a saída das contas canceladas.'],
+    c90:           ['Cancelam antes de 90 dias', 'Mostra se a saída acontece cedo. Cálculo: cancelamentos com menos de 90 dias de casa ÷ total de cancelamentos.'],
+    c30:           ['Cancelam antes de 30 dias', 'Mostra quem sai logo no primeiro mês. Cálculo: cancelamentos com menos de 30 dias de casa ÷ total de cancelamentos. Fica vermelho acima de 20%.'],
+    retGraf:       ['Retenção por safra', 'Quanto de cada turma de entrada continua ativa hoje. Cálculo: contas da safra ativas hoje ÷ contas que entraram naquele mês.'],
+    safraMrrGraf:  ['MRR da safra', 'Quanto da receita que entrou em cada mês ainda está ativa. Barra clara = MRR que entrou; barra verde = MRR dessas contas que continua ativo.'],
+    safras:        ['Safras', 'Contas agrupadas pelo mês de entrada, para acompanhar cada turma. Contagem por conta.'],
+    safra:         ['Safra', 'Mês em que as contas entraram.'],
+    safraEntr:     ['Entraram', 'Contas com data de entrada naquele mês.'],
+    cancelaram:    ['Cancelaram', 'Contas da safra que já saíram, por qualquer motivo (churn + outras saídas).'],
+    outras:        ['Outras saídas', 'Saídas que não são churn: fim de contrato, saída eventual e desistência. Cálculo: cancelaram − churn.'],
+    ativasHoje:    ['Ativas hoje', 'Contas da safra que continuam ativas hoje. Cálculo: entraram − cancelaram.'],
+    retencao:      ['Retenção', 'Quanto da safra continua ativa. Cálculo: ativas hoje ÷ entraram. Safra recente tende a ter retenção maior porque teve menos tempo para cancelar.'],
+    safraMrrIn:    ['MRR que entrou', 'Soma do MRR das contas da safra no momento da entrada.'],
+    safraMrrAt:    ['MRR ativo da safra', 'Soma do MRR das contas da safra que continuam ativas hoje.'],
+    entraram:      ['Entraram', 'Contas novas no mês: data de entrada dentro do mês.'],
+    sairam:        ['Saíram', 'Contas que saíram no mês, por churn ou outras saídas.'],
+    pontos:        ['Pontos de atenção', 'Alertas tirados dos números do painel: renovações próximas, efeito do onboarding e contas que ainda não pagam.'],
+    agencias:      ['Agências parceiras', 'Quanto cada agência movimenta. Clientes da agência = contas que ela revende (acordo); Serviços próprios = contratos da a empresa que a agência opera.'],
+    acessos:       ['Acessos na plataforma', 'Quantos logins já estão ativos. Cálculo: logins previstos na planilha − acessos ainda não criados, conferidos com a exportação da plataforma.'],
+    accPag:        ['Pagantes', 'Logins ativos de contas que pagam.'],
+    accGr:         ['Gratuitas e trial', 'Logins ativos de contas gratuitas, em trial ou com cortesia.'],
+    aCriar:        ['A criar', 'Logins previstos na planilha que ainda não estão ativos na plataforma. Saem da lista quando o acesso aparece na exportação da plataforma.'],
+    vencCart:      ['Vence em', 'Próxima renovação de cada conta: data de entrada + período do plano (mensal 1 mês, trimestral 3, semestral 6, anual 12), rolada até a próxima data a partir de hoje. Gratuito e trial não têm vencimento. Destaque quando faltam 30 dias ou menos.'],
+    renov:         ['Renovações', 'Contratos não mensais que vencem em até 60 dias, para agir antes do vencimento. Data = entrada + período do plano, rolada para frente. Mensal renova sozinho e não entra.'],
+    niveis:        ['Clientes, contas e usuários', 'A mesma base contada de três jeitos: cliente = empresa, conta = linha da planilha, usuário = login na plataforma.'],
+    carteira:      ['Carteira ativa', 'Todas as contas ativas da planilha, uma por linha, com plano, forma de pagamento, entrada e MRR. Internos ficam fora.'],
+    recebido:      ['Recebido no mês', 'Quanto já entrou de fato no mês, desde o dia 1º. Soma do valor cobrado nos pagamentos aprovados no Cartão, na Checkout e no Boleto (no Boleto, só os clientes deste painel). Plataformas consultadas só para leitura na atualização. Acordos das agências e PIX não entram. Trimestral e anual entram de uma vez no mês em que são pagos.'],
+    posicao:       ['Posição de', 'Data dos dados da planilha usada nesta atualização.'],
+    contasBase:    ['Contas na base', 'Contas ativas na planilha (linhas), sem internos.'],
+    histTab:       ['Todos os meses', 'Fechamento de cada mês. Quem continua ativo entra com o valor de hoje; quem saiu entra com o valor registrado na saída.'],
+    mrrConta:      ['MRR', 'Valor mensal da conta: trimestral ÷ 3, semestral ÷ 6, anual ÷ 12. É o que entra na soma do MRR ativo.'],
+    entrada:       ['Entrada', 'Data em que a conta entrou na base. Define a safra e a data de renovação.'],
+    pagamento:     ['Pagamento', 'Forma de pagamento da conta. Acordo Norte/Sul = a agência paga pelos clientes dela.'],
+    inadimplentes: ['Clientes inadimplentes', 'Quem está com pagamento em aberto. Em atraso: cliente ativo com cobrança não paga no Cartão (continua na base e no MRR; sai da lista quando paga). Nunca pagou: assinou e nunca pagou, com contrato vigente; fica registrado na planilha (status Inadimplente) e fora de clientes, contas, usuários e MRR.'],
+    fechamento:    ['Fechamento do mês', 'Números do mês escolhido, comparados com o mês anterior. No mês em andamento, é a posição de hoje.']
+  };
+  var REGRAS = [
+    [/^Churn %$|^Churn$/, '#p-retencao', 'safraChurn'],
+    [/^Churn por onboarding/, null, 'onbCard'],
+    [/^Churn MRR software/, null, 'churnSw'],
+    [/^Churn MRR serviço/, null, 'churnSv'],
+    [/Churn de MRR/, null, 'mrr'],
+    [/^Churn$|^Churn (de|mensal)/, null, 'clientes'],
+    [/^Motivos de churn/, null, 'motivos'],
+    [/não são churn/, null, 'naoChurn'],
+    [/^Saídas por churn/, null, 'saidasChurn'],
+    [/^MRR ativo$/, '#p-retencao', 'safraMrrAt'],
+    [/^MRR ativo$/, null, 'mrrAtivo'],
+    [/^MRR que entrou$/, '#p-retencao', 'safraMrrIn'],
+    [/^MRR que entrou e que saiu/, null, 'mov'],
+    [/^MRR que entrou e quanto/, null, 'safraMrrGraf'],
+    [/^MRR por produto/, null, 'prodTab'],
+    [/^MRR por plano/, null, 'plano'],
+    [/^MRR por forma/, null, 'forma'],
+    [/^MRR novo/, null, 'mrrNovo'],
+    [/^MRR perdido/, null, 'mrrPerd'],
+    [/^MRR no fim/, null, 'mrrFim'],
+    [/^MRR$/, null, 'mrrConta'],
+    [/^Entrada$/, null, 'entrada'],
+    [/^Pagamento$/, null, 'pagamento'],
+    [/^Resultado/, null, 'resultado'],
+    [/^Ticket/, null, 'ticket'],
+    [/^Clientes pagantes$/, null, 'clientesPag'],
+    [/^Clientes ativos$|^Clientes$/, null, 'clientesAt'],
+    [/^Contas ativas$|^Contas$/, null, 'contas'],
+    [/^Usuários$/, null, 'usuarios'],
+    [/^Pagam$/, null, 'pagam'],
+    [/^Não pagam$/, null, 'naoPagam'],
+    [/^Internos$/, null, 'internos'],
+    [/^Fizeram onboarding/, null, 'onbPct'],
+    [/^Onboarding muda/, null, 'onbCard'],
+    [/^Onboarding$/, null, 'onbCol'],
+    [/^Tempo médio dos ativos/, null, 'tAtivos'],
+    [/^Tempo médio até cancelar/, null, 'tCancel'],
+    [/^Cancelam antes de 90/, null, 'c90'],
+    [/^Cancelam antes de 30/, null, 'c30'],
+    [/^Quanto de cada safra/, null, 'retGraf'],
+    [/^Todas as safras/, null, 'safras'],
+    [/^Safra$/, null, 'safra'],
+    [/^Entraram$/, '#p-retencao', 'safraEntr'],
+    [/^Entraram$/, null, 'entraram'],
+    [/^Cancelaram$/, null, 'cancelaram'],
+    [/^Outras saídas/, null, 'outras'],
+    [/^Ativas hoje/, null, 'ativasHoje'],
+    [/^Retenção$/, null, 'retencao'],
+    [/^Saíram$|^Saídas do mês$/, null, 'sairam'],
+    [/^Pontos de atenção/, null, 'pontos'],
+    [/^Agências parceiras/, null, 'agencias'],
+    [/^Acessos na plataforma/, null, 'acessos'],
+    [/^Pagantes$/, null, 'accPag'],
+    [/^Gratuitas e trial/, null, 'accGr'],
+    [/^A criar$|^Acessos a criar/, null, 'aCriar'],
+    [/^Vence em/, '#tbl-cli', 'vencCart'],
+    [/^Renovações|^Vence em/, null, 'renov'],
+    [/^Clientes, contas e usuários/, null, 'niveis'],
+    [/^Carteira ativa/, null, 'carteira'],
+    [/^Total recebido/, null, 'recebido'],
+    [/^Posição de/, null, 'posicao'],
+    [/^Contas na base/, null, 'contasBase'],
+    [/^Todos os meses/, null, 'histTab'],
+    [/^Fechamento de/, null, 'fechamento'],
+    [/^Clientes inadimplentes/, null, 'inadimplentes']
+  ];
+  function chaveDica(txt, el){
+    for (var i = 0; i < REGRAS.length; i++) {
+      var r = REGRAS[i];
+      if (r[0].test(txt) && (!r[1] || el.closest(r[1]))) return r[2];
+    }
+    return null;
+  }
+  function criaTip(texto, chave){
+    var s = document.createElement('span');
+    s.className = 'tip'; s.tabIndex = 0; s.setAttribute('data-tip', chave);
+    s.setAttribute('aria-label', texto + ': ' + DICAS[chave][1]); s.textContent = texto;
+    return s;
+  }
+  function marcaDicas(){
+    // rotulos inteiros (titulos, numeros grandes, cabecalhos de tabela)
+    [].forEach.call(document.querySelectorAll('th, h2, h3, .kpi .k, .h-tile .k, .acc-list span, .side .row > span:first-child, #tb-niveis td > b, .pend-head b'), function(el){
+      if (el.closest('.tip') || el.querySelector('.tip')) return;
+      var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT), nos = [];
+      while (walker.nextNode()) if (walker.currentNode.nodeValue.trim()) nos.push(walker.currentNode);
+      if (nos.length !== 1) return;
+      var no = nos[0], txt = no.nodeValue.trim(), chave = chaveDica(txt, el);
+      if (!chave) return;
+      no.parentNode.replaceChild(criaTip(no.nodeValue, chave), no);
+    });
+    // a palavra "churn" no meio de frases
+    [].forEach.call(document.querySelectorAll('.card .sub, .vs span'), function(el){
+      if (el.closest('.tip') || el.querySelector('.tip') || !/churn/i.test(el.textContent)) return;
+      var chave = (el.closest('#g-onb') || /onboarding/i.test(el.textContent)) ? 'onbChurn' : /cancelamentos/i.test(el.textContent) ? 'naoChurn' : 'clientes';
+      var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT), nos = [];
+      while (walker.nextNode()) if (/churn/i.test(walker.currentNode.nodeValue)) nos.push(walker.currentNode);
+      nos.forEach(function(no){
+        var frag = document.createDocumentFragment();
+        no.nodeValue.split(/(churn)/i).forEach(function(p){
+          if (/^churn$/i.test(p)) frag.appendChild(criaTip(p, chave));
+          else if (p) frag.appendChild(document.createTextNode(p));
+        });
+        no.parentNode.replaceChild(frag, no);
+      });
+    });
+  }
+  (function(){
+    var box = document.createElement('div'); box.id = 'tip-box'; box.hidden = true; box.setAttribute('role', 'tooltip'); document.body.appendChild(box);
+    // "MRR perdido" (Receita) e "Saíram" (quadro do Histórico) mostram a lista de quem saiu no mês, em vez da explicação
+    var NOME_MES = {Jan:'janeiro',Fev:'fevereiro',Mar:'março',Abr:'abril',Mai:'maio',Jun:'junho',Jul:'julho',Ago:'agosto',Set:'setembro',Out:'outubro',Nov:'novembro',Dez:'dezembro'};
+    function listaSaidas(h){
+      var L = (h && h.saidas) || [], tot = L.reduce(function(s, x){ return s + x[4]; }, 0);
+      var html = '<b>Saíram em ' + esc(NOME_MES[h.m] || h.m) + ': ' + L.length + (L.length === 1 ? ' conta' : ' contas') + ' · ' + reais(tot) + '</b>';
+      if (!L.length) return html + 'Nenhuma saída até agora.';
+      return html + '<span class="tip-lista">' + L.map(function(x){
+        return '<span class="tip-item"><span>' + esc(x[0]) + ' · ' + esc(x[1]) + '<br><em>' + esc(x[2] || 'sem motivo') + (x[3] ? ' · churn' : ' · não é churn') + '</em></span><b>' + reais(x[4]) + '</b></span>';
+      }).join('') + '</span>';
+    }
+    // "MRR novo" (Receita) e "Entraram" (quadro do Historico) mostram a lista de quem entrou no mes
+    function listaEntradas(h){
+      var L = (h && h.entradas) || [], tot = L.reduce(function(s, x){ return s + x[2]; }, 0);
+      var html = '<b>Entraram em ' + esc(NOME_MES[h.m] || h.m) + ': ' + L.length + (L.length === 1 ? ' conta' : ' contas') + ' · ' + reais(tot) + '</b>';
+      if (!L.length) return html + 'Nenhuma entrada até agora.';
+      // lista longa (ex.: setembro) nao cabe na tela: mostra as 15 primeiras e resume o resto
+      var MAX = 15, resto = L.slice(MAX), totResto = resto.reduce(function(s, x){ return s + x[2]; }, 0);
+      return html + '<span class="tip-lista">' + L.slice(0, MAX).map(function(x){
+        return '<span class="tip-item"><span>' + esc(x[0]) + (x[3] ? ' <b>*UPSELL</b>' : '') + ' · entrou em ' + esc(x[1]) + (x[2] ? '' : ' · não paga') + '</span><b>' + reais(x[2]) + '</b></span>';
+      }).join('') + '</span>' + (resto.length ? '<em>e mais ' + resto.length + (resto.length === 1 ? ' conta' : ' contas') + ' (' + reais(totResto) + ') entraram depois, até o fim do mês.</em>' : '');
+    }
+    // "Clientes pagantes" mostra os nomes, um por cliente (grupo da planilha), em ordem alfabetica
+    function listaPagantes(){
+      var g = {};
+      (D.clientes || []).forEach(function(c){ if (c[6] > 0) { var n = c.length > 12 && c[12] ? c[12] : c[0]; g[n] = 1; } });
+      var nomes = Object.keys(g).sort(function(a, b){ return a.localeCompare(b, 'pt-BR'); });
+      // um nome por linha, em 3 colunas para a lista caber na tela
+      return '<b>Clientes pagantes: ' + nomes.length + '</b><span style="display:block;column-count:3;column-gap:18px;margin-top:6px">' +
+        nomes.map(function(n){ return '<span style="display:block;break-inside:avoid;padding:1px 0">' + esc(n) + '</span>'; }).join('') + '</span>';
+    }
+    // "MRR ativo" mostra a conta inteira: por produto e por plano (com a divisao dos planos longos)
+    function composicaoMrr(){
+      var DIV = {'Trimestral':' (valor ÷ 3)', 'Semestral':' (valor ÷ 6)', 'Anual':' (valor ÷ 12)'};
+      function linha(a, b, v){ return '<span class="tip-item"><span>' + a + (b ? '<br><em>' + b + '</em>' : '') + '</span><b>' + reais2(v) + '</b></span>'; }
+      var prod = D.produtos.map(function(p){ return linha(esc(p[0]), p[2] + (p[2] === 1 ? ' conta pagante' : ' contas pagantes'), p[3]); }).join('');
+      var plano = planosDet().filter(function(p){ return p[3] > 0; }).map(function(p){ return linha(esc(p[0]) + esc(DIV[p[0]] || ''), p[2] + (p[2] === 1 ? ' conta pagante' : ' contas pagantes'), p[3]); }).join('');
+      var zero = D.planos.filter(function(p){ return !(p[3] > 0) && p[1]; }).map(function(p){ return p[1] + ' ' + p[0].toLowerCase(); }).join(', ');
+      return '<b>MRR ativo: ' + reais2(D.kpi.mrr) + '</b>Soma do valor mensal de cada conta ativa que paga.' +
+        '<span class="tip-lista"><em>Por produto</em>' + prod + '<em>Por plano</em>' + plano + '</span>' +
+        (zero ? '<em>Entram com R$ 0: ' + esc(zero) + '.</em>' : '');
+    }
+    function mostra(el){
+      var k = el.getAttribute('data-tip'), t = DICAS[k], H = D.historico || [], h = null;
+      var he = null;
+      if (k === 'mrrPerd' && el.closest('#k-rec')) h = H[H.length - 1];
+      else if (k === 'sairam' && el.closest('.h-tile')) h = H[D.histSel != null ? D.histSel : H.length - 1];
+      else if (k === 'mrrNovo' && el.closest('#k-rec')) he = H[H.length - 1];
+      else if (k === 'entraram' && el.closest('.h-tile')) he = H[D.histSel != null ? D.histSel : H.length - 1];
+      box.style.maxWidth = '';
+      if (he) { box.innerHTML = listaEntradas(he); box.hidden = false; }
+      else if (k === 'clientesPag' && el.closest('#k-visao, #k-op')) { box.style.maxWidth = '560px'; box.innerHTML = listaPagantes(); box.hidden = false; }
+      else if (k === 'mrrAtivo' && el.closest('#k-visao, #k-rec')) { box.innerHTML = composicaoMrr(); box.hidden = false; }
+      else { box.innerHTML = h ? listaSaidas(h) : '<b>' + esc(t[0]) + '</b>' + esc(t[1]); box.hidden = false; }
+      var r = el.getBoundingClientRect(), w = box.offsetWidth, h = box.offsetHeight;
+      var x = Math.max(8, Math.min(r.left, window.innerWidth - w - 8)), y = r.bottom + 8;
+      if (y + h > window.innerHeight - 8) y = r.top - h - 8;
+      box.style.left = x + 'px'; box.style.top = y + 'px';
+    }
+    function esconde(){ box.hidden = true; }
+    document.addEventListener('mouseover', function(e){ var t = e.target.closest && e.target.closest('.tip'); if (t) mostra(t); });
+    document.addEventListener('mouseout', function(e){ if (e.target.closest && e.target.closest('.tip')) esconde(); });
+    document.addEventListener('focusin', function(e){ if (e.target.classList && e.target.classList.contains('tip')) mostra(e.target); });
+    document.addEventListener('focusout', esconde);
+    window.addEventListener('scroll', esconde, true);
+  })();
+
+  // ---------- barra lateral ----------
+  $('s-data').textContent = D.geradoEm;
+  if (D.atualizadoEm) {
+    var at = String(D.atualizadoEm).split(' ');
+    $('atualizado').innerHTML = 'Atualizado em <b>' + esc(at[0]) + '</b> às <b>' + esc(at[1] || '') + '</b>';
+  }
+  $('s-reg').textContent = D.niveis ? D.niveis.ct[3] + ' ativas' : D.txt.contasFim + ' ativas';
+  // recebido no mes: o que ja entrou em Cartão, Checkout e Boleto (consultados so para leitura na atualizacao)
+  (function(){
+    var R = D.recebidos;
+    if (!R) { $('s-rec-tit').parentNode.hidden = true; return; }
+    var MES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+    $('s-rec-tit').textContent = 'Recebido em ' + (MES[+R.mes - 1] || 'mês');
+    $('s-rec-tot').textContent = reais2(R.total);
+    $('s-rec-lista').innerHTML = R.fontes.map(function(f){
+      var v = f.ok ? reais(f.valor) + ' <span class="rec-n">· ' + f.n + (f.n === 1 ? ' pgto' : ' pgtos') + '</span>' : '<span class="rec-n">sem dados</span>';
+      return '<div class="row" title="' + esc(f.obs) + '"><span>' + esc(f.nome) + '</span><b>' + v + '</b></div>';
+    }).join('');
+    // em atraso: faturas em aberto de clientes ativos (Cartão); se nao houver lista, mostra so as recusadas do mes
+    var at = R.atrasos || [];
+    if (at.length) {
+      var totAt = at.reduce(function(s, a){ return s + a.valor; }, 0);
+      $('s-rec-falha').hidden = false;
+      $('s-rec-falha').innerHTML = '<b>Em atraso · ' + reais(totAt) + '</b>' + at.map(function(a){
+        return '<div class="atraso"><span>' + esc(a.nome) + '</span><b>' + reais(a.valor) + '</b><small>desde ' + esc(a.desde) + ' · ' + a.tentativas + (a.tentativas === 1 ? ' tentativa' : ' tentativas') + (a.proxima ? '<br>Cartão tenta cobrar de novo, sozinho, em ' + esc(a.proxima) : '') + (a.contatos ? '<br>' + a.contatos + (a.contatos === 1 ? ' contato feito' : ' contatos feitos') + (a.ultimo ? ' · último ' + esc(a.ultimo) : '') : '') + (a.situacao ? '<br><span class="atraso-sit">' + esc(a.situacao) + '</span>' : '') + '</small></div>';
+      }).join('');
+    } else {
+      var falhas = [];
+      R.fontes.forEach(function(f){ (f.falhas || []).forEach(function(n){ falhas.push(n + ' (' + f.nome + ')'); }); });
+      if (falhas.length) { $('s-rec-falha').hidden = false; $('s-rec-falha').textContent = 'Cobrança recusada: ' + falhas.join(', '); }
+    }
+    // resgate: renovacoes vencidas em cadencia de mensagens (toques anotados nas atividades do CRM)
+    var rg = R.resgates || [];
+    if (rg.length) {
+      $('s-resgate').hidden = false;
+      $('s-resgate').innerHTML = '<b>Em resgate · ' + rg.length + (rg.length === 1 ? ' cliente' : ' clientes') + '</b>' + rg.map(function(r){
+        return '<div class="atraso"><span>' + esc(r.nome) + '</span><b>' + reais(r.valor) + '/mês</b><small>' + r.toques + ' de ' + r.total + ' toques feitos · último ' + esc(r.ultimo) + (r.proximo ? '<br>próximo ' + esc(r.proximo) + (r.tipo ? ': ' + esc(r.tipo) : '') : '') + '</small></div>';
+      }).join('') + '<small>Toques anotados no CRM</small>';
+    }
+    // pedidos de cancelamento em aberto (ex.: dentro dos 7 dias de garantia)
+    var cc = R.cancelamentos || [];
+    if (cc.length) {
+      $('s-cancel').hidden = false;
+      $('s-cancel').innerHTML = '<b>Pediu cancelamento · ' + cc.length + (cc.length === 1 ? ' cliente' : ' clientes') + '</b>' + cc.map(function(c){
+        return '<div class="atraso"><span>' + esc(c.nome) + '</span><b>' + reais(c.valor) + '/mês</b><small>' + (c.entrada ? 'entrou ' + esc(c.entrada) : '') + (c.prazo ? ' · garantia até ' + esc(c.prazo) : '') + (c.situacao ? '<br><span class="atraso-sit">' + esc(c.situacao) + '</span>' : '') + '</small></div>';
+      }).join('');
+    }
+    $('s-rec-nota').textContent = 'De ' + R.de + ' a ' + R.ate + '. Valor cobrado, conferido nas plataformas só para leitura. Acordos das agências e PIX não entram nesta soma.';
+  })();
+
+  // ---------- visao executiva ----------
+  var churnMes = big('Churn de ' + D.txt.mes);
+  var churnMrr = big('Churn de MRR');
+  var rs = String(churnMrr.f).match(/R\$\s*[\d.,]+/g) || [];
+  var cli = D.niveis ? D.niveis.cli : [0,0,0,D.txt.clientes];
+  // ticket medio = MRR total ÷ clientes pagantes (mesma conta do Historico, para os numeros baterem)
+  var TICKET = cli[0] ? D.kpi.mrr / cli[0] : 0;
+  // composicao do MRR (por produto) escrita no proprio cartao, para a soma ficar visivel
+  var MRR_COMP = D.produtos.filter(function(p){ return p[3] > 0; }).map(function(p){ return p[0] + ' ' + reais(p[3]); }).join(' + ');
+  kpis($('k-visao'), [
+    ['MRR ativo', big('MRR').v, MRR_COMP],
+    ['Clientes pagantes', String(cli[0]), '+ ' + cli[1] + ' ativos que não pagam (gratuito, trial, cortesia) · ' + cli[3] + ' no total' + ((D.inadimplentes || []).length ? ' · ' + D.inadimplentes.length + ' inadimplentes à parte' : '')],
+    ['Ticket médio', reais2(TICKET), reais(D.kpi.mrr) + ' de MRR ÷ ' + cli[0] + ' clientes pagantes'],
+    ['Churn de ' + D.txt.mes, churnMes.v, D.txt.churnN + ' clientes saíram', D.txt.churnPc > 0.15 ? 'bad' : ''],
+    ['Churn de MRR', reais(mesAtualHist().mrrChurn), churnPorProduto(mesAtualHist()) + ' · ' + (mesAtualHist().mrrIni ? pct(mesAtualHist().mrrChurn / mesAtualHist().mrrIni) : '0,0%') + ' do MRR do início (' + reais(mesAtualHist().mrrIni) + ')']
+  ]);
+
+  // grafico de barras agrupadas: MRR que entrou x saiu
+  (function(){
+    var W = 640, H = 250, L = 46, B = 26, T = 10, R = 8;
+    var max = 0; D.mensal.forEach(function(m){ max = Math.max(max, m.novo, m.perd); });
+    var ticks = escala(max), top = ticks[ticks.length-1];
+    var cw = (W - L - R) / D.mensal.length, bw = Math.min(16, cw*0.3);
+    var y = function(v){ return T + (H - T - B) * (1 - v/top); };
+    var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" role="img" aria-label="MRR que entrou e saiu por mês">';
+    ticks.forEach(function(t){ s += '<line class="grid" x1="' + L + '" x2="' + (W-R) + '" y1="' + y(t) + '" y2="' + y(t) + '"/><text x="' + (L-8) + '" y="' + (y(t)+4) + '" text-anchor="end">' + kfmt(t) + '</text>'; });
+    D.mensal.forEach(function(m, i){
+      var cx = L + cw*i + cw/2;
+      s += '<rect x="' + (cx-bw-1) + '" y="' + y(m.novo) + '" width="' + bw + '" height="' + (H-B-y(m.novo)) + '" rx="3" fill="var(--accent)"><title>' + m.m + ' · entrou ' + reais(m.novo) + '</title></rect>';
+      s += '<rect x="' + (cx+1) + '" y="' + y(m.perd) + '" width="' + bw + '" height="' + (H-B-y(m.perd)) + '" rx="3" fill="var(--bad)"><title>' + m.m + ' · saiu ' + reais(m.perd) + '</title></rect>';
+      s += '<text x="' + cx + '" y="' + (H-8) + '" text-anchor="middle">' + m.m + '</text>';
+    });
+    $('g-mov').innerHTML = s + '</svg>';
+    var neg = D.mensal.filter(function(m){ return m.liq < 0; }).map(function(m){ return m.m; });
+    var ult = D.mensal[D.mensal.length-1];
+    $('n-mov').innerHTML = 'Em ' + D.txt.mes + ' entraram <b>' + reais(ult.novo) + '</b> e saíram <b>' + reais(ult.perd) + '</b>. ' +
+      (neg.length ? 'Mês com saldo negativo no ano: <b>' + neg.join(', ') + '</b>.' : 'Nenhum mês com saldo negativo no ano.');
+  })();
+
+  // rosca: MRR por produto
+  (function(){
+    var cores = ['var(--accent)','var(--ok)','var(--warn)','var(--accent-2)'];
+    var tot = D.produtos.reduce(function(a,p){ return a + p[3]; }, 0) || 1;
+    var r = 52, c = 2*Math.PI*r, off = 0;
+    var s = '<svg viewBox="0 0 150 150" width="150" height="150" role="img" aria-label="MRR por produto"><circle cx="75" cy="75" r="' + r + '" fill="none" stroke="var(--soft)" stroke-width="22"/>';
+    D.produtos.forEach(function(p, i){
+      var len = p[3]/tot*c;
+      s += '<circle cx="75" cy="75" r="' + r + '" fill="none" stroke="' + cores[i%4] + '" stroke-width="22" stroke-dasharray="' + len + ' ' + (c-len) + '" stroke-dashoffset="' + (-off) + '" transform="rotate(-90 75 75)"><title>' + esc(p[0]) + ' ' + reais(p[3]) + '</title></circle>';
+      off += len;
+    });
+    s += '<text x="75" y="72" text-anchor="middle" class="lbl" style="font:700 15px var(--display)">' + kfmt(tot) + '</text><text x="75" y="90" text-anchor="middle">MRR</text></svg>';
+    $('g-donut').innerHTML = s;
+    // tabela por produto: % da receita, clientes pagantes (grupos), ticket medio e receita mensal
+    var porProd = {};
+    (D.clientes || []).forEach(function(c){
+      var p = c[2] || 'Outro', g = c.length > 12 && c[12] ? c[12] : c[0];
+      porProd[p] = porProd[p] || {v:0, g:{}};
+      porProd[p].v += +c[6] || 0; if (c[6] > 0) porProd[p].g[g] = 1;
+    });
+    var totCli = 0, linhas = D.produtos.map(function(p, i){
+      var x = porProd[p[0]] || {v:p[3], g:{}}, n = Object.keys(x.g).length; totCli += n;
+      return '<tr><td><i class="dot" style="background:' + cores[i%4] + '"></i> ' + esc(p[0]) + '</td><td class="n">' + pct(p[3]/tot,0) + '</td><td class="n">' + n + '</td><td class="n">' + (n ? reais(p[3]/n) : '—') + '</td><td class="n">' + reais(p[3]) + '</td></tr>';
+    }).join('');
+    $('tb-prod').innerHTML = linhas + '<tr class="tot"><td><b>Total</b></td><td class="n">100%</td><td class="n">' + cli[0] + '</td><td class="n">' + reais(cli[0] ? tot/cli[0] : 0) + '</td><td class="n"><b>' + reais(tot) + '</b></td></tr>';
+  })();
+
+  // pontos de atencao
+  (function(){
+    var c30 = D.contratos.filter(function(c){ return c[5] === 30; });
+    var v30 = c30.reduce(function(a,c){ return a + c[4]; }, 0);
+    var onS = D.onb[0], onN = D.onb[1];
+    var trial = D.naoPagam.filter(function(c){ return /^Trial/.test(c[1]); }).length;
+    var itens = [
+      ['warn', c30.length + ' renovações em 30 dias', reais(v30) + ' de MRR. A primeira é ' + (c30[0] ? c30[0][0] + ', em ' + c30[0][2] : '—') + '.'],
+      ['bad', 'Sem onboarding, churn de ' + pct(onN[3],0), 'Contra ' + pct(onS[3],0) + ' de quem fez. ' + onN[1] + ' contas da base histórica não passaram por onboarding.'],
+      ['', D.naoPagam.length + ' contas ativas não pagam', trial + ' estão em trial e podem virar pagantes.']
+    ];
+    $('insights').innerHTML = itens.map(function(i){ return '<div class="ins ' + i[0] + '"><b>' + esc(i[1]) + '</b><span>' + esc(i[2]) + '</span></div>'; }).join('');
+  })();
+
+  // ---------- operacao de CS ----------
+  var totMot = D.motivos.reduce(function(a,m){ return a + m[1]; }, 0);
+  var totNao = D.naoChurn.reduce(function(a,m){ return a + m[1]; }, 0);
+  var onbTot = D.onb[0][1] + D.onb[1][1];
+  kpis($('k-op'), [
+    ['Clientes pagantes', String(cli[0]), '+ ' + cli[1] + ' ativos que não pagam · ' + cli[3] + ' no total'],
+    ['Contas ativas', String(D.niveis ? D.niveis.ct[3] : D.txt.contasFim), 'linhas da planilha'],
+    ['Saídas por churn no ano', String(totMot), 'contas'],
+    ['Fizeram onboarding', pct(D.onb[0][1]/onbTot,0), D.onb[0][1] + ' de ' + onbTot + ' contas da base histórica']
+  ]);
+  // comparacao discreta: barras finas na mesma escala (0 a 100%), sem numero gigante
+  hbars($('g-onb'), D.onb.map(function(o, i){
+    return {k:i ? 'Não fez' : 'Fez', s:o[2] + ' de ' + o[1] + ' contas saíram', v:o[3]*100, max:100, c:i ? 'warn' : ''};
+  }), function(v){ return pct(v/100,0); });
+  $('n-onb').innerHTML = 'Quem não faz onboarding sai <b>' + (D.onb[1][3]/D.onb[0][3]).toFixed(1).replace('.',',') + '×</b> mais. Base histórica inteira, contada por conta.';
+
+  function desenhaChurn(meta){
+    var W = 560, H = 230, L = 40, B = 26, T = 12, R = 8;
+    var max = Math.max(meta, Math.max.apply(null, D.mensal.map(function(m){ return m.pc*100; })));
+    var top = Math.ceil(max/10)*10;
+    var y = function(v){ return T + (H-T-B)*(1 - v/top); };
+    var cw = (W-L-R)/D.mensal.length, bw = Math.min(28, cw*0.55);
+    var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" role="img" aria-label="Churn mensal com meta">';
+    for (var t=0; t<=top; t+=10) s += '<line class="grid" x1="' + L + '" x2="' + (W-R) + '" y1="' + y(t) + '" y2="' + y(t) + '"/><text x="' + (L-8) + '" y="' + (y(t)+4) + '" text-anchor="end">' + t + '%</text>';
+    var acima = [];
+    D.mensal.forEach(function(m, i){
+      var v = m.pc*100, cx = L + cw*i + cw/2, over = v > meta;
+      if (over) acima.push(m.m);
+      s += '<rect x="' + (cx-bw/2) + '" y="' + y(v) + '" width="' + bw + '" height="' + Math.max(0, H-B-y(v)) + '" rx="3" fill="' + (over ? 'var(--bad)' : 'var(--accent)') + '"><title>' + m.m + ' · ' + pct(m.pc) + ' (' + m.churn + ' de ' + m.pag + ')</title></rect>';
+      s += '<text x="' + cx + '" y="' + (H-8) + '" text-anchor="middle">' + m.m + '</text>';
+    });
+    s += '<line x1="' + L + '" x2="' + (W-R) + '" y1="' + y(meta) + '" y2="' + y(meta) + '" stroke="var(--warn)" stroke-width="2" stroke-dasharray="6 4"/>';
+    $('g-churn').innerHTML = s + '</svg>';
+    $('meta-v').textContent = meta + '%';
+    $('n-churn').innerHTML = acima.length ? '<b>' + acima.length + ' de ' + D.mensal.length + ' meses</b> acima da meta: ' + acima.join(', ') + '.' : 'Todos os meses dentro da meta.';
+  }
+  var metaEl = $('meta');
+  try { var mv = localStorage.getItem('cs-meta'); if (mv) metaEl.value = mv; } catch(e) {}
+  desenhaChurn(+metaEl.value);
+  metaEl.addEventListener('input', function(){ desenhaChurn(+this.value); try { localStorage.setItem('cs-meta', this.value); } catch(e) {} });
+
+  $('s-motivos').textContent = totMot + ' saídas no ano';
+  hbars($('g-motivos'), D.motivos.map(function(m){ return {k:m[0], v:m[1], c:m[0]==='Outros'?'ghost':'bad'}; }));
+  hbars($('g-naochurn'), D.naoChurn.map(function(m){ return {k:m[0], v:m[1], c:'warn'}; }));
+
+  // ---------- retencao ----------
+  kpis($('k-ret'), [
+    ['Tempo médio dos ativos', D.tv.ativos + ' dias', 'desde a entrada'],
+    ['Tempo médio até cancelar', D.tv.cancel + ' dias', 'de quem já saiu'],
+    ['Cancelam antes de 90 dias', pct(D.tv.pc90,0), 'de quem cancela'],
+    ['Cancelam antes de 30 dias', pct(D.tv.pc30,0), 'de quem cancela', D.tv.pc30 > 0.2 ? 'bad' : '']
+  ]);
+  hbars($('g-safras'), D.safras.map(function(s){
+    var r = s.entr ? s.ativos/s.entr : 0;
+    return {k:s.m, s:s.ativos + ' de ' + s.entr + ' ativas', v:r*100, max:100, c:r<0.3?'bad':(r<0.6?'warn':'ok')};
+  }), function(v){ return pct(v/100,0); });
+  hbars($('g-safras-mrr'), D.safras.map(function(s){
+    return {k:s.m, s:'entrou ' + reais(s.mrrIn), v:s.mrrAt, ghost:s.mrrIn, max:s.mrrIn, c:'ok'};
+  }), reais);
+  $('tb-safras').innerHTML = D.safras.map(function(s){
+    var r = s.entr ? s.ativos/s.entr : 0;
+    return '<tr><td>' + s.m + '</td><td class="n">' + s.entr + '</td><td class="n">' + s.cancel + '</td><td class="n">' + s.churn + '</td><td class="n">' + (s.cancel-s.churn) + '</td><td class="n">' + s.ativos + '</td>' +
+      '<td class="n"><span class="pill ' + (r<0.3?'bad':(r<0.6?'warn':'ok')) + '">' + pct(r,0) + '</span></td><td class="n">' + (s.entr ? '<span class="pill ' + (s.churn/s.entr>0.5?'bad':(s.churn/s.entr>0.25?'warn':'ok')) + '">' + pct(s.churn/s.entr,0) + '</span>' : '—') + '</td><td class="n">' + reais(s.mrrIn) + '</td><td class="n">' + reais(s.mrrAt) + '</td></tr>';
+  }).join('');
+
+  // ---------- receita ----------
+  var ult = D.mensal[D.mensal.length-1];
+  kpis($('k-rec'), [
+    ['MRR ativo', big('MRR').v, MRR_COMP],
+    ['MRR novo em ' + D.txt.mes, reais(ult.novo), ult.novos + ' contas novas'],
+    ['MRR perdido em ' + D.txt.mes, reais(ult.perd), reais(mesAtualHist().mrrChurn) + ' churn + ' + reais(ult.perd - mesAtualHist().mrrChurn) + ' outras saídas (fim de contrato, desistência)', 'bad'],
+    ['Resultado de ' + D.txt.mes, (ult.liq<0?'− ':'+ ') + reais(Math.abs(ult.liq)), 'novo menos perdido']
+  ]);
+  (function(){
+    var W = 640, H = 240, L = 50, B = 26, T = 10, R = 8;
+    var mx = Math.max.apply(null, D.mensal.map(function(m){ return m.liq; })), mn = Math.min(0, Math.min.apply(null, D.mensal.map(function(m){ return m.liq; })));
+    var passo = 5000, top = Math.ceil(mx/passo)*passo, bot = Math.floor(mn/passo)*passo;
+    var y = function(v){ return T + (H-T-B)*(top - v)/(top - bot); };
+    var cw = (W-L-R)/D.mensal.length, bw = Math.min(30, cw*0.55);
+    var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" role="img" aria-label="Resultado líquido por mês">';
+    for (var t=bot; t<=top; t+=passo) s += '<line class="grid" x1="' + L + '" x2="' + (W-R) + '" y1="' + y(t) + '" y2="' + y(t) + '"' + (t===0?' style="stroke:var(--muted)"':'') + '/><text x="' + (L-8) + '" y="' + (y(t)+4) + '" text-anchor="end">' + (t<0?'−':'') + kfmt(Math.abs(t)) + '</text>';
+    D.mensal.forEach(function(m, i){
+      var cx = L + cw*i + cw/2, y0 = y(0), y1 = y(m.liq);
+      s += '<rect x="' + (cx-bw/2) + '" y="' + Math.min(y0,y1) + '" width="' + bw + '" height="' + Math.max(1, Math.abs(y1-y0)) + '" rx="3" fill="' + (m.liq<0?'var(--bad)':'var(--ok)') + '"><title>' + m.m + ' · ' + (m.liq<0?'−':'+') + reais(Math.abs(m.liq)) + '</title></rect>';
+      s += '<text x="' + cx + '" y="' + (H-8) + '" text-anchor="middle">' + m.m + '</text>';
+    });
+    $('g-liq').innerHTML = s + '</svg>';
+  })();
+  hbars($('g-planos'), planosDet().filter(function(p){ return p[3] > 0; }).map(function(p){
+    return {k:p[0], s:p[2] + ' pagam · ticket ' + reais(p[4]), v:p[3]};
+  }), reais);
+  // agencias: clientes da propria agencia x servicos da a empresa que ela opera
+  (function(){
+    var C = D.clientes || [];
+    var ags = [
+      {nome:'Agência Norte', cor:'rueda', tipo:'Cliente Agência Norte', op:'Parceiro Norte'},
+      {nome:'Agência Sul', cor:'liliam', tipo:'Cliente Agência Sul', op:'Parceiro Sul'}
+    ];
+    ags.forEach(function(a){
+      a.cli = C.filter(function(c){ return c[3] === a.tipo; });
+      a.srv = C.filter(function(c){ return c[2] === 'Serviço' && c[9] === a.op; });
+      a.vc = a.cli.reduce(function(s,c){ return s + c[6]; }, 0);
+      a.vs = a.srv.reduce(function(s,c){ return s + c[6]; }, 0);
+    });
+    var max = Math.max.apply(null, ags.map(function(a){ return a.vc + a.vs; })) || 1;
+    $('g-ag').innerHTML = ags.map(function(a){
+      var tot = a.vc + a.vs;
+      return '<div class="ag-item"><div class="ag-top"><b>' + a.nome + '</b><span>' + reais(tot) + '</span></div>' +
+        '<div class="ag-bar" style="width:' + (tot/max*100) + '%">' +
+          (a.vc ? '<i style="flex:' + a.vc + ';background:var(--' + a.cor + '-soft)" title="Clientes da agência ' + reais(a.vc) + '"></i>' : '') +
+          (a.vs ? '<i style="flex:' + a.vs + ';background:var(--' + a.cor + ')" title="Serviços próprios ' + reais(a.vs) + '"></i>' : '') +
+        '</div><div class="ag-parts">' +
+          '<div><i class="dot" style="background:var(--' + a.cor + '-soft);border:1px solid var(--' + a.cor + ')"></i><span>Clientes da agência</span><small>' + a.cli.length + ' contas · ' + reais(a.vc) + '</small></div>' +
+          '<div><i class="dot" style="background:var(--' + a.cor + ')"></i><span>Serviços próprios</span><small>' + a.srv.length + ' contas · ' + reais(a.vs) + '</small></div>' +
+        '</div></div>';
+    }).join('');
+  })();
+
+  // forma de pagamento, a partir da carteira (acordos viram as agencias)
+  (function(){
+    var NOME = {'Acordo Norte':'Agência Norte', 'Acordo Sul':'Agência Sul'};
+    var COR = {'Cartão':'c-stripe','Checkout':'c-kiwify','Boleto':'c-asaas','PIX':'c-pix','Agência Norte':'c-rueda','Agência Sul':'c-liliam'};
+    var DESC = {'Cartão':'conferido por fatura paga','Checkout':'conferido por venda paga','Boleto':'conferido por cobrança paga','PIX':'conferido por recebimento','Agência Norte':'acordo · conferido','Agência Sul':'acordo · conferido'};
+    var g = {};
+    (D.clientes || []).forEach(function(c){
+      if (!(c[6] > 0)) return;
+      var m = NOME[c[4]] || c[4] || 'Sem método';
+      g[m] = g[m] || {n:0, v:0}; g[m].n++; g[m].v += c[6];
+    });
+    var itens = Object.keys(g).map(function(m){
+      return {k:m, s:g[m].n + ' contas · ' + (DESC[m] || 'conferido'), v:g[m].v, c:COR[m] || 'ghost'};
+    }).sort(function(a,b){ return b.v - a.v; });
+    hbars($('g-metodo'), itens, reais);
+  })();
+
+  // ---------- clientes ----------
+  var renov = D.contratos.reduce(function(a,c){ return a + c[4]; }, 0);
+  $('s-renov').textContent = D.contratos.length + ' contratos · ' + reais(renov) + ' de MRR';
+  $('tb-renov').innerHTML = D.contratos.map(function(c){
+    return '<tr><td>' + esc(c[0]) + '</td><td>' + esc(c[1]) + '</td><td><span class="pill ' + (c[3]<=15?'bad':(c[5]===30?'warn':'n')) + '">' + c[3] + ' dias · ' + c[2].slice(0,5) + '</span></td><td class="n">' + reais2(c[4]) + '</td></tr>';
+  }).join('');
+  // contas internas usadas como teste: ficam dentro dos internos da planilha e aparecem separadas aqui
+  var CONTAS_TESTE = 1;
+  if (D.niveis) {
+    var nv = D.niveis, teste = Math.min(CONTAS_TESTE, nv.lg[2]), internos = nv.lg[2] - teste;
+    var gr = D.naoPagam.filter(function(c){ return /^Gratuito/.test(c[1]); }).length;
+    var tr = D.naoPagam.filter(function(c){ return /^Trial/.test(c[1]); }).length;
+    var co = D.naoPagam.length - gr - tr;
+    // cartao de acessos: so contas com login na plataforma (Software, Mentoria e Servico); SEO nao tem acesso e fica fora.
+    // previstos = contas da linha (vazio vira 1); a criar = previstos que ainda nao estao ativos na plataforma (sem e-mails)
+    var PLATAFORMA = {'Software':1, 'Mentoria':1, 'Serviço':1};
+    var falta = {}, ordem = [], faltaPag = 0, faltaGr = 0, prevPag = 0, prevGr = 0;
+    (D.clientes || []).forEach(function(c){
+      if (c.length < 12 || !PLATAFORMA[c[2]]) return;
+      var contas = parseInt(c[8], 10); if (isNaN(contas)) contas = 1;
+      if (c[6] > 0) prevPag += contas; else prevGr += contas;
+      var logins = c[11] >= 0 ? c[11] : c[10];
+      var n = contas - logins; if (n <= 0) return;
+      if (c[6] > 0) faltaPag += n; else faltaGr += n;
+      var nome = String(c[0]).replace(/\s*-\s*conta\s*\d+$/i, '');
+      if (!falta[nome]) { falta[nome] = 0; ordem.push(nome); }
+      falta[nome] += n;
+    });
+    var prevTot = prevPag + prevGr + nv.lg[2];
+    var aCriar = faltaPag + faltaGr, ativosLg = prevTot - aCriar;
+    var grupos = [
+      ['Pagantes', prevPag - faltaPag, 'var(--accent)', 'logins ativos de contas que pagam'],
+      ['Gratuitas e trial', prevGr - faltaGr, 'var(--warn)', gr + ' gratuitas · ' + tr + ' trial' + (co ? ' · ' + co + ' cortesia' : '')],
+      ['Internos', internos, 'var(--muted)', 'equipe interna'],
+      ['Teste', teste, 'var(--accent-2)', 'conta de teste']
+    ];
+    var listra = 'repeating-linear-gradient(45deg, var(--warn) 0 3px, var(--warn-soft) 3px 7px)';
+    $('acc-tot').innerHTML = ativosLg + ' <small style="font:500 14px var(--body);color:var(--muted)">ativos</small>';
+    $('acc-sub').textContent = prevTot + ' logins previstos na planilha (sem SEO, que não tem acesso): ' + ativosLg + ' já ativos na plataforma' + (aCriar ? ' e ' + aCriar + ' ainda a criar' : '');
+    $('acc-bar').innerHTML = grupos.map(function(g){ return g[1] ? '<i style="flex:' + g[1] + ';background:' + g[2] + '" title="' + g[0] + ' ' + g[1] + '"></i>' : ''; }).join('') +
+      (aCriar ? '<i style="flex:' + aCriar + ';background:' + listra + '" title="A criar ' + aCriar + '"></i>' : '');
+    $('acc-list').innerHTML = grupos.map(function(g){
+      return '<div><i class="dot" style="background:' + g[2] + '"></i><span>' + g[0] + '</span><b>' + g[1] + '</b><small>' + g[3] + '</small></div>';
+    }).join('') + (aCriar ? '<div><i class="dot" style="background:' + listra + '"></i><span>A criar</span><b>' + aCriar + '</b><small>previstos, fora dos ativos</small></div>' : '');
+    if (aCriar) {
+      $('pend').hidden = false;
+      $('pend-n').textContent = aCriar + (aCriar === 1 ? ' login' : ' logins');
+      $('pend-list').innerHTML = ordem.map(function(k){
+        return '<span class="pend-item">' + esc(k) + ' <b>' + falta[k] + '</b></span>';
+      }).join('');
+    }
+    $('tb-niveis').innerHTML = [['Clientes','empresas',nv.cli],['Contas','linhas da planilha',nv.ct],['Usuários','logins previstos',nv.lg]].map(function(r){
+      var a = r[2];
+      var intCel = (a === nv.lg && teste) ? internos + ' + ' + teste + ' teste' : (a[2] || '—');
+      return '<tr><td><b>' + r[0] + '</b><br><small style="color:var(--muted)">' + r[1] + '</small></td><td class="n">' + a[0] + '</td><td class="n">' + a[1] + '</td><td class="n">' + intCel + '</td><td class="n"><b>' + a[3] + '</b></td></tr>';
+    }).join('');
+    // composicao dos clientes ativos por produto (cliente = grupo da coluna R; paga se alguma conta do grupo paga)
+    var ORDEM_PROD = ['Software','Mentoria','Serviço','SEO'], porProd = {}, seoContas = 0, seoMrr = 0;
+    (D.clientes || []).forEach(function(c){
+      var p = c[2] || 'Outro', g = c.length > 12 && c[12] ? c[12] : c[0];
+      porProd[p] = porProd[p] || {g:{}, pag:{}};
+      porProd[p].g[g] = 1; if (c[6] > 0) porProd[p].pag[g] = 1;
+      if (p === 'SEO') { seoContas++; seoMrr += c[6]; }
+    });
+    var prods = ORDEM_PROD.filter(function(p){ return porProd[p]; }).concat(Object.keys(porProd).filter(function(p){ return ORDEM_PROD.indexOf(p) < 0; }));
+    var comp = prods.map(function(p){
+      var t = Object.keys(porProd[p].g).length, pg = Object.keys(porProd[p].pag).length;
+      return '<b>' + p + ' ' + t + '</b>' + (pg < t ? ' (' + pg + ' pagam)' : '');
+    }).join(' · ');
+    var extras = nv.lg[0] + nv.lg[1] - (nv.ct[3] - seoContas);
+    $('n-niveis').innerHTML =
+      '<b>' + nv.cli[3] + ' clientes ativos</b> por produto: ' + comp + '.<br>' +
+      (seoContas ? '<b>SEO</b> é o serviço de SEO feito pela equipe interna: entra em clientes e contas, com ' + reais(seoMrr) + ' de MRR, mas não tem acesso à plataforma, então fica fora de usuários.<br>' : '') +
+      'De <b>' + nv.ct[3] + ' contas</b> para <b>' + nv.lg[3] + ' usuários</b>: ' + (seoContas ? '−' + seoContas + ' contas de SEO sem login, ' : '') + '+' + extras + ' logins de contas com mais de um acesso, +' + internos + ' internos' + (teste ? ' e +' + teste + ' de teste' : '') + '.' +
+      // inadimplentes: nunca pagaram, ficam registrados ate o fim do contrato e fora de todas as contagens acima
+      ((D.inadimplentes || []).length ? '<br><b>Inadimplentes (' + D.inadimplentes.length + ')</b>, fora das contagens acima: ' + D.inadimplentes.map(function(x){ return esc(x[0]) + ' (desde ' + esc(x[1]) + (x[2] ? ', contrato até ' + esc(x[2]) : '') + ')'; }).join('; ') + '. Nunca pagaram, sem MRR.' : '');
+  }
+  // quadro proprio dos inadimplentes (aba Clientes)
+  (function(){
+    // dois grupos: em atraso (clientes ativos com cobranca em aberto, da barra lateral) e nunca pagou (fora da base)
+    var A = (D.recebidos && D.recebidos.atrasos) || [], L = D.inadimplentes || [];
+    if (!A.length && !L.length) return;
+    $('card-inad').hidden = false;
+    var n = A.length + L.length;
+    $('inad-n').textContent = n + (n === 1 ? ' cliente' : ' clientes');
+    $('tb-inad').innerHTML = A.map(function(a){
+      var obs = (a.proxima ? 'nova tentativa em ' + esc(a.proxima) : '') + (a.contatos ? (a.proxima ? ' · ' : '') + a.contatos + (a.contatos === 1 ? ' contato feito' : ' contatos feitos') : '') + (a.situacao ? '<br><i>' + esc(a.situacao) + '</i>' : '');
+      return '<tr><td>' + esc(a.nome) + '</td><td class="num">' + esc(a.desde) + '</td><td class="n">' + reais(a.valor) + '</td><td><span class="pill warn">Em atraso</span></td><td>' + (obs || '—') + '</td></tr>';
+    }).join('') + L.map(function(x){
+      return '<tr><td>' + esc(x[0]) + '</td><td class="num">' + esc(x[1]) + '</td><td class="n">—</td><td><span class="pill bad">Nunca pagou</span></td><td>' + (x[2] ? 'contrato até ' + esc(x[2]) : '—') + '</td></tr>';
+    }).join('');
+  })();
+
+  (function(){
+    var C = D.clientes || [];
+    // filtros combinaveis: plano, tipo (todas as contas ligadas a agencia ficam juntas em "Agência") e forma de pagamento
+    function tipoFiltro(c){ return (/^Cliente Agência|^Agência/.test(c[3]) || /^Acordo /.test(c[4])) ? 'Agência' : (c[3] || 'Sem tipo'); }
+    function valores(fn, ordem){
+      var v = []; C.forEach(function(c){ var x = fn(c); if (x && v.indexOf(x) < 0) v.push(x); });
+      return v.sort(function(a,b){ var ia = ordem.indexOf(a), ib = ordem.indexOf(b); return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib) || a.localeCompare(b); });
+    }
+    function onbTxt(c){ return c[7] === 'S' ? 'Fez' : c[7] === 'N' ? 'Não fez' : 'Sem registro'; }
+    var GRUPOS = [
+      {k:'tipo', sec:'Cliente', rot:'Tipo', todos:'Todos os tipos', fn:tipoFiltro, ordem:['Individual','Multicontas','Agência','Serviço','SEO','Mentoria','Vip','Parceiro/Afiliado']},
+      {k:'prod', sec:'Cliente', rot:'Produto', todos:'Todos os produtos', fn:function(c){ return c[2]; }, ordem:['Software','Serviço','SEO','Mentoria']},
+      {k:'plano', sec:'Plano e pagamento', rot:'Plano', todos:'Todos os planos', fn:function(c){ return c[1]; }, ordem:['Mensal','Trimestral','Semestral','Anual','Gratuito','Trial']},
+      {k:'pag', sec:'Plano e pagamento', rot:'Forma de pagamento', todos:'Todas as formas', fn:function(c){ return c[4] || '—'; }, ordem:['Cartão','Checkout','Boleto','PIX','Acordo Norte','Acordo Sul','Gratuito']},
+      {k:'onb', sec:'Acompanhamento', rot:'Onboarding', todos:'Todos', fn:onbTxt, ordem:['Fez','Não fez','Sem registro']}
+    ];
+    var sel = {}, mrrMin = '', mrrMax = '', busca = '', ord = 6, dir = -1;
+    // proximo vencimento: data de entrada + periodo do plano, rolada ate hoje ou depois (mesma regra das renovacoes)
+    var MESES_PLANO = {'Mensal':1, 'Trimestral':3, 'Semestral':6, 'Anual':12};
+    var gd = String(D.geradoEm).split('/'), HOJE = new Date(+gd[2], +gd[1] - 1, +gd[0]);
+    function somaMeses(ent, n){ var d = new Date(ent.getFullYear(), ent.getMonth() + n, 1), fim = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate(); d.setDate(Math.min(ent.getDate(), fim)); return d; }
+    C.forEach(function(c){
+      var p = MESES_PLANO[c[1]];
+      c.venc = '9999-99-99'; c.vencDias = null;
+      if (!p || !c[5]) return;
+      var e = c[5].split('-'), ent = new Date(+e[0], +e[1] - 1, +e[2]), k = p, d = somaMeses(ent, k);
+      while (d < HOJE) { k += p; d = somaMeses(ent, k); }
+      c.venc = d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2);
+      c.vencDias = Math.round((d - HOJE) / 86400000);
+    });
+    function vencCel(c){
+      if (c.vencDias === null) return '<span style="color:var(--muted)">—</span>';
+      var dt = c.venc.slice(8,10) + '/' + c.venc.slice(5,7) + '/' + c.venc.slice(0,4);
+      var dd = c.vencDias, txt = dd === 0 ? 'hoje' : dd === 1 ? 'amanhã' : 'em ' + dd + ' dias';
+      var cls = dd <= 3 ? 'bad' : dd <= 15 ? 'warn' : '';
+      return dt + (dd <= 30 ? ' <span class="pill ' + (cls || 'n') + '">' + txt + '</span>' : '');
+    }
+    GRUPOS.forEach(function(g){ sel[g.k] = ''; });
+    // monta o painel de filtros por secao
+    (function(){
+      var secs = [], html = '';
+      GRUPOS.forEach(function(g){ if (secs.indexOf(g.sec) < 0) secs.push(g.sec); });
+      secs.forEach(function(s){
+        html += '<div class="pop-sec"><h5>' + esc(s) + '</h5>';
+        GRUPOS.filter(function(g){ return g.sec === s; }).forEach(function(g){
+          html += '<div class="pop-campo"><label for="f-' + g.k + '">' + esc(g.rot) + '</label><select id="f-' + g.k + '" data-g="' + g.k + '"><option value="">' + esc(g.todos) + '</option>' +
+            valores(g.fn, g.ordem).map(function(p){ return '<option value="' + esc(p) + '">' + esc(p) + ' (' + C.filter(function(c){ return g.fn(c) === p; }).length + ')</option>'; }).join('') + '</select></div>';
+        });
+        if (s === 'Plano e pagamento') html += '<div class="pop-campo"><label>MRR da conta (R$)</label><div class="pop-duplo"><input type="number" id="f-min" min="0" placeholder="Mín" aria-label="MRR mínimo"><input type="number" id="f-max" min="0" placeholder="Máx" aria-label="MRR máximo"></div></div>';
+        html += '</div>';
+      });
+      $('pop-body').innerHTML = html;
+    })();
+    var pop = $('pop-filtro'), btn = $('btn-filtro');
+    function abrePop(abrir){ pop.hidden = !abrir; btn.setAttribute('aria-expanded', String(abrir)); }
+    btn.addEventListener('click', function(e){ e.stopPropagation(); abrePop(pop.hidden); });
+    document.addEventListener('click', function(e){ if (!pop.hidden && !pop.contains(e.target) && e.target !== btn) abrePop(false); });
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && !pop.hidden) { abrePop(false); btn.focus(); } });
+    $('pop-body').addEventListener('change', function(e){
+      var g = e.target.getAttribute('data-g'); if (g) sel[g] = e.target.value;
+      render();
+    });
+    $('pop-body').addEventListener('input', function(e){
+      if (e.target.id === 'f-min') mrrMin = e.target.value; else if (e.target.id === 'f-max') mrrMax = e.target.value; else return;
+      render();
+    });
+    function limpa(k){
+      if (!k || k === 'mrr') { mrrMin = mrrMax = ''; $('f-min').value = $('f-max').value = ''; }
+      GRUPOS.forEach(function(g){ if (!k || k === g.k) { sel[g.k] = ''; $('f-' + g.k).value = ''; } });
+      render();
+    }
+    $('pop-limpar').addEventListener('click', function(){ limpa(); });
+    $('filtros-ativos').addEventListener('click', function(e){ var b = e.target.closest('.ativo'); if (b) limpa(b.getAttribute('data-k')); });
+    function mostraAtivos(){
+      var at = GRUPOS.filter(function(g){ return sel[g.k]; }).map(function(g){ return [g.k, g.rot + ': ' + sel[g.k]]; });
+      if (mrrMin !== '' || mrrMax !== '') at.push(['mrr', 'MRR: ' + (mrrMin !== '' ? 'de R$ ' + mrrMin : '') + (mrrMin !== '' && mrrMax !== '' ? ' ' : '') + (mrrMax !== '' ? 'até R$ ' + mrrMax : '')]);
+      $('filtros-ativos').innerHTML = at.map(function(a){ return '<button type="button" class="ativo" data-k="' + a[0] + '" aria-label="Remover filtro ' + esc(a[1]) + '">' + esc(a[1]) + ' <i>×</i></button>'; }).join('');
+      var n = $('btn-filtro-n'); n.hidden = !at.length; n.textContent = at.length;
+    }
+    function fdata(s){ return s ? s.slice(8,10) + '/' + s.slice(5,7) + '/' + s.slice(0,4) : '—'; }
+    function render(){
+      var q = busca.toLowerCase();
+      var rows = C.filter(function(c){
+        return GRUPOS.every(function(g){ return !sel[g.k] || g.fn(c) === sel[g.k]; }) && (!q || c[0].toLowerCase().indexOf(q) >= 0) &&
+          (mrrMin === '' || (+c[6]||0) >= +mrrMin) && (mrrMax === '' || (+c[6]||0) <= +mrrMax);
+      });
+      mostraAtivos();
+      rows.sort(function(a,b){ var x = a[ord], y = b[ord]; return (x < y ? -1 : x > y ? 1 : 0) * dir; });
+      $('tb-cli').innerHTML = rows.map(function(c){
+        var onb = c[7] === 'S' ? '<span class="pill ok">Fez</span>' : c[7] === 'N' ? '<span class="pill bad">Não fez</span>' : '<span class="pill n">Sem registro</span>';
+        return '<tr><td>' + esc(c[0]) + '</td><td>' + esc(c[1]) + '</td><td>' + esc(c[2]) + '</td><td>' + esc(c[3]) + '</td><td>' + esc(c[4]||'—') + '</td><td class="num">' + fdata(c[5]) + '</td><td class="num">' + vencCel(c) + '</td><td class="n">' + (c[6] ? reais2(c[6]) : '<span class="pill warn">Não paga</span>') + '</td><td>' + onb + '</td></tr>';
+      }).join('') || '<tr><td colspan="9" style="color:var(--muted)">Nenhum cliente com esse filtro.</td></tr>';
+      var soma = rows.reduce(function(a,c){ return a + (+c[6]||0); }, 0);
+      $('cnt').textContent = rows.length + ' contas · ' + reais(soma);
+    }
+    $('busca').addEventListener('input', function(){ busca = this.value; render(); });
+    [].forEach.call(document.querySelectorAll('th button[data-s]'), function(b){
+      b.addEventListener('click', function(){ var a = b.getAttribute('data-s'), s = a === 'venc' ? a : +a; dir = s === ord ? -dir : (s === 6 || s === 5 ? -1 : 1); ord = s; render(); });
+    });
+    render();
+  })();
+
+  // ---------- historico: so os numeros de cada mes, comparados com o anterior ----------
+  (function(){
+    var H = D.historico || [];
+    if (!H.length) return;
+    var NOME = {Jan:'janeiro',Fev:'fevereiro',Mar:'março',Abr:'abril',Mai:'maio',Jun:'junho',Jul:'julho',Ago:'agosto',Set:'setembro',Out:'outubro',Nov:'novembro',Dez:'dezembro'};
+    var pcPorMes = {}; D.mensal.forEach(function(m){ pcPorMes[m.m] = m; });
+    H.forEach(function(h){
+      h.ticket = h.clientesPag ? h.mrr / h.clientesPag : 0;
+      var o = pcPorMes[h.m]; h.churnCli = o ? o.churn : 0; h.pc = o && o.pag ? o.churn / o.pag : 0;
+    });
+    function delta(atual, ant, sobeEhBom, fmt){
+      if (ant === undefined) return '<span class="delta neutro">primeiro mês do ano</span>';
+      var d = atual - ant;
+      if (Math.abs(d) < 0.005) return '<span class="delta neutro">igual ao mês anterior</span>';
+      var cls = (d > 0) === sobeEhBom ? 'bom' : 'ruim';
+      return '<span class="delta ' + cls + '">' + (d > 0 ? '▲ ' : '▼ ') + fmt(Math.abs(d)) + ' vs mês anterior</span>';
+    }
+    function un(n){ return String(Math.round(n)); }
+    function pp(n){ return (n*100).toFixed(1).replace('.',',') + ' p.p.'; }
+    function tile(k, v, f, dl){ return '<div class="h-tile"><span class="k">' + k + '</span><span class="v">' + v + '</span><span class="f">' + f + '</span>' + dl + '</div>'; }
+    function mostra(i){
+      var h = H[i], a = H[i-1] || {};
+      D.histSel = i;
+      var nome = NOME[h.m] || h.m;
+      $('h-titulo').textContent = 'Fechamento de ' + nome + (h.parcial ? ' (parcial)' : '');
+      $('h-sub').textContent = h.parcial ? 'Mês em andamento, posição de ' + D.geradoEm : 'Posição no último dia do mês';
+      $('h-grid').innerHTML =
+        tile('MRR no fim do mês', reais2(h.mrr), 'começou o mês com ' + reais(h.mrrIni), delta(h.mrr, a.mrr, true, reais)) +
+        tile('Clientes pagantes', un(h.clientesPag), '+ ' + (h.clientes - h.clientesPag) + ' ativos que não pagam · ' + h.clientes + ' no total', delta(h.clientesPag, a.clientesPag, true, un)) +
+        tile('Contas ativas', un(h.contas), h.contasPag + ' pagantes', delta(h.contas, a.contas, true, un)) +
+        tile('Ticket médio', reais2(h.ticket), 'por cliente pagante', delta(h.ticket, a.ticket, true, reais)) +
+        tile('Entraram', h.entraram + ' contas', reais(h.mrrNovo) + ' de MRR novo', delta(h.mrrNovo, a.mrrNovo, true, reais)) +
+        // um cartao so para saidas: o total do mes e, dentro, quanto foi churn e quanto foram outras saidas
+        '<div class="h-tile h-tile-2"><span class="k">Saídas do mês</span><span class="v">' + reais(h.mrrSaiu) + ' <small class="h-sub">· ' + h.sairam + (h.sairam === 1 ? ' conta' : ' contas') + '</small></span>' +
+          '<div class="saida-split">' +
+            '<div class="saida-parte churn"><b>Churn · ' + reais(h.mrrChurn) + '</b><span>' + h.churnContas + (h.churnContas === 1 ? ' conta' : ' contas') + ' · ' + (h.mrrIni ? pct(h.mrrChurn / h.mrrIni) : '0,0%') + ' do MRR do início (' + reais(h.mrrIni) + ')<br>' + churnPorProduto(h) + '</span></div>' +
+            '<div class="saida-parte outras"><b>Outras saídas · ' + reais(h.mrrSaiu - h.mrrChurn) + '</b><span>' + (h.sairam - h.churnContas) + ((h.sairam - h.churnContas) === 1 ? ' conta' : ' contas') + ' · fim de contrato, desistência<br>não entram no churn</span></div>' +
+          '</div>' + delta(h.mrrSaiu, a.mrrSaiu, false, reais) + '</div>' +
+        tile('Churn de clientes', pct(h.pc), h.churnCli + ' clientes saíram por churn ÷ ' + (pcPorMes[h.m] ? pcPorMes[h.m].pag : '—') + ' clientes pagantes (pico do mês)<br>conta empresas; fim de contrato e desistência ficam fora', delta(h.pc, a.pc, false, pp));
+      [].forEach.call($('h-meses').querySelectorAll('.chip'), function(b, j){ b.setAttribute('aria-pressed', String(j === i)); });
+      [].forEach.call($('tb-hist').querySelectorAll('tr'), function(tr, j){ tr.classList.toggle('sel', j === i); });
+      marcaDicas();
+    }
+    $('h-meses').innerHTML = H.map(function(h, i){
+      return '<button type="button" class="chip" data-i="' + i + '" aria-pressed="false">' + h.m + (h.parcial ? '*' : '') + '</button>';
+    }).join('');
+    $('tb-hist').innerHTML = H.map(function(h){
+      return '<tr><td>' + h.m + (h.parcial ? ' <small style="color:var(--muted)">parcial</small>' : '') + '</td><td class="n">' + reais(h.mrr) + '</td><td class="n">' + h.clientesPag + '</td><td class="n">' + h.contas + '</td><td class="n">' + reais(h.ticket) +
+        '</td><td class="n">' + h.entraram + '</td><td class="n">' + reais(h.mrrNovo) + '</td><td class="n">' + h.sairam + '</td><td class="n">' + reais(h.mrrSaiu) +
+        '</td><td class="n">' + pct(h.pc) + '</td><td class="n">' + reais(churnPartes(h).sw + churnPartes(h).mt) + '</td><td class="n">' + reais(churnPartes(h).sv) + '</td><td class="n"><b>' + reais(h.mrrChurn) + '</b></td></tr>';
+    }).join('');
+    $('h-meses').addEventListener('click', function(e){ var b = e.target.closest('.chip'); if (b) mostra(+b.getAttribute('data-i')); });
+    $('tb-hist').addEventListener('click', function(e){ var tr = e.target.closest('tr'); if (tr) mostra([].indexOf.call(this.children, tr)); });
+    // abre no ultimo mes fechado
+    var ult = H.length - 1; while (ult > 0 && H[ult].parcial) ult--;
+    mostra(ult);
+  })();
+
+  // ---------- metodologia: explicacao completa, com exemplos usando os numeros reais ----------
+  (function(){
+    var H = D.historico || [];
+    if (!H.length) return;
+    var NOMES = {Jan:'janeiro',Fev:'fevereiro',Mar:'março',Abr:'abril',Mai:'maio',Jun:'junho',Jul:'julho',Ago:'agosto',Set:'setembro',Out:'outubro',Nov:'novembro',Dez:'dezembro'};
+    var iEx = H.length - 1; while (iEx > 0 && H[iEx].parcial) iEx--;
+    var ex = H[iEx], cur = H[H.length - 1], nEx = NOMES[ex.m] || ex.m;
+    var mEx = D.mensal.filter(function(m){ return m.m === ex.m; })[0] || {};
+    var outrasEx = ex.mrrSaiu - ex.mrrChurn, cli = D.niveis ? D.niveis.cli : [0,0,0,0];
+    var outrasLista = (ex.saidas || []).filter(function(s){ return !s[3]; }).map(function(s){ return esc(s[0]) + ' (' + esc(s[2]) + ', ' + reais(s[4]) + ')'; }).join('; ');
+    var prod = D.produtos.filter(function(p){ return p[3] > 0; }).map(function(p){ return esc(p[0]) + ' ' + reais2(p[3]); }).join(' + ');
+    function sec(titulo, corpo){ return '<div class="m-sec"><h4>' + titulo + '</h4>' + corpo + '</div>'; }
+    function linhaCalc(nome, conta, exemplo){ return '<tr><td><b>' + nome + '</b></td><td>' + conta + '</td><td>' + exemplo + '</td></tr>'; }
+    var html =
+      sec('Resumo em 30 segundos',
+        '<ul>' +
+        '<li><b>MRR</b> é quanto a empresa recebe por mês de forma recorrente, somando todos os clientes que pagam. Hoje: <b>' + reais2(D.kpi.mrr) + '</b>.</li>' +
+        '<li><b>Churn</b> é o cliente que saiu porque quis sair (cancelou, não viu resultado, não usou, não pagou etc.). É a perda que dá para evitar.</li>' +
+        '<li><b>Não churn</b> é a saída prevista ou que não indica insatisfação: fim de contrato, desistência com reembolso nos 7 dias e saída eventual.</li>' +
+        '<li>Todas as saídas reduzem o MRR. <b>Só o churn</b> entra nas taxas de churn.</li>' +
+        '</ul>') +
+      sec('De onde vêm os números',
+        '<ul>' +
+        '<li><b>Planilha "Dashboard de Customer Success" (aba Dados)</b>: é a fonte oficial. Cada linha é uma conta, com entrada, saída, plano, valor, forma de pagamento, motivo da saída e se é churn ou não. Quase todos os números do painel saem daqui.</li>' +
+        '<li><b>Cartão, Checkout e Boleto</b>: consultados <b>somente para leitura</b> (nada é alterado nessas plataformas). Alimentam só a barra lateral: "Recebido no mês" e "Em atraso".</li>' +
+        '<li><b>CRM</b>: de onde vêm os toques da cadência de resgate (quadro "Em resgate").</li>' +
+        '<li><b>Plataforma a empresa</b>: exportação de logins ativos, usada em "Acessos na plataforma".</li>' +
+        '<li><b>Atualização</b>: todo dia às 9h e sempre que há mudança na planilha. A data e a hora da última atualização ficam no topo do painel.</li>' +
+        '</ul>') +
+      sec('Palavras que aparecem no painel',
+        '<table class="m-tab"><tbody>' +
+        '<tr><td><b>Cliente</b></td><td>A empresa. Um cliente pode ter várias contas (ex.: multicontas, clientes de agência).</td></tr>' +
+        '<tr><td><b>Conta</b></td><td>Cada linha da planilha. É o que se contrata e se paga.</td></tr>' +
+        '<tr><td><b>Usuário</b></td><td>Cada login na plataforma. Uma conta pode ter vários logins.</td></tr>' +
+        '<tr><td><b>Pagante</b></td><td>Conta ou cliente com valor mensal maior que zero. Gratuito, trial e cortesia são ativos, mas <b>não</b> são pagantes.</td></tr>' +
+        '<tr><td><b>Mensalizar</b></td><td>Transformar o valor do plano em valor por mês: trimestral ÷ 3, semestral ÷ 6, anual ÷ 12. Ex.: trimestral de R$ 1.491 = R$ 497 por mês.</td></tr>' +
+        '<tr><td><b>MRR do início do mês</b></td><td>O MRR no último dia do mês anterior. É a base para calcular o churn de MRR.</td></tr>' +
+        '<tr><td><b>Pico do mês</b></td><td>O maior número de clientes pagantes em qualquer dia do mês. É a base para calcular o churn de clientes.</td></tr>' +
+        '<tr><td><b>Safra</b></td><td>Grupo de contas que entraram no mesmo mês.</td></tr>' +
+        '</tbody></table>') +
+      sec('Churn e não churn: o que entra em cada um',
+        '<div class="m-duas">' +
+          '<div class="m-churn"><b>Churn</b><p>O cliente decidiu sair ou parou de pagar. Entra na <b>taxa de churn</b> e no <b>churn de MRR</b>.</p><ul>' +
+            '<li>Falta de resultado / ROI</li><li>Falta de uso (tempo, prioridade)</li><li>Preço / orçamento</li><li>Problema técnico</li><li>Foi para o concorrente ou fez solução própria</li><li>Sem fit cultural</li><li>Fechamento da empresa</li><li>Sem resposta depois do contato</li><li>Inadimplência</li><li>Encerramento combinado que começou com pedido do cliente</li><li>Outros motivos de cancelamento</li></ul></div>' +
+          '<div class="m-nao"><b>Não churn</b><p>Saída prevista ou que não indica insatisfação. Reduz o MRR (entra em "Saídas do mês"), mas <b>fica fora da taxa de churn</b>.</p><ul>' +
+            '<li><b>Fim de contrato</b>: plano com prazo (ex.: trimestral) que terminou e não foi renovado, como já estava previsto.</li>' +
+            '<li><b>Desistência</b>: cancelou com reembolso dentro dos 7 dias de garantia, ou não chegou a contratar. Entra com <b>R$ 0</b>, porque não gerou receita.</li>' +
+            '<li><b>Saída eventual</b>: saída por motivo pessoal, fora do controle do cliente.</li></ul></div>' +
+        '</div>' +
+        '<p class="m-obs">Quem marca se é churn ou não é a coluna "É churn" da planilha, preenchida na hora de lançar a saída.</p>') +
+      sec('Como cada número é calculado (com o exemplo de ' + nEx + ')',
+        '<div class="tbl-wrap"><table class="m-tab m-calc"><thead><tr><th>Número</th><th>Conta</th><th>Exemplo real</th></tr></thead><tbody>' +
+        linhaCalc('MRR ativo', 'Soma do valor mensal de todas as contas ativas que pagam.', 'Hoje: ' + prod + ' = <b>' + reais2(D.kpi.mrr) + '</b>') +
+        linhaCalc('Clientes pagantes', 'Empresas com pelo menos uma conta ativa que paga.', 'Hoje: <b>' + cli[0] + '</b> pagantes (+ ' + cli[1] + ' ativos que não pagam = ' + cli[3] + ' no total)') +
+        linhaCalc('Ticket médio', 'MRR ÷ clientes pagantes.', 'Hoje: ' + reais2(D.kpi.mrr) + ' ÷ ' + cli[0] + ' = <b>' + reais2(cli[0] ? D.kpi.mrr / cli[0] : 0) + '</b>') +
+        linhaCalc('MRR novo', 'Soma do valor mensal das contas que entraram no mês.', ex.entraram + ' contas entraram em ' + nEx + ' = <b>' + reais2(ex.mrrNovo) + '</b>') +
+        linhaCalc('Saídas do mês (MRR perdido)', 'Soma do valor mensal de <b>todas</b> as contas que saíram no mês = churn + não churn.', reais2(ex.mrrChurn) + ' (churn) + ' + reais2(outrasEx) + ' (não churn) = <b>' + reais2(ex.mrrSaiu) + '</b> · ' + ex.sairam + ' contas' + (outrasLista ? '<br><small>Não churn: ' + outrasLista + '</small>' : '')) +
+        linhaCalc('Churn de MRR', 'MRR das contas que saíram <b>por churn</b> ÷ MRR do início do mês.', reais2(ex.mrrChurn) + ' ÷ ' + reais2(ex.mrrIni) + ' = <b>' + pct(ex.mrrIni ? ex.mrrChurn / ex.mrrIni : 0) + '</b>') +
+        linhaCalc('Churn de clientes', 'Empresas que perderam todas as contas pagantes <b>por churn</b> ÷ pico de clientes pagantes do mês.', (mEx.churn || 0) + ' clientes ÷ ' + (mEx.pag || 0) + ' pagantes = <b>' + pct(mEx.pag ? mEx.churn / mEx.pag : 0) + '</b><br><small>Conta empresas: um cliente com 2 contas que saíram conta 1.</small>') +
+        linhaCalc('Resultado do mês', 'MRR novo − saídas do mês.', reais2(ex.mrrNovo) + ' − ' + reais2(ex.mrrSaiu) + ' = <b>' + (ex.mrrNovo - ex.mrrSaiu < 0 ? '−' : '+') + reais2(Math.abs(ex.mrrNovo - ex.mrrSaiu)) + '</b>') +
+        linhaCalc('Fechamento do mês', 'MRR do início + MRR novo − saídas = MRR do fim. O fim de um mês é o início do seguinte.', reais2(ex.mrrIni) + ' + ' + reais2(ex.mrrNovo) + ' − ' + reais2(ex.mrrSaiu) + ' = <b>' + reais2(ex.mrr) + '</b>') +
+        linhaCalc('Retenção da safra', 'Contas da safra ainda ativas hoje ÷ contas que entraram naquele mês.', 'Ver aba Retenção, tabela "Todas as safras".') +
+        linhaCalc('Recebido no mês', 'Soma dos pagamentos aprovados no Cartão, na Checkout e no Boleto desde o dia 1º. É dinheiro que entrou, <b>não é MRR</b>.', D.recebidos ? 'De ' + D.recebidos.de + ' a ' + D.recebidos.ate + ': <b>' + reais2(D.recebidos.total) + '</b>' : '—') +
+        linhaCalc('Vence em', 'Data de entrada + período do plano, rolada para a próxima data a partir de hoje.', 'Ex.: trimestral que entrou em 02/07 vence em 02/10.') +
+        '</tbody></table></div>') +
+      sec('Cuidados na hora de ler',
+        '<ul>' +
+        '<li><b>Recebido no mês é diferente de MRR.</b> Trimestral, semestral e anual são pagos de uma vez num mês só; no MRR eles entram divididos por mês. No começo do mês o recebido é baixo porque as cobranças caem ao longo dos dias.</li>' +
+        '<li><b>Contas, clientes e usuários são contagens diferentes.</b> Saídas do mês contam contas; churn de clientes conta empresas.</li>' +
+        '<li><b>No começo do mês</b> os números do mês corrente aparecem zerados ou pequenos. O mês fechado completo fica na aba Histórico.</li>' +
+        '<li><b>Histórico</b>: quem continua ativo aparece nos meses anteriores com o valor de hoje; quem saiu aparece com o valor que tinha na saída.</li>' +
+        '<li><b>Internos da equipe</b> só aparecem em usuários; ficam fora de clientes, contas e MRR.</li>' +
+        '<li>Passe o mouse sobre qualquer nome sublinhado com pontinhos para ver a explicação daquele número.</li>' +
+        '</ul>');
+    $('metodo').innerHTML = html;
+  })();
+
+  // ---------- abas ----------
+  var tabs = [].slice.call(document.querySelectorAll('[role="tab"]'));
+  function abre(t, foco){
+    tabs.forEach(function(o){
+      var on = o === t;
+      o.setAttribute('aria-selected', String(on)); o.tabIndex = on ? 0 : -1;
+      $(o.getAttribute('aria-controls')).hidden = !on;
+    });
+    if (foco) t.focus();
+    $('aviso-metodo').hidden = t.id === 't-metodologia';
+    try { history.replaceState(null, '', '#' + t.id.slice(2)); } catch(e) {}
+  }
+  $('ir-metodo').addEventListener('click', function(){ abre($('t-metodologia'), true); window.scrollTo(0, 0); });
+  tabs.forEach(function(t, i){
+    t.addEventListener('click', function(){ abre(t); });
+    t.addEventListener('keydown', function(e){
+      var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+      if (d) { abre(tabs[(i + d + tabs.length) % tabs.length], true); e.preventDefault(); }
+    });
+  });
+  var h = (location.hash || '').slice(1), ini = $('t-' + h);
+  abre(ini && ini.getAttribute('role') === 'tab' ? ini : tabs[0]);
+
+  marcaDicas();
+
+  $('tema').addEventListener('click', function(){
+    var r = document.documentElement, a = r.getAttribute('data-theme');
+    var escuro = a ? a === 'dark' : (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+    r.setAttribute('data-theme', escuro ? 'light' : 'dark');
+  });
+})();
+</script>
