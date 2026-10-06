@@ -104,3 +104,10 @@ section[id]{scroll-margin-top:90px}
 .case-demo-cta p{margin:0;color:#bdb2b4;font-size:.88rem}
 .case-demo-cta .button{flex:none}
 @media(max-width:700px){.case-demo-cta{align-items:flex-start;flex-direction:column;padding:22px}.case-demo-cta .button{width:100%}}
+
+.hero-actions.dual-purpose .button{min-width:205px;justify-content:center}
+.button.professional{border-color:#70303a;background:#160d0f;color:var(--soft)}
+.button.professional:hover{background:#241217;border-color:var(--red);color:var(--ink)}
+.project-load-note{display:inline-flex;margin:0 0 22px;padding:8px 11px;border-radius:8px;background:rgba(239,178,74,.08);color:#d5b66d;font-size:.72rem;line-height:1.4}
+.project-index{padding-left:8px}
+@media(max-width:600px){.hero-actions.dual-purpose .button{width:100%;min-width:0}.project-index{padding-left:3px}}
