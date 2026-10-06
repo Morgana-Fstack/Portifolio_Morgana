@@ -57,3 +57,28 @@
 .process-steps p{color:var(--muted);font-size:.82rem;margin:0}
 @media(max-width:900px){.services-grid{grid-template-columns:1fr}.service-card{min-height:auto}.service-process{grid-template-columns:1fr;gap:35px}}
 @media(max-width:600px){.service-card{padding:23px}.service-number{margin-bottom:30px}.service-process{padding:23px}.process-intro .button{width:100%}}
+
+
+/* Featured CS case */
+section[id]{scroll-margin-top:90px}
+.case-section{background:linear-gradient(150deg,#180d10 0%,#0b090a 58%,#100a0c 100%)}
+.case-hero{display:grid;grid-template-columns:1.08fr .92fr;gap:70px;align-items:end;margin-bottom:55px}
+.case-eyebrow{margin:30px 0 16px;color:var(--soft);font-size:.72rem;font-weight:800;letter-spacing:.13em}
+.case-hero h2{font-size:clamp(2.8rem,5vw,5.5rem);line-height:.96;letter-spacing:-.06em;margin:0}
+.case-hero h2 span{color:var(--red)}
+.case-context{color:#c7bdbf;font-size:1.02rem;line-height:1.75;margin:0}
+.case-columns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line);border-radius:20px;overflow:hidden}
+.case-columns article{padding:30px;background:rgba(10,8,9,.7);border-right:1px solid var(--line)}
+.case-columns article:last-child{border-right:0}
+.case-columns h3{font-size:1.16rem;margin-bottom:24px}
+.case-columns ul{list-style:none;margin:0;padding:0}
+.case-columns li{position:relative;padding:12px 0 12px 19px;border-top:1px solid var(--line);color:#cfc5c7;font-size:.88rem;line-height:1.55}
+.case-columns li:before{content:"";position:absolute;left:1px;top:20px;width:6px;height:6px;border-radius:50%;background:var(--red)}
+.case-results{background:linear-gradient(145deg,rgba(231,60,78,.12),rgba(10,8,9,.82))!important}
+.case-footer{display:flex;justify-content:space-between;gap:25px;margin-top:18px;padding:20px 24px;border:1px solid var(--line);border-radius:14px;color:var(--muted);font-size:.75rem}
+.case-footer strong{color:var(--soft);font-weight:700}
+.case-footer span{display:flex;align-items:center;gap:8px}
+.case-footer svg{color:var(--red);flex:none}
+.project-description,.timeline article>p,.service-card>p,.process-steps p{color:#bdb2b4}
+@media(max-width:900px){.case-hero{grid-template-columns:1fr;gap:28px}.case-columns{grid-template-columns:1fr}.case-columns article{border-right:0;border-bottom:1px solid var(--line)}.case-columns article:last-child{border-bottom:0}.case-footer{flex-direction:column}}
+@media(max-width:600px){section[id]{scroll-margin-top:74px}.case-columns article{padding:23px}.case-context{font-size:1rem}.case-footer{padding:18px}.project-description,.timeline article>p,.service-card>p,.process-steps p{font-size:.94rem;line-height:1.7}}
