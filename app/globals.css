@@ -123,3 +123,12 @@ section[id]{scroll-margin-top:90px}
 .project-visual{width:min(86%,760px);margin:0 auto 26px}
 .avatar-frame{width:min(88%,460px);margin:42px auto 0}
 @media(max-width:700px){.case-visual,.project-visual,.avatar-frame{width:100%}}
+
+
+/* Keep About section balanced at wide viewports and reduced browser zoom */
+.about-section{grid-template-columns:minmax(320px,440px) minmax(0,1fr);gap:clamp(40px,5vw,72px);justify-content:space-between;align-items:start}
+.about-title,.about-copy{min-width:0}
+.about-copy{max-width:600px}
+.avatar-frame{width:100%;max-width:440px;margin:42px 0 0}
+@media(max-width:900px){.about-section{grid-template-columns:1fr;gap:30px}.about-copy{max-width:680px}.avatar-frame{width:min(88%,440px);margin:42px auto 0}}
+@media(max-width:700px){.avatar-frame{width:100%}}
