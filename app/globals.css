@@ -116,3 +116,10 @@ section[id]{scroll-margin-top:90px}
 
 .case-visual{margin:42px 0 48px;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:#121014;box-shadow:0 24px 70px rgba(0,0,0,.28)}.case-visual img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}.case-visual figcaption{padding:14px 18px;color:var(--muted);font-size:.76rem;line-height:1.5;border-top:1px solid var(--line)}
 @media(max-width:600px){.case-visual{margin:30px 0 36px;border-radius:12px}.case-visual figcaption{padding:12px 14px}}
+
+
+/* More compact portfolio imagery */
+.case-visual{width:min(88%,980px);margin:38px auto 44px}
+.project-visual{width:min(86%,760px);margin:0 auto 26px}
+.avatar-frame{width:min(88%,460px);margin:42px auto 0}
+@media(max-width:700px){.case-visual,.project-visual,.avatar-frame{width:100%}}
