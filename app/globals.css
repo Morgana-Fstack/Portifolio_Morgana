@@ -257,3 +257,47 @@ section[id]{scroll-margin-top:90px}
   .nucleus-center.brand-core{width:37%}
   .brand-core small{top:calc(100% + 7px);font-size:.43rem}
 }
+
+/* Harmonized typography scale across portfolio sections */
+.section-head h2,
+.contact h2{
+  font-size:clamp(2.75rem,4.4vw,4.5rem);
+  line-height:.98;
+  letter-spacing:-.055em;
+}
+.case-hero h2{
+  font-size:clamp(2.75rem,4.4vw,4.5rem);
+  line-height:.98;
+}
+.about-section{
+  grid-template-columns:minmax(360px,500px) minmax(0,600px);
+}
+.about-section h2{
+  font-size:clamp(2.8rem,3.8vw,3.9rem);
+  line-height:1;
+  letter-spacing:-.05em;
+}
+.about-copy .lead{
+  font-size:1.4rem;
+  line-height:1.45;
+}
+.about-copy blockquote{
+  font-size:1.22rem;
+  line-height:1.42;
+}
+.project-main h3{
+  font-size:clamp(1.9rem,3vw,3.15rem);
+}
+@media(max-width:900px){
+  .about-section{grid-template-columns:1fr}
+  .about-section h2{font-size:clamp(2.8rem,6.5vw,4rem)}
+}
+@media(max-width:600px){
+  .section-head h2,
+  .about-section h2{font-size:2.75rem;line-height:1}
+  .case-hero h2{font-size:2.65rem}
+  .contact h2{font-size:2.25rem}
+  .project-main h3{font-size:2rem}
+  .about-copy .lead{font-size:1.25rem}
+  .about-copy blockquote{font-size:1.12rem}
+}
