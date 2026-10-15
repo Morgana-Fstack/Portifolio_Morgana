@@ -132,12 +132,3 @@ section[id]{scroll-margin-top:90px}
 .avatar-frame{width:100%;max-width:440px;margin:42px 0 0}
 @media(max-width:900px){.about-section{grid-template-columns:1fr;gap:30px}.about-copy{max-width:680px}.avatar-frame{width:min(88%,440px);margin:42px auto 0}}
 @media(max-width:700px){.avatar-frame{width:100%}}
-
-
-/* Morgana CS Operations brand mark */
-.brand-symbol{overflow:hidden;background:#160d0f;border:1px solid #6d303a;padding:5px}
-.brand-symbol img{display:block;width:100%;height:100%;object-fit:contain}
-.nucleus-center.brand-core{width:44%;background:linear-gradient(145deg,#1b1013,#0d090a);border:1px solid #7f2f3d;padding:10%;overflow:visible}
-.brand-core img{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 0 14px rgba(239,62,87,.25))}
-.brand-core small{position:absolute;top:calc(100% + 16px);white-space:nowrap;color:var(--soft)}
-@media(max-width:600px){.nucleus-center.brand-core{width:43%;padding:9%}.brand-core small{top:calc(100% + 10px);font-size:.46rem}}
