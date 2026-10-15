@@ -229,7 +229,7 @@ section[id]{scroll-margin-top:90px}
   object-fit:contain;
 }
 .nucleus-center.brand-core{
-  width:31%;
+  width:38%;
   aspect-ratio:auto;
   min-height:0;
   padding:0;
@@ -254,6 +254,6 @@ section[id]{scroll-margin-top:90px}
   color:rgba(255,180,172,.78);
 }
 @media(max-width:600px){
-  .nucleus-center.brand-core{width:30%}
+  .nucleus-center.brand-core{width:37%}
   .brand-core small{top:calc(100% + 7px);font-size:.43rem}
 }
