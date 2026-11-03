@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import "./globals.css";
 import "./brand.css";
 
@@ -25,13 +26,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const requestHeaders = await headers();
+  const requestedLocale = requestHeaders.get("x-portfolio-locale");
+  const language = requestedLocale === "en" || requestedLocale === "es"
+    ? requestedLocale
+    : "pt-BR";
+
   return (
-    <html lang="pt-BR">
+    <html lang={language}>
       <body className="antialiased">{children}</body>
     </html>
   );
