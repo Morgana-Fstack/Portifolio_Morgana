@@ -1,126 +1,79 @@
-# vinext-starter
+# Morgana Petterle da Cunha | Portfolio
 
-A clean full-stack starter running on [vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and Drizzle support.
+[Português](#português) · [English](#english) · [Español](#español)
 
-## Prerequisites
+## Português
 
-- Node.js `>=22.13.0`
-- Portable: Windows, macOS, or Linux; no Bash required
-- Managed Linux: managed Linux runtime with Bash, `flock`, `curl`, `sha256sum`, and GNU `timeout`
-- Git is required only for publishing
+### Visão de cliente. Execução técnica.
 
-## Sites Lifecycle
+Trabalho na interseção entre **Customer Success Operations (CS Ops), dados, automação e desenvolvimento de software**. Transformo desafios operacionais em processos mais inteligentes, indicadores claros e soluções digitais úteis.
 
-The Sites initializer copies the shared starter with the explicit `--execution-profile portable` or `--execution-profile managed-linux` argument from the plugin's setup instructions. It saves the selection only in ignored `.sites-runtime/execution-profile.json`. Both profiles copy/configure first, then use the plugin's separate `install-dependencies.mjs` step to measure installation independently. Edit source under `app/` and follow the Sites skill for installation, preview, builds, and publishing.
+Este repositório contém o código do meu **portfólio profissional**, desenvolvido com **Next.js, React, TypeScript e Tailwind CSS**, com conteúdo em três idiomas:
 
-Whenever reopening or moving a checkout, follow the plugin's instructions to run `configure-execution-profile.mjs --execution-profile <portable|managed-linux>` before project commands. Profile changes do not alter tracked source or require reinstalling otherwise-valid dependencies; restart an existing preview to use the new selection. Do not commit or upload `.sites-runtime/`.
+- [Site em português](https://morgana-petterle-portfolio.vercel.app/)
+- [Website in English](https://morgana-petterle-portfolio.vercel.app/en)
+- [Sitio en español](https://morgana-petterle-portfolio.vercel.app/es)
 
-This starter does not use `wrangler.jsonc`.
+**Projetos em destaque:**
 
-`install:ci` runs `npm ci` once against the shared lockfile, disables parent-workspace discovery, and includes required dev/optional dependencies despite production/omit settings. Sharp defaults to prebuilt binaries unless explicitly configured otherwise. Do not overlap installers.
+| Projeto | Foco | Link |
+| --- | --- | --- |
+| Customer Success Automation Demo | Priorização de follow-ups, renovações e saúde da carteira com dados fictícios | [Demo](https://customer-success-automation-demo.streamlit.app/) |
+| Customer Success Analytics Dashboard | Análise de retenção, churn, MRR e risco de receita | [Dashboard](https://customer-success-analytics-dashboard.streamlit.app/) |
+| Data Quality Studio | Diagnóstico, limpeza, padronização e validação de dados CSV/Excel | [Aplicação](https://data-cleaning-python.streamlit.app/) |
+| ShipTrack API | API REST de rastreamento de remessas, persistência e testes | [Código](https://github.com/Morgana-Fstack/shiptrack-api) |
+| Explore Mundo | Aplicação responsiva de exploração de destinos | [Aplicação](https://morgana-fstack.github.io/explore-mundo/) |
 
-- **Portable:** Preserve host HOME, npm cache, registry, proxy, temporary paths, retry/concurrency settings, and lifecycle-script policy. Use `--prefer-offline --no-audit --no-fund`.
-- **Managed Linux:** Use the existing project-local HOME/cache/tmp setup and Linux install lock, tarball preflight, and timeout. Restore the image-seeded npm cache only when its lockfile hash matches; retain network fallback. Builds keep their existing timeout. These helpers are not invoked by the portable profile.
+**Execução local:** Node.js 22.13+; execute `npm ci`, depois `npm run dev`. Verificações disponíveis: `npm run lint` e `npm run build`.
 
-`scripts/sites-env.mjs` preserves the caller's HOME, npm cache, proxy, XDG, and temporary-directory configuration while defaulting Wrangler and Miniflare state to the checkout. If npm reports an unwritable cache, select a writable path with `npm_config_cache` for that install. The `dev` and `start` scripts also keep Wrangler logs inside the checkout. Generated `.sites-runtime/` and `.wrangler/` directories are disposable and ignored by Git.
+**Contato:** [LinkedIn](https://linkedin.com/in/morgana-petterle) · [GitHub](https://github.com/Morgana-Fstack)
 
-On portable, `npm run dev` uses `vinext dev` with HMR, starting at port 5173. Vinext records the running server in ignored `.vinext/` state, rejects an ordinary duplicate launch, and recovers stale state after a stopped process; exactly simultaneous starts can race. Pass `--port <port>` or `--hostname <host>` after `npm run dev --` when needed; keep portable previews on loopback.
+---
 
-On managed Linux, use `sites-preview start` only for requested browser QA. The project's dev script runs Vite and accepts the supervisor's `--host 0.0.0.0 --port 4173 --strictPort` arguments. The internal browser uses `http://terminal.local:4173/`; it is not a user-facing URL. The supervisor owns the preview lifecycle. The ignored local profile survives the supervisor's cleared process environment.
+## English
 
-The portable profile simulates ChatGPT sign-in only for loopback development requests. Visit `/signin-with-chatgpt?return_to=/` to sign in as `local_seedy` (`seedy@sites.test`, display name `Seedy`) and `/signout-with-chatgpt?return_to=/` to sign out. The development cookie preserves that identity across server restarts. Mock auth is disabled in the managed-linux profile and is not included in production builds; hosted authentication remains dispatch-owned.
+### Customer insight. Technical execution.
 
-The Worker uses `vinext/server/fetch-handler`, including Vinext's config-aware image handling. After building, `npm start` runs that Worker locally through Wrangler on `127.0.0.1`, sharing `.wrangler/state` with dev preview and local D1 migrations; it does not deploy the site or simulate sign-in. Use the URL printed by the server. Pass `npm start -- --port <port>` to select a different built-preview port.
+I work at the intersection of **Customer Success Operations (CS Ops), data, automation, and software development**. I translate operational challenges into smarter processes, actionable metrics, and digital solutions.
 
-Local previews use Miniflare's placeholder `Request.cf` metadata without a network lookup. Set `CLOUDFLARE_CF_FETCH_ENABLED=true` to opt into fetching preview metadata; this setting does not change hosted request metadata.
+This repository contains my **professional portfolio**, built with **Next.js, React, TypeScript, and Tailwind CSS**, with dedicated pages in [Portuguese](https://morgana-petterle-portfolio.vercel.app/), [English](https://morgana-petterle-portfolio.vercel.app/en), and [Spanish](https://morgana-petterle-portfolio.vercel.app/es).
 
-Local tool usage metrics are disabled by default. Set `WRANGLER_SEND_METRICS=true` to opt in.
+**Featured projects:**
 
-## Included Shape
+- [Customer Success Automation Demo](https://customer-success-automation-demo.streamlit.app/): a synthetic-data application for prioritizing customer follow-ups, renewals, and portfolio health.
+- [Customer Success Analytics Dashboard](https://customer-success-analytics-dashboard.streamlit.app/): retention, churn, MRR, and revenue-risk insights.
+- [Data Quality Studio](https://data-cleaning-python.streamlit.app/): CSV/Excel data profiling, cleaning, and validation.
+- [ShipTrack API](https://github.com/Morgana-Fstack/shiptrack-api): shipment-tracking REST API with persistence and tests.
+- [Explore Mundo](https://morgana-fstack.github.io/explore-mundo/): responsive destination-discovery web app.
 
-- edit site code under `app/`
-- `app/chatgpt-auth.ts` provides optional dispatch-owned ChatGPT sign-in helpers
-- `.openai/hosting.json` declares optional Sites D1 and R2 bindings
-- `vite.config.ts` simulates declared bindings for local development
-- `db/index.ts` reads the D1 binding from the Cloudflare Worker environment
-- `db/schema.ts` starts intentionally empty
-- `@cloudflare/workers-types` provides Worker types; `cloudflare-env.d.ts` declares optional `DB`/`BUCKET` bindings—update these declarations if binding names change
-- `examples/d1/` contains an optional D1 example surface
-- `drizzle.config.ts` supports local migration generation when needed
+**Local setup:** Node.js 22.13+; run `npm ci` and `npm run dev`. Checks: `npm run lint` and `npm run build`.
 
-## Workspace Auth Headers
+**Connect:** [LinkedIn](https://linkedin.com/in/morgana-petterle) · [GitHub](https://github.com/Morgana-Fstack)
 
-Signed-in visitors receive both `oai-authenticated-user-id` and `oai-authenticated-user-email`. Private Sites require every visitor to sign in; public Sites may also have anonymous visitors, for whom neither header is present.
+---
 
-The user ID is stable for the same user on the same Site and different across Sites. Use it as the durable user key; use email and name for display or contact purposes.
+## Español
 
-SIWC-authenticated workspace sites may also receive `oai-authenticated-user-full-name` when the user's SIWC profile has a non-empty `name` claim. The full-name value is percent-encoded UTF-8 and is accompanied by `oai-authenticated-user-full-name-encoding: percent-encoded-utf-8`.
+### Visión del cliente. Ejecución técnica.
 
-Treat the full name as optional and fall back to email when it is absent:
+Trabajo en la intersección de **Customer Success Operations (CS Ops), datos, automatización y desarrollo de software**. Transformo los retos operativos en procesos más inteligentes, indicadores claros y soluciones digitales.
 
-```tsx
-import { headers } from "next/headers";
+Este repositorio contiene mi **portafolio profesional**, desarrollado con **Next.js, React, TypeScript y Tailwind CSS**, y disponible en [portugués](https://morgana-petterle-portfolio.vercel.app/), [inglés](https://morgana-petterle-portfolio.vercel.app/en) y [español](https://morgana-petterle-portfolio.vercel.app/es).
 
-export default async function Home() {
-  const requestHeaders = await headers();
-  const userId = requestHeaders.get("oai-authenticated-user-id");
-  const email = requestHeaders.get("oai-authenticated-user-email");
-  const encodedFullName = requestHeaders.get("oai-authenticated-user-full-name");
-  const fullName =
-    encodedFullName &&
-    requestHeaders.get("oai-authenticated-user-full-name-encoding") ===
-      "percent-encoded-utf-8"
-      ? decodeURIComponent(encodedFullName)
-      : null;
+**Proyectos destacados:**
 
-  const displayName = fullName ?? email;
-  // ...
-}
-```
+- [Customer Success Automation Demo](https://customer-success-automation-demo.streamlit.app/): aplicación con datos ficticios para priorizar seguimientos, renovaciones y salud de la cartera.
+- [Customer Success Analytics Dashboard](https://customer-success-analytics-dashboard.streamlit.app/): análisis de retención, churn, MRR y riesgo de ingresos.
+- [Data Quality Studio](https://data-cleaning-python.streamlit.app/): diagnóstico, limpieza y validación de archivos CSV/Excel.
+- [ShipTrack API](https://github.com/Morgana-Fstack/shiptrack-api): API REST para el seguimiento de envíos, con persistencia y pruebas.
+- [Explore Mundo](https://morgana-fstack.github.io/explore-mundo/): aplicación web adaptable para descubrir destinos.
 
-## Optional Dispatch-Owned ChatGPT Sign-In
+**Ejecución local:** Node.js 22.13+; ejecutar `npm ci` y `npm run dev`. Comprobaciones: `npm run lint` y `npm run build`.
 
-Import the ready-to-use helpers from `app/chatgpt-auth.ts` when the site needs optional or required ChatGPT sign-in:
+**Contacto:** [LinkedIn](https://linkedin.com/in/morgana-petterle) · [GitHub](https://github.com/Morgana-Fstack)
 
-- Use `getChatGPTUser()` for optional signed-in UI.
-- Use the returned `userId` as the stable user key for user-owned records; do not use email as a durable identifier.
-- Use `requireChatGPTUser(returnTo)` for server-rendered pages that should send anonymous visitors through Sign in with ChatGPT.
-- In a Server Component, start sign-in with `<a href={chatGPTSignInPath(returnTo)} target="_top">`. The auth helper module is server-only; do not import it into a Client Component.
-- Do not use `fetch`, XHR, a client-side router, or a framework link that can prefetch the sign-in route. SIWC must start as a top-level navigation.
-- Never request the AuthAPI authorization endpoint directly. The dispatch-owned `/signin-with-chatgpt` route must start the SIWC flow.
-- Use `chatGPTSignOutPath(returnTo)` for browser sign-out links or actions.
-- Pass a same-origin relative `returnTo` path for the destination after sign-in or sign-out. The helper validates and safely encodes it.
-- Mark protected pages with `export const dynamic = "force-dynamic"` because they depend on per-request identity headers.
+---
 
-Dispatch owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback`, the OAuth cookies, and identity header injection. Do not implement app routes for those reserved paths. Routes that do not import and call the helper remain anonymous-compatible.
+© 2026 **Morgana Petterle da Cunha**. Todos os direitos reservados / All rights reserved / Todos los derechos reservados.
 
-SIWC establishes identity only; it does not prove workspace membership. Use the Sites hosting platform's access policy controls for workspace-wide restrictions, or enforce explicit server-side membership or allowlist checks.
-
-Use SIWC for account pages, user-specific dashboards, saved records, and write actions tied to the current ChatGPT user. Leave public content anonymous.
-
-## Local D1 migrations
-
-For a D1-backed local preview, generate SQL with `npm run db:generate`. Build once through the Sites skill's build entrypoint (or `npm run build` for standalone use) to generate `dist/server/wrangler.json`, rebuilding if bindings change. From the project root, apply each pending migration in order:
-
-```sh
-node --import ./scripts/sites-env.mjs ./node_modules/wrangler/bin/wrangler.js d1 execute DB --local --config dist/server/wrangler.json --persist-to .wrangler/state --file drizzle/0000_example.sql
-```
-
-Replace the filename with the pending migration and `DB` with your D1 binding name if different. Use `.wrangler/state`, not `.wrangler/state/v3`; Wrangler adds the versioned directories. Do not replay migrations already applied locally. This updates only the preview database; publishing applies production migrations separately.
-
-## Diagnostic Commands
-
-- `npm run install:ci`: perform the one locked dependency install
-- `npm run dev`: start the Vite/Vinext development server
-- `npm run build`: build the deployable Sites artifact
-- `npm run start`: preview the built Worker locally with D1/R2 support
-- `npm run db:generate`: generate Drizzle migrations after schema changes
-
-When using the Sites plugin, follow its skill instructions for installation, builds, and publishing. These npm commands remain available for standalone use.
-
-The portable build runs Vinext directly without a host `timeout` command. The managed-linux build uses `scripts/build-verified.sh` and its existing `SITES_BUILD_TIMEOUT` setting.
-
-## Learn More
-
-- [vinext Documentation](https://github.com/cloudflare/vinext)
-- [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
+O código-fonte público não é automaticamente licenciado para reutilização. Public source code is not automatically licensed for reuse. El código fuente público no implica una licencia de reutilización.
