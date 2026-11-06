@@ -365,3 +365,80 @@ Grupo de contas que entraram no mesmo mês.	Accounts that joined in the same mon
 Mensalizar	Convert to a monthly amount	Convertir a importe mensual
 Data de entrada + período do plano, rolada para a próxima data a partir de hoje.	Start date plus the plan term, advanced to the next renewal date.	Fecha de alta más el periodo del plan, hasta la próxima renovación.
 Páginas do painel	Dashboard pages	Páginas del panel
+é quanto a empresa recebe por mês de forma recorrente, somando todos os clientes que pagam. Hoje:	is recurring monthly revenue from all paying customers. Today:	es el ingreso recurrente mensual de todos los clientes de pago. Hoy:
+é o cliente que saiu porque quis sair (cancelou, não viu resultado, não usou, não pagou etc.). É a perda que dá para evitar.	counts customers who chose to leave or stopped paying, for reasons such as low usage or poor results.	cuenta los clientes que decidieron irse o dejaron de pagar, por motivos como el poco uso o la falta de resultados.
+é a saída prevista ou que não indica insatisfação: fim de contrato, desistência com reembolso nos 7 dias e saída eventual.	covers expected departures, including contract expiration, withdrawals within the seven-day refund period and occasional departures.	incluye bajas previstas, como el fin del contrato, el desistimiento dentro del plazo de reembolso de siete días y las salidas eventuales.
+Todas as saídas reduzem o MRR.	All departures reduce MRR.	Todas las bajas reducen el MRR.
+Só o churn	Only churn	Solo el churn
+entra nas taxas de churn.	counts toward churn rates.	se incluye en las tasas de churn.
+Planilha "Dashboard de Customer Success" (aba Dados)	Customer Success Dashboard spreadsheet (Data tab)	Hoja del panel de Customer Success (pestaña Datos)
+: é a fonte oficial. Cada linha é uma conta, com entrada, saída, plano, valor, forma de pagamento, motivo da saída e se é churn ou não. Quase todos os números do painel saem daqui.	 is the main source. Each row represents an account, with start and departure dates, plan, amount, payment method, departure reason and churn status.	es la fuente principal. Cada fila representa una cuenta con fechas de alta y baja, plan, importe, forma de pago, motivo de baja e indicador de churn.
+Cartão, Checkout e Boleto	Card, checkout and bank slip	Tarjeta, checkout y boleto bancario
+: consultados	 are accessed with	se consultan con acceso de
+somente para leitura	read-only permissions	solo lectura
+(nada é alterado nessas plataformas). Alimentam só a barra lateral: "Recebido no mês" e "Em atraso".	. They feed the payments and overdue sections in the sidebar.	. Alimentan los cobros y los pagos vencidos de la barra lateral.
+: de onde vêm os toques da cadência de resgate (quadro "Em resgate").	 provides the recovery outreach records.	proporciona los registros de seguimiento de recuperación.
+Plataforma a empresa	Company platform	Plataforma de la empresa
+: exportação de logins ativos, usada em "Acessos na plataforma".	 provides the active login export for the Platform logins section.	proporciona los accesos activos de la sección Accesos a la plataforma.
+Atualização	Refresh	Actualización
+: todo dia às 9h e sempre que há mudança na planilha. A data e a hora da última atualização ficam no topo do painel.	 runs daily at 9 a.m. and whenever the spreadsheet changes. The latest timestamp appears at the top.	se ejecuta a diario a las 9:00 y cuando cambia la hoja. La fecha y hora más recientes aparecen arriba.
+Pagante	Paying	De pago
+Conta ou cliente com valor mensal maior que zero. Gratuito, trial e cortesia são ativos, mas	An account or customer with a monthly value above zero. Free, trial and complimentary accounts are active but	Una cuenta o cliente con un importe mensual superior a cero. Las cuentas gratuitas, de prueba y de cortesía están activas, pero
+são pagantes.	paying.	son de pago.
+não	not	no
+Transformar o valor do plano em valor por mês: trimestral ÷ 3, semestral ÷ 6, anual ÷ 12. Ex.: trimestral de R$ 1.491 = R$ 497 por mês.	Convert the plan price to a monthly value: quarterly ÷ 3, semiannual ÷ 6 and annual ÷ 12. Example: BRL 1,491 per quarter equals BRL 497 per month.	Convierte el precio del plan en un importe mensual: trimestral ÷ 3, semestral ÷ 6 y anual ÷ 12. Ejemplo: 1.491 BRL por trimestre equivalen a 497 BRL al mes.
+O MRR no último dia do mês anterior. É a base para calcular o churn de MRR.	MRR on the last day of the previous month, used to calculate MRR churn.	MRR del último día del mes anterior, usado para calcular el churn de MRR.
+O maior número de clientes pagantes em qualquer dia do mês. É a base para calcular o churn de clientes.	The highest daily count of paying customers that month, used to calculate customer churn.	El mayor número diario de clientes de pago del mes, usado para calcular el churn de clientes.
+O cliente decidiu sair ou parou de pagar. Entra na	The customer chose to leave or stopped paying. This counts toward	El cliente decidió irse o dejó de pagar. Esto cuenta en la
+taxa de churn	churn rate	tasa de churn
+e no	and	y en el
+churn de MRR	MRR churn	churn de MRR
+Falta de resultado / ROI	Lack of results or ROI	Falta de resultados o ROI
+Falta de uso (tempo, prioridade)	Low usage (time or priorities)	Poco uso (tiempo o prioridades)
+Preço / orçamento	Price or budget	Precio o presupuesto
+Foi para o concorrente ou fez solução própria	Switched to a competitor or built an internal solution	Cambió a un competidor o desarrolló una solución interna
+Sem fit cultural	Cultural mismatch	Incompatibilidad cultural
+Sem resposta depois do contato	No response after outreach	Sin respuesta tras el contacto
+Inadimplência	Non-payment	Impago
+Encerramento combinado que começou com pedido do cliente	Agreed termination requested by the customer	Cierre acordado a petición del cliente
+Outros motivos de cancelamento	Other cancellation reasons	Otros motivos de baja
+Saída prevista ou que não indica insatisfação. Reduz o MRR (entra em "Saídas do mês"), mas	An expected departure that reduces MRR and is counted as a monthly departure, but	Una baja prevista que reduce el MRR y se cuenta como baja del mes, pero
+fica fora da taxa de churn	is excluded from the churn rate	queda fuera de la tasa de churn
+: plano com prazo (ex.: trimestral) que terminou e não foi renovado, como já estava previsto.	: a fixed-term plan expired without renewal, as expected.	: un plan de duración fija terminó sin renovación, como estaba previsto.
+Desistência	Withdrawal	Desistimiento
+: cancelou com reembolso dentro dos 7 dias de garantia, ou não chegou a contratar. Entra com	: a refund within seven days or a withdrawal before signing. It contributes	: reembolso dentro de siete días o desistimiento antes de contratar. Aporta
+porque não gerou receita.	because it generated no revenue.	porque no generó ingresos.
+: saída por motivo pessoal, fora do controle do cliente.	: departure for personal reasons beyond the customer's control.	: baja por motivos personales fuera del control del cliente.
+Quem marca se é churn ou não é a coluna "É churn" da planilha, preenchida na hora de lançar a saída.	The spreadsheet's churn column classifies each departure when recorded.	La columna de churn de la hoja clasifica cada baja al registrarla.
+Hoje:	Today:	Hoy:
+contas entraram em	accounts joined in	cuentas se dieron de alta en
+Soma do valor mensal de	Sum of the monthly value of	Suma del importe mensual de
+todas	all	todas
+as contas que saíram no mês = churn + não churn.	accounts that left that month = churn and other departures.	las cuentas que se dieron de baja ese mes = churn y otras bajas.
+não churn	non-churn	bajas ajenas al churn
+MRR das contas que saíram	MRR of accounts lost	MRR de las cuentas perdidas
+por churn	to churn	por churn
+Empresas que perderam todas as contas pagantes	Companies that lost all paying accounts	Empresas que perdieron todas sus cuentas de pago
+pico de clientes pagantes do mês.	peak paying customers in the month.	máximo mensual de clientes de pago.
+Conta empresas: um cliente com 2 contas que saíram conta 1.	Counts companies: one customer with two departed accounts counts once.	Cuenta empresas: un cliente con dos cuentas dadas de baja cuenta una vez.
+MRR do início + MRR novo − saídas = MRR do fim. O fim de um mês é o início do seguinte.	Opening MRR + new MRR − lost MRR = closing MRR. Closing MRR carries over to the next month.	MRR inicial + MRR nuevo − MRR perdido = MRR al cierre. El cierre de un mes pasa al siguiente.
+Soma dos pagamentos aprovados no Cartão, na Checkout e no Boleto desde o dia 1º. É dinheiro que entrou,	Sum of approved card, checkout and bank-slip payments since the first day of the month. This is collected cash,	Suma de cobros aprobados por tarjeta, checkout y boleto desde el primer día del mes. Es dinero cobrado,
+não é MRR	not MRR	no MRR
+Ex.: trimestral que entrou em 02/07 vence em 02/10.	Example: a quarterly plan started on July 2 renews on October 2.	Ejemplo: un plan trimestral iniciado el 2 de julio se renueva el 2 de octubre.
+Recebido no mês é diferente de MRR.	Cash collected this month differs from MRR.	Los cobros del mes son distintos del MRR.
+Trimestral, semestral e anual são pagos de uma vez num mês só; no MRR eles entram divididos por mês. No começo do mês o recebido é baixo porque as cobranças caem ao longo dos dias.	Quarterly, semiannual and annual plans are paid upfront and spread across months for MRR. Cash collected tends to be low early in the month as payments arrive throughout the month.	Los planes trimestrales, semestrales y anuales se pagan de una vez y se reparten por mes para el MRR. Los cobros suelen ser bajos al inicio del mes porque llegan a lo largo del periodo.
+Contas, clientes e usuários são contagens diferentes.	Accounts, customers and users are different counts.	Cuentas, clientes y usuarios son recuentos distintos.
+Saídas do mês contam contas; churn de clientes conta empresas.	Monthly departures count accounts, while customer churn counts companies.	Las bajas del mes cuentan cuentas y el churn de clientes cuenta empresas.
+No começo do mês	Early in the month	Al inicio del mes
+os números do mês corrente aparecem zerados ou pequenos. O mês fechado completo fica na aba Histórico.	, current-month values may be zero or low. See History for complete monthly snapshots.	, las cifras pueden ser bajas o nulas. Consulta Histórico para ver los cierres completos.
+: quem continua ativo aparece nos meses anteriores com o valor de hoje; quem saiu aparece com o valor que tinha na saída.	: active accounts use their current price in earlier months. Departed accounts use the price at departure.	: las cuentas activas usan el precio actual en meses anteriores. Las bajas usan el precio al salir.
+Internos da equipe	Internal team members	Miembros del equipo interno
+só aparecem em usuários; ficam fora de clientes, contas e MRR.	count only as users and are excluded from customers, accounts and MRR.	solo cuentan como usuarios y quedan fuera de clientes, cuentas y MRR.
+Passe o mouse sobre qualquer nome sublinhado com pontinhos para ver a explicação daquele número.	Hover over any dotted-underlined label to see how the metric is calculated.	Pasa el cursor sobre un nombre subrayado con puntos para ver cómo se calcula el indicador.
+Data dos dados da planilha usada nesta atualização.	Date of the spreadsheet snapshot used for this refresh.	Fecha de los datos de la hoja usados en esta actualización.
+Contas ativas na planilha (linhas), sem internos.	Active spreadsheet rows, excluding internal accounts.	Filas activas de la hoja, sin cuentas internas.
+pgto	payment	cobro
+pgtos	payments	cobros
+tentativa	attempt	intento
+tentativas	attempts	intentos
+/mês	/month	/mes

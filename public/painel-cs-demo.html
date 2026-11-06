@@ -541,10 +541,11 @@
 
   function $(id){ return document.getElementById(id); }
   function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-  function brl(n){ return Number(n).toLocaleString(demoLanguage === 'en' ? 'en-US' : demoLanguage === 'es' ? 'es-ES' : 'pt-BR',{maximumFractionDigits:0}); }
+  var demoLocale = demoLanguage === 'en' ? 'en-US' : demoLanguage === 'es' ? 'es-ES' : 'pt-BR';
+  function brl(n){ return Number(n).toLocaleString(demoLocale,{maximumFractionDigits:0}); }
   function reais(n){ return 'R$ ' + brl(n); }
-  function reais2(n){ return 'R$ ' + Number(n).toLocaleString(demoLanguage === 'en' ? 'en-US' : demoLanguage === 'es' ? 'es-ES' : 'pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
-  function pct(x,c){ return (x*100).toFixed(c===undefined?1:c).replace('.',',') + '%'; }
+  function reais2(n){ return 'R$ ' + Number(n).toLocaleString(demoLocale,{minimumFractionDigits:2,maximumFractionDigits:2}); }
+  function pct(x,c){ var digits = c === undefined ? 1 : c; return new Intl.NumberFormat(demoLocale, {style:'percent', minimumFractionDigits:digits, maximumFractionDigits:digits}).format(x); }
   function big(prefixo){ for (var i=0;i<D.big.length;i++) if (D.big[i].k.indexOf(prefixo)===0) return D.big[i]; return {v:'—',f:''}; }
   function kpis(el, itens){
     el.innerHTML = itens.map(function(k){

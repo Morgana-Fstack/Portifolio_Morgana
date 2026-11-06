@@ -302,3 +302,13 @@ section[id]{scroll-margin-top:90px}
   .about-copy .lead{font-size:1.25rem}
   .about-copy blockquote{font-size:1.12rem}
 }
+
+.mobile-menu{display:none}
+@media(max-width:900px){
+  .nav{position:relative;gap:8px;z-index:5}
+  .mobile-menu{display:block}
+  .mobile-menu summary{cursor:pointer;padding:6px;color:var(--ink)}
+  .mobile-menu-links{position:absolute;right:0;top:100%;z-index:6;display:grid;min-width:190px;padding:8px;background:#171318;border:1px solid var(--line);border-radius:12px}
+  .mobile-menu-links a{padding:8px 12px;color:var(--ink)}
+  .mobile-menu-links a:hover,.mobile-menu-links a:focus-visible{background:#30232d}
+}

@@ -13,7 +13,22 @@ const pattern = new RegExp("(?<![\\p{L}\\p{N}])(?:" + keys.map(quote).join("|") 
 const translatedText = new WeakMap();
 const translatedAttributes = new WeakMap();
 const attributes = ["aria-label", "title", "placeholder"];
-const translate = value => value.replace(pattern, match => copy.get(match));
+const dateLocale = lang === "en" ? "en-US" : "es-ES";
+const shortDate = new Intl.DateTimeFormat(dateLocale, { day: "numeric", month: "short", timeZone: "UTC" });
+const fullDate = new Intl.DateTimeFormat(dateLocale, { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+
+function translate(value) {
+  return value
+    .replace(pattern, match => copy.get(match))
+    .replace(/\bem (\d+) dias\b/g, (_, days) => lang === "en" ? `in ${days} days` : `en ${days} días`)
+    .replace(/\bdesde (?=\d{2}\/\d{2})/g, lang === "en" ? "since " : "desde ")
+    .replace(/(?<![\d/])(\d{2})\/(\d{2})(?:\/(\d{4}))?(?![\d/])/g, (original, day, month, year) => {
+      const date = new Date(Date.UTC(Number(year || 2026), Number(month) - 1, Number(day)));
+      return date.getUTCDate() === Number(day) && date.getUTCMonth() + 1 === Number(month)
+        ? (year ? fullDate : shortDate).format(date)
+        : original;
+    });
+}
 
 function text(node) {
   if (node.parentElement?.closest("script, style, [data-no-translate]")) return;
