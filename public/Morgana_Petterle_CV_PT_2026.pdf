@@ -1,77 +1,114 @@
 %PDF-1.4
+%“Œ‹ž ReportLab Generated PDF document (opensource)
 1 0 obj
-<< /Type /Catalog /Pages 2 0 R >>
+<<
+/F1 2 0 R /F2 3 0 R
+>>
 endobj
 2 0 obj
-<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+<<
+/BaseFont /Helvetica /Encoding /WinAnsiEncoding /Name /F1 /Subtype /Type1 /Type /Font
+>>
 endobj
 3 0 obj
-<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /Contents 6 0 R >>
+<<
+/BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding /Name /F2 /Subtype /Type1 /Type /Font
+>>
 endobj
 4 0 obj
-<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+<<
+/A <<
+/S /URI /Type /Action /URI (tel:+5541996333827)
+>> /Border [ 0 0 0 ] /Rect [ 50 728.0898 128.309 738.8898 ] /Subtype /Link /Type /Annot
+>>
 endobj
 5 0 obj
-<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>
+<<
+/A <<
+/S /URI /Type /Action /URI (mailto:morganapetterledacunha@gmail.com)
+>> /Border [ 0 0 0 ] /Rect [ 135.653 728.0898 285.845 738.8898 ] /Subtype /Link /Type /Annot
+>>
 endobj
 6 0 obj
-<< /Length 5433 >>
+<<
+/A <<
+/S /URI /Type /Action /URI (https://morgana-petterle-portfolio.vercel.app/)
+>> /Border [ 0 0 0 ] /Rect [ 50 716.0898 83.012 726.8898 ] /Subtype /Link /Type /Annot
+>>
+endobj
+7 0 obj
+<<
+/A <<
+/S /URI /Type /Action /URI (https://www.linkedin.com/in/morgana-petterle)
+>> /Border [ 0 0 0 ] /Rect [ 90.356 716.0898 124.376 726.8898 ] /Subtype /Link /Type /Annot
+>>
+endobj
+8 0 obj
+<<
+/A <<
+/S /URI /Type /Action /URI (https://github.com/Morgana-Fstack)
+>> /Border [ 0 0 0 ] /Rect [ 131.72 716.0898 159.728 726.8898 ] /Subtype /Link /Type /Annot
+>>
+endobj
+9 0 obj
+<<
+/Annots [ 4 0 R 5 0 R 6 0 R 7 0 R 8 0 R ] /Contents 13 0 R /MediaBox [ 0 0 595.2756 841.8898 ] /Parent 12 0 R /Resources <<
+/Font 1 0 R /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
+>> /Rotate 0 
+  /Trans <<
+
+>> /Type /Page
+>>
+endobj
+10 0 obj
+<<
+/PageMode /UseNone /Pages 12 0 R /Type /Catalog
+>>
+endobj
+11 0 obj
+<<
+/Author (Morgana Petterle da Cunha) /CreationDate (D:20261106091951-03'00') /Creator (\(unspecified\)) /Keywords () /ModDate (D:20261106091951-03'00') /Producer (ReportLab PDF Library - \(opensource\)) 
+  /Subject (\(unspecified\)) /Title (Curr\355culo - Morgana Petterle da Cunha) /Trapped /False
+>>
+endobj
+12 0 obj
+<<
+/Count 1 /Kids [ 9 0 R ] /Type /Pages
+>>
+endobj
+13 0 obj
+<<
+/Filter [ /ASCII85Decode /FlateDecode ] /Length 2165
+>>
 stream
-0.08 0.17 0.28 rg BT /F2 17 Tf 1 0 0 1 50 796 Tm (MORGANA PETTERLE DA CUNHA) Tj ET
-0.12 0.38 0.55 rg BT /F2 8.7 Tf 1 0 0 1 50 777 Tm (CUSTOMER SUCCESS OPERATIONS | DADOS | AUTOMA\307\303O | DESENVOLVIMENTO) Tj ET
-0.17 0.22 0.30 rg BT /F1 8.1 Tf 1 0 0 1 50 761 Tm (Curitiba, PR, Brasil  |  linkedin.com/in/morgana-petterle  |  github.com/Morgana-Fstack) Tj ET
-0.81 0.84 0.88 RG 0.65 w 50 747 m 545 747 l S
-0.08 0.30 0.45 rg BT /F2 10 Tf 1 0 0 1 50 727 Tm (PERFIL PROFISSIONAL) Tj ET
-0.17 0.22 0.30 rg BT /F1 8.45 Tf 1 0 0 1 55 714 Tm (- Profissional de Customer Success Operations, dados e automa\347\343o, com experi\352ncia em opera\347\365es B2B SaaS,) Tj ET
-0.17 0.22 0.30 rg BT /F1 8.45 Tf 1 0 0 1 55 703 Tm (  reten\347\343o, an\341lise de churn, CRM e melhoria de processos.) Tj ET
-0.17 0.22 0.30 rg BT /F1 8.45 Tf 1 0 0 1 55 689 Tm (- Forma\347\343o em Desenvolvimento Full Stack e projetos pr\341ticos em Python, Streamlit, React, TypeScript e) Tj ET
-0.17 0.22 0.30 rg BT /F1 8.45 Tf 1 0 0 1 55 678 Tm (  APIs REST. Interesse em posicoes remotas de CS Ops, Data Operations, automa\347\343o e tecnologia.) Tj ET
-0.08 0.30 0.45 rg BT /F2 10 Tf 1 0 0 1 50 657 Tm (EXPERI\312NCIA PROFISSIONAL) Tj ET
-0.17 0.22 0.30 rg BT /F2 9.1 Tf 1 0 0 1 55 644 Tm (Tracionei | Analista de Customer Success) Tj ET
-0.17 0.22 0.30 rg BT /F1 8.1 Tf 1 0 0 1 470 644 Tm (2026 - atual) Tj ET
-0.17 0.22 0.30 rg BT /F1 8.35 Tf 1 0 0 1 60 632 Tm (- Gest\343o de jornada e acompanhamento de carteira B2B SaaS, incluindo onboarding, ativa\347\343o, reten\347\343o,) Tj ET
-0.17 0.22 0.30 rg BT /F1 8.35 Tf 1 0 0 1 60 621.3 Tm (  follow-ups e cancelamentos.) Tj ET
-0.17 0.22 0.30 rg BT /F1 8.35 Tf 1 0 0 1 60 609.5999999999999 Tm (- Estruturacao de processos em CRM, relatorios operacionais, indicadores de churn e rotinas de) Tj ET
-0.17 0.22 0.30 rg BT /F1 8.35 Tf 1 0 0 1 60 598.8999999999999 Tm (  acompanhamento.) Tj ET
-0.17 0.22 0.30 rg BT /F1 8.35 Tf 1 0 0 1 60 587.1999999999998 Tm (- Confer\352ncia de informa\347\365es de clientes e faturamento, identifica\347\343o de divergencias e apoio a) Tj ET
-0.17 0.22 0.30 rg BT /F1 8.35 Tf 1 0 0 1 60 576.4999999999998 Tm (  consolida\347\343o de indicadores.) Tj ET
-0.17 0.22 0.30 rg BT /F1 8.35 Tf 1 0 0 1 60 564.7999999999997 Tm (- Automa\347\365es e fluxos com apoio de IA para reduzir tarefas manuais e organizar informa\347\365es operacionais.) Tj ET
-0.17 0.22 0.30 rg BT /F2 9.1 Tf 1 0 0 1 55 548.0999999999997 Tm (Telef\364nica Vivo | Customer Success e Contas B2B) Tj ET
-0.17 0.22 0.30 rg BT /F1 8.1 Tf 1 0 0 1 470 548.0999999999997 Tm (2021 - 2025) Tj ET
-0.17 0.22 0.30 rg BT /F1 8.35 Tf 1 0 0 1 60 536.0999999999997 Tm (- Relacionamento consultivo com clientes corporativos, acompanhamento de demandas e tratativa de) Tj ET
-0.17 0.22 0.30 rg BT /F1 8.35 Tf 1 0 0 1 60 525.3999999999996 Tm (  situa\347\365es cr\355ticas.) Tj ET
-0.17 0.22 0.30 rg BT /F1 8.35 Tf 1 0 0 1 60 513.6999999999996 Tm (- An\341lise de necessidades, articulacao de solu\347\365es e melhoria de processos de atendimento e experi\352ncia) Tj ET
-0.17 0.22 0.30 rg BT /F1 8.35 Tf 1 0 0 1 60 502.9999999999996 Tm (  do cliente.) Tj ET
-0.08 0.30 0.45 rg BT /F2 10 Tf 1 0 0 1 50 479.2999999999996 Tm (PROJETOS SELECIONADOS) Tj ET
-0.17 0.22 0.30 rg BT /F1 8.45 Tf 1 0 0 1 55 466.2999999999996 Tm (- Customer Success Automation: demonstracao em Streamlit para sa\372de da carteira, risco, prioriza\347\343o de) Tj ET
-0.17 0.22 0.30 rg BT /F1 8.45 Tf 1 0 0 1 55 455.2999999999996 Tm (  follow-ups e renovacoes com dados sinteticos.) Tj ET
-0.17 0.22 0.30 rg BT /F1 8.45 Tf 1 0 0 1 55 441.2999999999996 Tm (- Customer Success Analytics Dashboard: visao executiva de MRR, ARR, churn, reten\347\343o, risco de receita e) Tj ET
-0.17 0.22 0.30 rg BT /F1 8.45 Tf 1 0 0 1 55 430.2999999999996 Tm (  prioridades.) Tj ET
-0.17 0.22 0.30 rg BT /F1 8.45 Tf 1 0 0 1 55 416.2999999999996 Tm (- Data Quality Studio: aplicacao Python/pandas para diagnostico, limpeza, validacao e exportacao de dados) Tj ET
-0.17 0.22 0.30 rg BT /F1 8.45 Tf 1 0 0 1 55 405.2999999999996 Tm (  CSV e Excel.) Tj ET
-0.17 0.22 0.30 rg BT /F1 8.45 Tf 1 0 0 1 55 391.2999999999996 Tm (- ShipTrack API: API REST em Python/Flask para rastreamento de entregas, hist\363rico de eventos e testes) Tj ET
-0.17 0.22 0.30 rg BT /F1 8.45 Tf 1 0 0 1 55 380.2999999999996 Tm (  automatizados.) Tj ET
-0.08 0.30 0.45 rg BT /F2 10 Tf 1 0 0 1 50 359.2999999999996 Tm (FORMA\307\303O) Tj ET
-0.17 0.22 0.30 rg BT /F1 8.45 Tf 1 0 0 1 55 346.2999999999996 Tm (- Desenvolvimento Full Stack | Universidade Estacio de S\341 | 2024 - 2026 \(conclu\355do\)) Tj ET
-0.17 0.22 0.30 rg BT /F1 8.45 Tf 1 0 0 1 55 332.2999999999996 Tm (- Educa\347\343o F\355sica | Gradua\347\343o concluida) Tj ET
-0.08 0.30 0.45 rg BT /F2 10 Tf 1 0 0 1 50 311.2999999999996 Tm (COMPET\312NCIAS) Tj ET
-0.17 0.22 0.30 rg BT /F1 8.45 Tf 1 0 0 1 55 298.2999999999996 Tm (- CS Operations; indicadores de reten\347\343o e churn; CRM; automa\347\343o de processos; Python; pandas; Streamlit;) Tj ET
-0.17 0.22 0.30 rg BT /F1 8.45 Tf 1 0 0 1 55 287.2999999999996 Tm (  SQL; JavaScript; TypeScript; React; APIs REST; Git/GitHub; dashboards.) Tj ET
-0.08 0.30 0.45 rg BT /F2 10 Tf 1 0 0 1 50 266.2999999999996 Tm (IDIOMAS) Tj ET
-0.17 0.22 0.30 rg BT /F1 8.45 Tf 1 0 0 1 55 253.2999999999996 Tm (- Portugu\352s \(nativo\); ingl\352s \(comunica\347\343o profissional\); espanhol \(comunica\347\343o\); italiano \(b\341sico\).) Tj ET
-endstream
+Gatm<?$G!n&q/*0W(229+\4qI]Ih-J64PmVOZE<S93Z.M:F%f38^&GmIf/&;nKGoWZ>k[rCa$3dlf6i+e[X,KO)'58.FHD'hVGa'HF-q@gM(eD3Ml9:c'LBWIV$m'?I*Q_qh%)h^k5[7cuIl*[9T@(iGZL"q#Qo.)d%0B)o,D[iuWJ_2XX_s=80&?Do7>Rc,\#hGVL5fm>sf0*o7F2C&%ucs2CIW`6Ysr61>3dr.>*S>=E0F(kjg$8g=\>Z^h#l@9MenXSbg(s*[VHUoi%,b]B>=,a%&oS#BT_P?>bl?^cHrSoiQIZJU/Fb:X7*a'RkIBiLcIKgYHc6T7Kq.Y/,>.c4uc(BcgfcrLuLKb9@iH.$56WXB:1dk\?DoRmZInFF6>Dm*C:qmgd5:Ic35:sTLNC3ffoF1]rm!tV(L0Y7*>mc/=Akkb9_^[Lj^^+ZC9Xq4U@VSR#Ibsl5Q.uQ`_7)gE#ZR>:89e',jMKIPh*"[Rmi9&`-l]pB#';[>pf2Q=RAN\'e@dH$R]It@r;UHMllhGkTek;75S9B;gd.qp+2jj`<Zb&dG:1b$SC#dd8hCGP`%1_/QhqRA&b&`YI,Re\;gof;b%:i3mh@50*K]'_eLq"/(+IUZ[b[n63a\JZf"&nX1,b_FRdH;8sNQC[u2CXPM0%LAoO2W9:X$<u5fLi4o8eg-JCp9cSH""ji1b9@OV-oft(_qmt,+YhNbK3L/es<^#7e$D%[PduUi,u/cGP\hMfHtiD$OhA_.cc-2MKQ^g;(s5'Nl-sDYB<bB`U6Cq;Mmk.^J6i@C+PP2?OS%:rrO@-Q1'#0UWN$*a%<o?9<)?C!B#je&ZJn&OX$,-<Y7i5%f)HG_D:-IdHYKG@<IQ0ckG.B]XHFg[j2=AYK>OlgUS<(LCgbnaIqTTHdopN.bcq9U)j,q"-(Y!mL0];<QOO:Uda<,'QkFf.?,,;r-BOo(,3Z$Q7&?UqB;>FmIR1Kbmu68i*.NFiYH"sWhPXC67U!_=p(p^@^VD3"%7H<V!N,`+P2Q?6Rn#!.+Uj/>LF817o,u'Yk!7JBS:'Gq1TU]:OL5OZCH+oGXT<ISH]4gJHL/EQE@5<B+T%`&WKaSR_t\hd<0[&$J.SV-EmL*HU2,?0jDmicAk=a)!F8R?ia/4ef]T(8U`,=(=r^_8<d8RP/ebq.Ie2#o9dT5%uc0QA+qsKbSE@,Qob_6H9rMp"aGtVM/=eTB+S=N)_GYD`lhLUiHRC)Z-(k]_jD5"nC)L$*u[9K]U)*@MQ>8[Vd5cqoeQS&Q+it.3SfSjaYLKNbGhFAN%rKe,eh80:+$lY87aI]eiCT#TTpqjF:XMID7A6T%P-0%:V&<%"2-Kj8SSf.8_;Y]0PZR#-jI+c$]gkm(_@6MKdI':7SGWh]D=U2DVP,^Y^<3'd1<f`kH*us#Q2?&I4K.spchRNYh!1W(iX;pLc?rE'PX;!9&IRYDZG-E2gV'4W2JVpM6YW'UAoUFDY*%+mF7@@>84rq27NQ.1781DKrI)=j]rq\5q6r\(LdY$;`6mJCJLloG]E$Iq4ujS1sV.E9,(`qQnh_=Gr"i5l2Vk4=\6tC2NbS<#9HWOU=-1A#!DA@E)Q">)<NU-qc5?VahJs5`T^F:CK*kCKtfS0U)R>i(ZCS3nmM!UL@`N2+>odqkUb&S^Ipuo\I'DFdfR^9:.0WI@&h9g923X8\`HQ)4>mh$S>noIn5\Y:26^RhbYdl!.5(=Es7X?M&$tH<"F)c8a6ERWmY/TGmc\(7)E'&u(1"!hZMsM!^Y?*kF./:1Gn0#bTatT[_T8ZmiR%/]<Z\F$0CPh-7UbMNB^\o#F(c^cKMOR5]rOn1%Mq.7<<d"2R<(!.qh!5,`5ZLk*7S]*o3u4*Fi2L6ib,uXW6&jc8\KTA@O8^W/aeBE^CC4sriC+k?G$#hr=f*4asaSdCq\6@LULjNqjTc\gq!"@a>7G&FPNg`f0[3k&km![b\_O??X7(oNHdDi!fYgaNA1W%p_r*=@_<9b)@:$GfS2AGbBau9ZesB-gcl-b=fSc(HmYCO>-_Xgm[u9Gs)MHJ9Pu5aqdtS0mVBO,oY5nD7jBE@>V;'JD40cIX(qt4fHc6ad*XU1C[9a/f*/fjk4Y1-@.>Hh%Cq3.Spq,i+-Gg1b19+Ojct\?3jH9q-i`DTrr?/&Yk.~>endstream
 endobj
 xref
-0 7
+0 14
 0000000000 65535 f 
-0000000009 00000 n 
-0000000058 00000 n 
-0000000115 00000 n 
-0000000251 00000 n 
-0000000348 00000 n 
-0000000450 00000 n 
+0000000061 00000 n 
+0000000102 00000 n 
+0000000209 00000 n 
+0000000321 00000 n 
+0000000484 00000 n 
+0000000673 00000 n 
+0000000863 00000 n 
+0000001056 00000 n 
+0000001238 00000 n 
+0000001485 00000 n 
+0000001555 00000 n 
+0000001875 00000 n 
+0000001935 00000 n 
 trailer
-<< /Size 7 /Root 1 0 R >>
+<<
+/ID 
+[<13e31d084c0b269debd97dae5696a569><13e31d084c0b269debd97dae5696a569>]
+% ReportLab generated PDF document -- digest (opensource)
+
+/Info 11 0 R
+/Root 10 0 R
+/Size 14
+>>
 startxref
-5934
+4192
 %%EOF
