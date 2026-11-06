@@ -4,10 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Customer Success · Demo</title>
-<link rel="stylesheet" href="/painel-cs-international.css">
-<script type="module" src="/painel-cs-international.js"></script>
+<script>
+  const lang = new URLSearchParams(location.search).get('lang') === 'es' ? 'es' : 'en';
+  const sections = { overview: 'visao', operations: 'operacao', retention: 'retencao', revenue: 'receita', customers: 'clientes', history: 'historico', methodology: 'metodologia' };
+  const section = sections[location.hash.slice(1)];
+  location.replace('/painel-cs-demo.html?lang=' + lang + (section ? '#' + section : ''));
+</script>
 </head>
 <body>
-<main id="dashboard"></main>
+<a href="/painel-cs-demo.html?lang=en" lang="en">English demo</a>
+<a href="/painel-cs-demo.html?lang=es" lang="es">Demostración en español</a>
 </body>
 </html>

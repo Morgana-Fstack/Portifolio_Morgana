@@ -1,0 +1,367 @@
+Painel de CS · Demo	CS Dashboard · Demo	Panel de CS · Demo
+Fonte dos dados	Data source	Fuente de datos
+Planilha	Spreadsheet	Hoja de cálculo
+Posição de	Snapshot as of	Datos al
+Contas na base	Accounts in the dataset	Cuentas en la base
+Recebido no mês	Payments received this month	Cobros recibidos este mes
+Total recebido	Total received	Total cobrado
+Trocar tema	Toggle theme	Cambiar tema
+Demonstração · dados fictícios	Demo · fictional data	Demostración · datos ficticios
+Customer Success · Demonstração	Customer Success · Demo	Customer Success · Demostración
+Base ativa, receita recorrente, churn e renovações da carteira, com os números da planilha de CS.	Active accounts, recurring revenue, churn and renewals from the CS spreadsheet.	Cuentas activas, ingresos recurrentes, churn y renovaciones a partir de la hoja de CS.
+Seções do painel	Dashboard sections	Secciones del panel
+Visão executiva	Executive overview	Visión ejecutiva
+Operação de CS	CS operations	Operaciones de CS
+Retenção	Retention	Retención
+Receita	Revenue	Ingresos
+Clientes	Customers	Clientes
+Histórico	History	Histórico
+Metodologia	Methodology	Metodología
+Entenda os indicadores:	Understand the metrics:	Entiende los indicadores:
+passe o mouse sobre os nomes sublinhados ou consulte a aba	hover over the underlined labels or open the	pasa el cursor sobre los nombres subrayados o consulta
+para ver fontes, critérios e cálculos.	for sources, criteria and calculations.	para ver las fuentes, los criterios y los cálculos.
+MRR que entrou e que saiu	New and lost MRR	MRR nuevo y perdido
+MRR que entrou e saiu por mês	Monthly new and lost MRR	MRR nuevo y perdido por mes
+Por mês, em reais	Per month, in Brazilian reais	Por mes, en reales brasileños
+Entrou	Added	Ingresó
+Saiu	Lost	Salió
+MRR por produto	MRR by product	MRR por producto
+Composição da receita ativa	Active revenue breakdown	Composición de los ingresos activos
+Produto	Product	Producto
+% receita	% of revenue	% de ingresos
+Ticket médio	Average revenue per customer	Ingreso medio por cliente
+Pontos de atenção	Items to watch	Puntos de atención
+Churn por onboarding	Churn by onboarding status	Churn según la incorporación
+Quanto saiu de cada grupo	Departures in each group	Bajas en cada grupo
+Churn mensal de clientes	Monthly customer churn	Churn mensual de clientes
+Clientes que saíram ÷ pico de pagantes do mês	Customers who left ÷ peak paying customers that month	Clientes que se dieron de baja ÷ máximo mensual de clientes de pago
+Meta máxima	Maximum target	Objetivo máximo
+Motivos de churn	Churn reasons	Motivos de churn
+Saídas que não são churn	Departures excluded from churn	Bajas excluidas del churn
+Entram em cancelamentos, ficam fora da taxa de churn	Counted as cancellations and excluded from the churn rate	Se cuentan como cancelaciones y quedan fuera de la tasa de churn
+Quanto de cada safra continua ativo	Active accounts by cohort	Cuentas activas por cohorte
+Contas agrupadas pelo mês de entrada	Accounts grouped by start month	Cuentas agrupadas por mes de alta
+Safra recente sempre parece melhor, porque teve menos tempo para cancelar.	Recent cohorts have had less time to cancel.	Las cohortes recientes han tenido menos tiempo para cancelar.
+MRR que entrou e quanto ainda está ativo	Original and remaining MRR	MRR inicial y restante
+Por safra	By cohort	Por cohorte
+Ainda ativo	Still active	Aún activo
+Todas as safras	All cohorts	Todas las cohortes
+Contagem por conta	Counted by account	Recuento por cuenta
+Safra	Cohort	Cohorte
+Entraram	Joined	Altas
+Cancelaram	Cancelled	Bajas
+Outras saídas	Other departures	Otras bajas
+Ativas hoje	Active today	Activas hoy
+MRR que entrou	New MRR	MRR nuevo
+MRR ativo	Active MRR	MRR activo
+Resultado líquido por mês	Monthly net change	Variación neta mensual
+MRR que entrou menos MRR que saiu	New MRR minus lost MRR	MRR nuevo menos MRR perdido
+Agências parceiras	Partner agencies	Agencias asociadas
+Clientes da agência e serviços da a empresa que ela opera	Agency customers and company services operated by the agency	Clientes de la agencia y servicios de la empresa gestionados por la agencia
+Os serviços são clientes da a empresa: a agência só opera a conta.	Company service customers remain with the company. The agency operates their accounts.	Los clientes de servicios pertenecen a la empresa. La agencia opera sus cuentas.
+MRR por plano	MRR by plan	MRR por plan
+Ticket por conta pagante	Average MRR per paying account	MRR medio por cuenta de pago
+MRR por forma de pagamento	MRR by payment method	MRR por forma de pago
+Todas as formas de pagamento conferidas	All payment methods reviewed	Todas las formas de pago revisadas
+Acessos na plataforma	Platform logins	Accesos a la plataforma
+Logins ativos hoje, por tipo de conta	Active logins by account type	Accesos activos por tipo de cuenta
+Acessos a criar	Logins to create	Accesos por crear
+Clientes inadimplentes	Customers with overdue payments	Clientes con pagos vencidos
+Quem está com pagamento em aberto. "Em atraso" continua na base e no MRR; "Nunca pagou" fica fora de clientes, contas e MRR.	Customers with open payments. Overdue accounts stay in the totals and MRR. Accounts that never paid are excluded.	Clientes con pagos pendientes. Las cuentas vencidas siguen en los totales y en el MRR. Se excluyen las cuentas que nunca pagaron.
+Cliente	Customer	Cliente
+Desde	Since	Desde
+Valor	Amount	Importe
+Situação	Status	Estado
+Observação	Note	Nota
+Renovações nos próximos 60 dias	Renewals in the next 60 days	Renovaciones en los próximos 60 días
+Plano	Plan	Plan
+Vence em	Renewal date	Fecha de renovación
+Clientes, contas e usuários	Customers, accounts and users	Clientes, cuentas y usuarios
+A mesma base contada de três jeitos	Three ways to count the same dataset	Tres formas de contar la misma base
+Pagam	Paying	De pago
+Não pagam	Non-paying	Sin pago
+Internos	Internal	Internos
+Carteira ativa	Active accounts	Cartera activa
+Uma linha por conta	One row per account	Una fila por cuenta
+Buscar cliente	Find a customer	Buscar cliente
+Filtros da carteira	Account filters	Filtros de la cartera
+Filtros	Filters	Filtros
+Limpar	Clear	Borrar
+Tipo	Type	Tipo
+Pagamento	Payment method	Forma de pago
+Entrada	Start date	Fecha de alta
+Escolha o mês	Choose a month	Elige el mes
+Todos os meses	All months	Todos los meses
+Posição no último dia de cada mês	Snapshot on the last day of each month	Datos al último día de cada mes
+Posição no último dia do mês	Snapshot on the last day of the month	Datos al último día del mes
+Mês	Month	Mes
+MRR no fim	Closing MRR	MRR al cierre
+Clientes pagantes	Paying customers	Clientes de pago
+Clientes ativos	Active customers	Clientes activos
+Contas	Accounts	Cuentas
+Ticket	Average revenue	Ingreso medio
+MRR novo	New MRR	MRR nuevo
+Saíram	Departed	Bajas
+MRR perdido	Lost MRR	MRR perdido
+Churn MRR software	Software MRR churn	Churn de MRR de software
+Churn MRR serviço	Service MRR churn	Churn de MRR de servicios
+Churn de MRR	MRR churn	Churn de MRR
+Quem continua ativo entra com o valor de hoje: se um cliente mudou de preço, os meses anteriores mostram o preço atual. Quem já saiu entra com o valor registrado na saída. Internos ficam fora.	Active accounts use their current price, including in past months. Departed accounts use their recorded price at departure. Internal accounts are excluded.	Las cuentas activas usan el precio actual, incluso en meses anteriores. Las bajas usan el precio registrado al salir. Se excluyen las cuentas internas.
+Criado por	Created by	Creado por
+demonstração com dados fictícios	demo with fictional data	demostración con datos ficticios
+Usuários	Users	Usuarios
+usuários	users	usuarios
+Usuário	User	Usuario
+Conta	Account	Cuenta
+contas	accounts	cuentas
+conta	account	cuenta
+clientes	customers	clientes
+cliente	customer	cliente
+Pagantes	Paying	De pago
+pagantes	paying	de pago
+Não paga	Non-paying	Sin pago
+não paga	does not pay	no paga
+Gratuitas e trial	Free and trial	Gratuitas y de prueba
+grátis/trial	free/trial	gratis/prueba
+gratuito, trial, cortesia	free, trial or complimentary	gratis, prueba o cortesía
+A criar	To create	Por crear
+ativos	active	activos
+ativas	active	activas
+Contas ativas	Active accounts	Cuentas activas
+Recebido em	Received in	Cobrado en
+Atualizado em	Updated on	Actualizado el
+às	at	a las
+Cartão	Card	Tarjeta
+Boleto	Bank slip	Boleto bancario
+Sem método	No payment method	Sin forma de pago
+Em atraso	Overdue	Vencido
+Em resgate	In recovery	En recuperación
+Nunca pagou	Never paid	Nunca pagó
+Pediu cancelamento	Requested cancellation	Solicitó la baja
+Cobrança recusada	Payment declined	Cobro rechazado
+sem dados	no data	sin datos
+consultado em	checked on	consultado el
+Mensal	Monthly	Mensual
+Trimestral	Quarterly	Trimestral
+Semestral	Semiannual	Semestral
+Anual	Annual	Anual
+Gratuito	Free	Gratuito
+Trial	Trial	Prueba
+Serviço LinkedIn	LinkedIn service	Servicio de LinkedIn
+Mensal - Serviços e SEO	Monthly - Services and SEO	Mensual - Servicios y SEO
+Serviços próprios	Company services	Servicios propios
+Serviço (próprio)	Company service	Servicio propio
+Serviço	Service	Servicio
+Serviços	Services	Servicios
+Mentoria	Mentoring	Mentoría
+Agência Norte	North agency	Agencia norte
+Agência Sul	South agency	Agencia sur
+Agência	Agency	Agencia
+Acordo Norte	North agency agreement	Acuerdo con agencia norte
+Acordo Sul	South agency agreement	Acuerdo con agencia sur
+Cliente Agência Norte	North agency customer	Cliente de agencia norte
+Cliente Agência Sul	South agency customer	Cliente de agencia sur
+Clientes da agência	Agency customers	Clientes de la agencia
+Parceiro Norte	North partner	Socio norte
+Parceiro Sul	South partner	Socio sur
+Parceiro/Afiliado	Partner/affiliate	Socio/afiliado
+Multicontas	Multiple accounts	Varias cuentas
+Outros	Other	Otros
+Falta de resultado/ROI	Lack of results or ROI	Falta de resultados o ROI
+Falta de uso (tempo/prioridade)	Low usage (time or priorities)	Poco uso (tiempo o prioridades)
+Problema técnico	Technical issue	Problema técnico
+Preço/orçamento	Price or budget	Precio o presupuesto
+Sem resposta pós contato	No response after outreach	Sin respuesta tras el contacto
+Foi pro concorrente	Switched to a competitor	Se pasó a un competidor
+Encerramento combinado	Agreed termination	Cierre acordado
+Solução própria	In-house solution	Solución propia
+Cliente sem fit cultural	Cultural mismatch	Incompatibilidad cultural
+Fechamento da empresa	Business closure	Cierre de la empresa
+Fim de contrato	End of contract	Fin del contrato
+Desistência (não chegou a contratar)	Withdrew before signing	Desistió antes de contratar
+Outras saídas (encerramento combinado etc.)	Other departures (agreed termination, etc.)	Otras bajas (cierre acordado, etc.)
+Saída eventual	Occasional departure	Salida eventual
+Sem registro	Not recorded	Sin registro
+Sem tipo	No type	Sin tipo
+Todos os tipos	All types	Todos los tipos
+Todos os produtos	All products	Todos los productos
+Todos os planos	All plans	Todos los planes
+Todas as formas	All methods	Todas las formas
+Todos	All	Todos
+Plano e pagamento	Plan and payment	Plan y pago
+Forma de pagamento	Payment method	Forma de pago
+Acompanhamento	Follow-up	Seguimiento
+MRR da conta (R$)	Account MRR (BRL)	MRR de la cuenta (BRL)
+MRR mínimo	Minimum MRR	MRR mínimo
+MRR máximo	Maximum MRR	MRR máximo
+Mín	Min	Mín.
+Máx	Max	Máx.
+Remover filtro	Remove filter	Quitar filtro
+Não fez onboarding	Onboarding incomplete	Incorporación incompleta
+Fez onboarding	Onboarding completed	Incorporación completada
+Não fez	Not completed	Sin completar
+Fez	Completed	Completada
+Nenhum cliente com esse filtro.	No customers match these filters.	Ningún cliente coincide con estos filtros.
+Fechamento de	Snapshot for	Cierre de
+Mês em andamento, posição de	Month in progress, snapshot as of	Mes en curso, datos al
+primeiro mês do ano	first month of the year	primer mes del año
+igual ao mês anterior	unchanged from last month	sin cambios respecto al mes anterior
+vs mês anterior	vs. previous month	vs. mes anterior
+Saídas do mês	Monthly departures	Bajas del mes
+parcial	partial	parcial
+amanhã	tomorrow	mañana
+hoje	today	hoy
+janeiro	January	enero
+fevereiro	February	febrero
+março	March	marzo
+abril	April	abril
+maio	May	mayo
+junho	June	junio
+julho	July	julio
+agosto	August	agosto
+setembro	September	septiembre
+outubro	October	octubre
+novembro	November	noviembre
+dezembro	December	diciembre
+Fev	Feb	Feb
+Abr	Apr	Abr
+Mai	May	May
+Ago	Aug	Ago
+Set	Sep	Sep
+Out	Oct	Oct
+Dez	Dec	Dic
+Resumo em 30 segundos	30-second summary	Resumen en 30 segundos
+De onde vêm os números	Where the numbers come from	De dónde salen las cifras
+Palavras que aparecem no painel	Dashboard terminology	Términos del panel
+Churn e não churn: o que entra em cada um	What counts as churn and what does not	Qué se incluye y qué se excluye del churn
+Como cada número é calculado (com o exemplo de	How each metric is calculated (using the example for	Cómo se calcula cada indicador (con el ejemplo de
+Cuidados na hora de ler	How to interpret the data	Cómo interpretar los datos
+Número	Metric	Indicador
+Exemplo real	Worked example	Ejemplo de cálculo
+Churn de clientes	Customer churn	Churn de clientes
+Não churn	Non-churn	Salidas ajenas al churn
+Retenção da safra	Cohort retention	Retención de la cohorte
+Fechamento do mês	Month-end snapshot	Cierre mensual
+Resultado do mês	Monthly net change	Variación neta mensual
+MRR do início do mês	Opening MRR	MRR inicial del mes
+Pico do mês	Monthly peak	Máximo del mes
+Saídas por churn no ano	Year-to-date churn departures	Bajas por churn en el año
+Soma do valor mensal de todas as contas ativas que pagam.	Sum of the monthly value of all active paying accounts.	Suma del valor mensual de todas las cuentas activas de pago.
+Empresas com pelo menos uma conta ativa que paga.	Companies with at least one active paying account.	Empresas con al menos una cuenta activa de pago.
+MRR ÷ clientes pagantes.	MRR ÷ paying customers.	MRR ÷ clientes de pago.
+Soma do valor mensal das contas que entraram no mês.	Sum of monthly revenue from accounts that joined this month.	Suma del valor mensual de las cuentas que se dieron de alta este mes.
+MRR novo − saídas do mês.	New MRR − monthly departures.	MRR nuevo − bajas del mes.
+Contas da safra ainda ativas hoje ÷ contas que entraram naquele mês.	Accounts in the cohort still active today ÷ accounts that joined that month.	Cuentas de la cohorte que siguen activas ÷ cuentas dadas de alta ese mes.
+Ver aba Retenção, tabela "Todas as safras".	See the All cohorts table in the Retention tab.	Consulta la tabla Todas las cohortes en la pestaña Retención.
+Mede quantas empresas pagantes deixaram de ser clientes no mês. Cálculo: clientes que perderam todas as contas pagantes no mês ÷ maior número de clientes pagantes em qualquer dia do mês.	Counts paying companies lost in the month, divided by the peak number of paying companies that month.	Cuenta las empresas de pago perdidas en el mes y las divide entre el máximo mensual de empresas de pago.
+Fizeram onboarding	Completed onboarding	Completaron la incorporación
+Tempo médio dos ativos	Average active account age	Antigüedad media de las cuentas activas
+Tempo médio até cancelar	Average time to cancellation	Tiempo medio hasta la baja
+Cancelam antes de 90 dias	Cancel within 90 days	Cancelan antes de 90 días
+Cancelam antes de 30 dias	Cancel within 30 days	Cancelan antes de 30 días
+Retenção por safra	Retention by cohort	Retención por cohorte
+MRR da safra	Cohort MRR	MRR de la cohorte
+Safras	Cohorts	Cohortes
+MRR ativo da safra	Active cohort MRR	MRR activo de la cohorte
+MRR no fim do mês	Closing MRR	MRR al cierre del mes
+e saíram	and lost	y perdió
+meses acima da meta	months above target	meses por encima del objetivo
+acima da meta:	above target:	por encima del objetivo:
+Todos os meses dentro da meta.	All months within target.	Todos los meses dentro del objetivo.
+Mês com saldo negativo no ano:	Month with a net loss this year:	Mes con saldo negativo en el año:
+Nenhum mês com saldo negativo no ano.	No months with a net loss this year.	Ningún mes con saldo negativo en el año.
+renovações em 30 dias	renewals within 30 days	renovaciones en 30 días
+A primeira é	The first is	La primera es
+Sem onboarding, churn de	Without onboarding, churn was	Sin incorporación, el churn fue de
+de quem fez	for customers who completed onboarding	de quienes completaron la incorporación
+contas da base histórica não passaram por onboarding.	historical accounts did not complete onboarding.	cuentas del histórico no completaron la incorporación.
+contas ativas não pagam	active accounts do not pay	cuentas activas no pagan
+estão em trial e podem virar pagantes.	are on a trial and could convert to paid.	están en prueba y podrían pasar a un plan de pago.
+contas da base histórica	accounts in the historical dataset	cuentas del histórico
+Quem não faz onboarding sai	Accounts without onboarding are	Las cuentas sin incorporación tienen
+× mais. Base histórica inteira, contada por conta.	× more likely to leave, based on all historical accounts.	× más probabilidades de darse de baja, según todo el histórico de cuentas.
+saídas no ano	departures this year	bajas en el año
+desde a entrada	since joining	desde el alta
+de quem já saiu	for accounts that left	de las cuentas que se dieron de baja
+de quem cancela	of cancellations	de las bajas
+MRR novo em	New MRR in	MRR nuevo en
+contas novas	new accounts	cuentas nuevas
+MRR perdido em	Lost MRR in	MRR perdido en
+outras saídas (fim de contrato, desistência)	other departures (contract end, withdrawal)	otras bajas (fin de contrato, desistimiento)
+Resultado de	Net change in	Variación neta de
+novo menos perdido	new minus lost	nuevo menos perdido
+conferido por fatura paga	verified against paid invoices	verificado con facturas pagadas
+conferido por venda paga	verified against paid sales	verificado con ventas pagadas
+conferido por cobrança paga	verified against paid charges	verificado con cobros pagados
+conferido por recebimento	verified against payments received	verificado con cobros recibidos
+sem conexão	not connected	sin conexión
+logins ativos de contas que pagam	active logins on paying accounts	accesos activos de cuentas de pago
+equipe interna	internal team	equipo interno
+conta de teste	test account	cuenta de prueba
+já ativos na plataforma	already active on the platform	ya activos en la plataforma
+ainda a criar	still to create	pendientes de crear
+previstos, fora dos ativos	expected, excluded from active logins	previstos, excluidos de los accesos activos
+logins previstos	expected logins	accesos previstos
+linhas da planilha	spreadsheet rows	filas de la hoja
+empresas	companies	empresas
+logins previstos na planilha (sem SEO, que não tem acesso):	expected logins in the spreadsheet (SEO has no access):	accesos previstos en la hoja (SEO no tiene acceso):
+nunca pagaram, sem MRR	never paid, no MRR	nunca pagaron, sin MRR
+Nunca pagaram, sem MRR.	Never paid, no MRR.	Nunca pagaron, sin MRR.
+nova tentativa em	next attempt on	próximo intento el
+contrato até	contract through	contrato hasta
+contas pagantes	paying accounts	cuentas de pago
+conta pagante	paying account	cuenta de pago
+contas saíram	accounts left	cuentas se dieron de baja
+ativos que não pagam	active non-paying accounts	cuentas activas sin pago
+no total	in total	en total
+inadimplentes à parte	overdue accounts reported separately	cuentas vencidas por separado
+clientes saíram	customers left	clientes se dieron de baja
+do MRR do início	of opening MRR	del MRR inicial
+contas de SEO sem login	SEO accounts without login	cuentas de SEO sin acceso
+logins de contas com mais de um acesso	logins on multi-login accounts	accesos de cuentas con varios accesos
+de teste	test	de prueba
+começou o mês com	opened the month with	empezó el mes con
+por cliente pagante	per paying customer	por cliente de pago
+de MRR novo	in new MRR	de MRR nuevo
+fim de contrato, desistência	contract end, withdrawal	fin de contrato, desistimiento
+não entram no churn	excluded from churn	no cuentan como churn
+clientes saíram por churn	customers churned	clientes se perdieron por churn
+pico do mês	monthly peak	máximo del mes
+conta empresas; fim de contrato e desistência ficam fora	counts companies and excludes contract endings and withdrawals	cuenta empresas y excluye fines de contrato y desistimientos
+Nenhuma saída até agora.	No departures yet.	Aún no hay bajas.
+Nenhuma entrada até agora.	No new accounts yet.	Aún no hay altas.
+Saíram em	Departed in	Bajas en
+Entraram em	Joined in	Altas en
+sem motivo	no reason recorded	sin motivo registrado
+não é churn	excluded from churn	no cuenta como churn
+entrou em	joined on	alta el
+e mais	and another	y otras
+entraram depois, até o fim do mês.	joined later, by month end.	se dieron de alta después, antes de fin de mes.
+valor ÷	amount ÷	importe ÷
+Soma do valor mensal de cada conta ativa que paga.	Sum of the monthly value of each active paying account.	Suma del importe mensual de cada cuenta activa de pago.
+Por produto	By product	Por producto
+Por plano	By plan	Por plan
+Entram com R$ 0:	Count as BRL 0:	Se cuentan como 0 BRL:
+Cartão tenta cobrar de novo, sozinho, em	The card charge will retry automatically on	El cobro con tarjeta se reintentará automáticamente el
+contato feito	outreach attempt	intento de contacto
+contatos feitos	outreach attempts	intentos de contacto
+toques feitos	outreach attempts	intentos de contacto
+último	last	último
+próximo	next	próximo
+Toques anotados no CRM	Outreach logged in the CRM	Contactos registrados en el CRM
+encerramento (conta bloqueada nesse dia)	closure (account blocked that day)	cierre (cuenta bloqueada ese día)
+garantia até	guarantee through	garantía hasta
+Valor cobrado, conferido nas plataformas só para leitura. Acordos das agências e PIX não entram nesta soma.	Amounts charged, verified using read-only access. Agency agreements and PIX are excluded.	Importes cobrados, verificados con acceso de solo lectura. Se excluyen los acuerdos con agencias y PIX.
+contratos	contracts	contratos
+por produto:	by product:	por producto:
+é o serviço de SEO feito pela equipe interna: entra em clientes e contas, com	is the SEO service delivered by the internal team. It is included in customers and accounts, with	es el servicio de SEO del equipo interno. Se incluye en clientes y cuentas, con
+de MRR, mas não tem acesso à plataforma, então fica fora de usuários.	in MRR, but has no platform access, so it is excluded from users.	de MRR, pero no tiene acceso a la plataforma y se excluye de usuarios.
+fora das contagens acima:	excluded from the counts above:	fuera de los recuentos anteriores:
+É a base para calcular o churn de MRR.	It is the basis for calculating MRR churn.	Es la base para calcular el churn de MRR.
+A empresa. Um cliente pode ter várias contas (ex.: multicontas, clientes de agência).	The company. One customer can have multiple accounts, including through an agency.	La empresa. Un cliente puede tener varias cuentas, incluso mediante una agencia.
+Cada linha da planilha. É o que se contrata e se paga.	One spreadsheet row, representing the service purchased.	Una fila de la hoja, que representa el servicio contratado.
+Cada login na plataforma. Uma conta pode ter vários logins.	One platform login. An account can have multiple logins.	Un acceso a la plataforma. Una cuenta puede tener varios accesos.
+Grupo de contas que entraram no mesmo mês.	Accounts that joined in the same month.	Cuentas que se dieron de alta el mismo mes.
+Mensalizar	Convert to a monthly amount	Convertir a importe mensual
+Data de entrada + período do plano, rolada para a próxima data a partir de hoje.	Start date plus the plan term, advanced to the next renewal date.	Fecha de alta más el periodo del plan, hasta la próxima renovación.
+Páginas do painel	Dashboard pages	Páginas del panel
